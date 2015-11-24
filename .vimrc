@@ -11,6 +11,10 @@ set softtabstop=4
 set expandtab
 set mouse=a
 set nostartofline
+set wildmode=longest,list,full
+set wildmenu
+
+let mapleader=","
 
 noremap <leader>W :w !sudo tee % > /dev/null<CR>
 
@@ -19,3 +23,4 @@ set background=dark
 
 filetype plugin on
 set omnifunc=syntaxcomplete#Complete
+set laststatus=2
