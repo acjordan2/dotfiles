@@ -16,9 +16,6 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'vim-airline/vim-airline'
 Plugin 'ctrlpvim/ctrlp.vim'
 
-
-
-
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -49,6 +46,7 @@ set nostartofline
 set wildmode=longest,list,full
 set wildmenu
 set paste
+set directory=~/.vim/swapfiles//
 
 let mapleader=","
 
