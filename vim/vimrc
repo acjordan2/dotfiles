@@ -41,12 +41,14 @@ set tabstop=4
 set shiftwidth=4 
 set softtabstop=4
 set expandtab
+set autoindent
 set mouse=a
 set nostartofline
 set wildmode=longest,list,full
 set wildmenu
-set paste
 set directory=~/.vim/swapfiles//
+set pastetoggle=<F10>
+
 
 let mapleader=","
 
