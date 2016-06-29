@@ -48,7 +48,7 @@ set wildmode=longest,list,full
 set wildmenu
 set directory=~/.vim/swapfiles//
 set pastetoggle=<F10>
-
+set backspace=indent,eol,start
 
 let mapleader=","
 
