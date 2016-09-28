@@ -304,6 +304,17 @@ augroup restore_cursor
 augroup END
 " }}}
 
+" Disable the arrow keys {{{
+map <up> <nop>
+map <down> <nop>
+map <left> <nop>
+map <right> <nop>
+imap <up> <nop>
+imap <down> <nop>
+imap <left> <nop>
+imap <right> <nop>
+" }}}
+
 " Filetypes -------------------------------------------------------------
 " C {{{
 augroup filetype_c
@@ -397,7 +408,6 @@ augroup filetype_ruby
 augroup END
 " }}}
 
-" }}}
 " XML {{{
 augroup filetype_xml
   autocmd!
@@ -473,6 +483,7 @@ nmap <F8> :TagbarToggle<CR>
   Plugin 'majutsushi/tagbar'
   Plugin 'scrooloose/nerdcommenter'
   Plugin 'scrooloose/syntastic'
+  Plugin 'junegunn/goyo.vim'
 
   call vundle#end() 
   filetype plugin indent on 
