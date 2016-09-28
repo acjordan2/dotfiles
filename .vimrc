@@ -178,6 +178,21 @@ augroup general_config
   imap <PageUp> <C-O><C-U>
   imap <PageDown> <C-O><C-D>
   " }}}
+  
+  " Disable the arrow keys {{{
+  map <up> <nop>
+  map <down> <nop>
+  map <left> <nop>
+  map <right> <nop>
+  imap <up> <nop>
+  imap <down> <nop>
+  imap <left> <nop>
+  imap <right> <nop>
+  " }}}
+ 
+  " jj to <ESC> {{{
+   imap jj <Esc>
+  " }}}
 augroup END
 " }}}
 
@@ -304,16 +319,6 @@ augroup restore_cursor
 augroup END
 " }}}
 
-" Disable the arrow keys {{{
-map <up> <nop>
-map <down> <nop>
-map <left> <nop>
-map <right> <nop>
-imap <up> <nop>
-imap <down> <nop>
-imap <left> <nop>
-imap <right> <nop>
-" }}}
 
 " Filetypes -------------------------------------------------------------
 " C {{{
