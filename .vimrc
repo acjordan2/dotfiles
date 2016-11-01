@@ -102,17 +102,6 @@ set wrapscan " Searches wrap around end of file
 
 " Configuration -------------------------------------------------------------
 
-" FastEscape{{{
-if ! has('gui_running')
-  set ttimeoutlen=10
-  augroup FastEscape
-    autocmd!
-    au InsertEnter * set timeoutlen=0
-    au InsertLeave * set timeoutlen=1000
-  augroup END
-endif
-" }}}
-
 " MacVim {{{
 if has("gui_running")
    let s:uname = system("uname")
