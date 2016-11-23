@@ -69,13 +69,13 @@ set ofu=syntaxcomplete#Complete " Set omni-completion method
 set report=0 " Show all changes
 set ruler " Show the cursor position
 set scrolloff=3 " Start scrolling three lines before horizontal border of window
-set shiftwidth=4 " The # of spaces for indenting
+set shiftwidth=2 " The # of spaces for indenting
 set shortmess=atI " Don't show the intro message when starting vim
 set showtabline=2 " Always show tab bar
 set sidescrolloff=3 " Start scrolling three columns before vertical border of window
 set smartcase " Ignore 'ignorecase' if search patter contains uppercase characters
 set smarttab " At start of line, <Tab> inserts shiftwidth spaces, <Bs> deletes shiftwidth spaces
-set softtabstop=4 " Tab key results in 2 spaces
+set softtabstop=2 " Tab key results in 2 spaces
 set splitbelow " New window goes below
 set splitright " New windows goes right
 set suffixes=.bak,~,.swp,.swo,.o,.d,.info,.aux,.log,.dvi,.pdf,.bin,.bbl,.blg,.brf,.cb,.dmg,.exe,.ind,.idx,.ilg,.inx,.out,.toc,.pyc,.pyd,.dll
@@ -181,6 +181,10 @@ augroup general_config
  
   " jj to <ESC> {{{
    imap jj <Esc>
+  " }}}
+
+  " Disable Ex-MOde {{{
+   map Q <Nop> 
   " }}}
 augroup END
 " }}}
@@ -450,6 +454,16 @@ augroup ctrlp_config
 augroup END
 " }}}
 
+" EasyAlign.vim {{{
+augroup easy_align_config
+  autocmd!
+  " Start interactive EasyAlign in visual mode (e.g. vip<Enter>)
+  vmap <Enter> <Plug>(EasyAlign) 
+  " Start interactive EasyAlign for a motion/text object (e.g. <Leader>aip)
+  nmap <Leader>a <Plug>(EasyAlign) 
+augroup END
+" }}}
+
 " Syntastic.vim {{{
 augroup syntastic_config
   autocmd!
@@ -478,6 +492,7 @@ nmap <F8> :TagbarToggle<CR>
   Plugin 'scrooloose/nerdcommenter'
   Plugin 'scrooloose/syntastic'
   Plugin 'junegunn/goyo.vim'
+  Plugin 'junegunn/vim-easy-align'
 
   call vundle#end() 
   filetype plugin indent on 
