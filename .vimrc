@@ -493,6 +493,7 @@ nmap <F8> :TagbarToggle<CR>
   Plugin 'scrooloose/syntastic'
   Plugin 'junegunn/goyo.vim'
   Plugin 'junegunn/vim-easy-align'
+  Plugin 'vim-ruby/vim-ruby'
 
   call vundle#end() 
   filetype plugin indent on 
