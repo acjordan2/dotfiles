@@ -435,6 +435,12 @@ augroup airline_config
 augroup END
 " }}}
 
+" Auto-save.vim {{{
+  autocmd!
+  " Disable by default
+  let g:auto_save = 0
+" }}}
+
 " CtrlP.vim {{{
 augroup ctrlp_config
   autocmd!
@@ -494,6 +500,7 @@ nmap <F8> :TagbarToggle<CR>
   Plugin 'junegunn/goyo.vim'
   Plugin 'junegunn/vim-easy-align'
   Plugin 'vim-ruby/vim-ruby'
+  Plugin 'vim-scripts/vim-auto-save'
 
   call vundle#end() 
   filetype plugin indent on 

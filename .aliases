@@ -32,3 +32,10 @@ alias vim /opt/local/bin/vim
 alias ctags /opt/local/bin/ctags
 alias yoink="open -a Yoink"  
 
+alias ctags="`brew --prefix`/bin/ctags"
+
+alias msfc='msfconsole'
+
+alias scratchpad='vim -c "let g:auto_save = 1" ~/scratchpad/`date +"%m_%d_%Y"`.txt'
+
+
