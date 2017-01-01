@@ -28,14 +28,16 @@ alias v="vim"
 # File size
 alias fs="stat -f \"%z bytes\""
 
+# Use macports versions
 alias vim /opt/local/bin/vim
 alias ctags /opt/local/bin/ctags
+
+# Add stuff to Yoink dropbox
 alias yoink="open -a Yoink"  
+alias msfc="msfconsole"
 
-alias ctags="`brew --prefix`/bin/ctags"
-
-alias msfc='msfconsole'
-
+# Vim scratchpad with autosaving
 alias scratchpad='vim -c "let g:auto_save = 1" ~/scratchpad/`date +"%m_%d_%Y"`.txt'
 
-
+# Use tmux with 256 colors
+alias tmux="TERM=xterm-256color tmux"
