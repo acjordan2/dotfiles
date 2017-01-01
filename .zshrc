@@ -74,3 +74,8 @@ export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 #alias pip="/usr/local/bin/pip"
 
 source ~/.aliases
+
+# start in tmux session
+case $- in *i*)
+   if [ -z "$TMUX" ]; then TERM=xterm-256color; exec tmux; fi;;
+esac
