@@ -435,12 +435,6 @@ augroup airline_config
 augroup END
 " }}}
 
-" Auto-save.vim {{{
-  autocmd!
-  " Disable by default
-  let g:auto_save = 0
-" }}}
-
 " CtrlP.vim {{{
 augroup ctrlp_config
   autocmd!
@@ -486,24 +480,19 @@ nmap <F8> :TagbarToggle<CR>
 " Plugins -------------------------------------------------------------
 
 " Load plugins {{{
+  
+  call plug#begin('~/.vim/plugged')
 
-  filetype off
-  set rtp+=~/.vim/bundle/Vundle.vim " set the runtime path to include Vundle and initialize
-  call vundle#begin()
-
-  Plugin 'VundleVim/Vundle.vim'
-  Plugin 'vim-airline/vim-airline'
-  Plugin 'ctrlpvim/ctrlp.vim'
-  Plugin 'majutsushi/tagbar'
-  Plugin 'scrooloose/nerdcommenter'
-  Plugin 'scrooloose/syntastic'
-  Plugin 'junegunn/goyo.vim'
-  Plugin 'junegunn/vim-easy-align'
-  Plugin 'vim-ruby/vim-ruby'
-  Plugin 'vim-scripts/vim-auto-save'
-
-  call vundle#end() 
-  filetype plugin indent on 
+  Plug 'vim-airline/vim-airline'
+  Plug 'ctrlpvim/ctrlp.vim'
+  Plug 'majutsushi/tagbar'
+  Plug 'scrooloose/nerdcommenter'
+  Plug 'scrooloose/syntastic'
+  Plug 'junegunn/goyo.vim'
+  Plug 'junegunn/vim-easy-align'
+  Plug 'fatih/vim-go'
+  
+  call plug#end()
 " }}}
 
 
