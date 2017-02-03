@@ -73,9 +73,17 @@ export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 #export PYTHONPATH=$PYTHONPATH:/usr/local/lib/python2.7/site-packages
 #alias pip="/usr/local/bin/pip"
 
+# Check if tmux is installed, done before alias
+program="tmux"
+condition=$(which $program 2>/dev/null | grep -v "not found" | wc -l)
+
 source ~/.aliases
 
 # start in tmux session
-case $- in *i*)
-   if [ -z "$TMUX" ]; then TERM=xterm-256color; exec tmux; fi;;
-esac
+if [ $condition -eq 0 ] ; then
+  echo "$program is not installed"
+else
+  case $- in *i*)
+    if [ -z "$TMUX" ]; then TERM=xterm-256color; exec tmux; fi;;
+  esac
+fi
