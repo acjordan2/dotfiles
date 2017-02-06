@@ -464,6 +464,13 @@ augroup easy_align_config
 augroup END
 " }}}
 
+" RainbowParenthesis.vim {{{
+augroup rainbow_parenthesis_config
+  autocmd!
+  nnoremap <leader>rp :RainbowParentheses!!<CR>
+augroup END
+" }}}
+
 " Syntastic.vim {{{
 augroup syntastic_config
   autocmd!
@@ -483,12 +490,13 @@ nmap <F8> :TagbarToggle<CR>
   
   call plug#begin('~/.vim/plugged')
 
-  Plug 'vim-airline/vim-airline'
   Plug 'ctrlpvim/ctrlp.vim'
-  Plug 'majutsushi/tagbar'
-  Plug 'scrooloose/nerdcommenter'
-  Plug 'scrooloose/syntastic'
   Plug 'junegunn/goyo.vim'
+  Plug 'scrooloose/nerdcommenter'
+  Plug 'junegunn/rainbow_parentheses.vim'
+  Plug 'scrooloose/syntastic'
+  Plug 'majutsushi/tagbar'
+  Plug 'vim-airline/vim-airline'
   Plug 'junegunn/vim-easy-align'
   Plug 'fatih/vim-go'
   
