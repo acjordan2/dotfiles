@@ -84,6 +84,7 @@ if [ $condition -eq 0 ] ; then
   echo "$program is not installed"
 else
   case $- in *i*)
-    if [ -z "$TMUX" ]; then TERM=xterm-256color; exec tmux; fi;;
+    name=$(echo $TERM_SESSION_ID | cut -d ":" -f1)
+    if [ -z "$TMUX" ]; then TERM=xterm-256color; tmux attach -t $name || {tmux new-session -A -s $name}; exit; fi;;
   esac
 fi
