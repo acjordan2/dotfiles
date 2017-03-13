@@ -50,20 +50,17 @@ plugins=(git docker)
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
-
 export PATH="/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:$HOME/bin"
-
-# Macports
-export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+source ~/.extra/exports
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # # Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
+if [[ -n $SSH_CONNECTION ]]; then
+   export EDITOR='vim'
+else
+   export EDITOR='mvim'
+fi
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -85,6 +82,7 @@ if [ $condition -eq 0 ] ; then
 else
   case $- in *i*)
     name=$(echo $TERM_SESSION_ID | cut -d ":" -f1)
-    if [ -z "$TMUX" ]; then TERM=xterm-256color; tmux attach -t $name || {tmux new-session -A -s $name}; exit; fi;;
+    if [ -z "$TMUX" ] && [ -z "$SSH_CLIENT" ] && [ -z "$SSH_TTY" ]; then TERM=xterm-256color; tmux attach -t $name || {tmux new-session -A -s $name}; exit; fi;;
   esac
 fi
+
