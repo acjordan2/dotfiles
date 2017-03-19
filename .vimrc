@@ -36,7 +36,7 @@ set esckeys " Allow cursor keys in insert mode
 set expandtab " Expand tabs to spaces
 set foldcolumn=0 " Column to show folds
 set foldenable " Enable folding
-set foldlevel=0 " Close all folds by default
+set foldlevel=10 " Close all folds by default
 set foldmethod=syntax " Syntax are used to specify folds
 set foldminlines=0 " Allow folding single lines
 set foldnestmax=5 " Set max fold nesting level
@@ -58,6 +58,7 @@ set incsearch " Highlight dynamically as pattern is typed
 set laststatus=2 " Always show status line
 set lazyredraw " Don't redraw when we don't have to
 set magic " Enable extended regexes
+set modelines=1
 set mouse=a " Enable mouse in all in all modes
 set noerrorbells " Disable error bells
 set nojoinspaces " Only insert single space after a '.', '?' and '!' with a join command
@@ -503,20 +504,5 @@ nmap <F8> :TagbarToggle<CR>
   call plug#end()
 " }}}
 
-
-" set omnifunc=syntaxcomplete#Complete
-
-" ====== PLUGINS =======
-
-" === CtrlP ===
-" set runtimepath^=~/.vim/bundle/ctrlp.vim
-
-
-" Use a leader instead of the actual named binding
-" nmap <leader>p :CtrlP<cr>
-
-" Easy bindings for its various modes
-" nmap <leader>bb :CtrlPBuffer<cr>
-" nmap <leader>bm :CtrlPMixed<cr>
-" nmap <leader>bs :CtrlPMRU<cr>
-
+" Enable top leveol folds for .vimrc only
+" vim:foldmethod=marker:foldlevel=0
