@@ -465,6 +465,19 @@ augroup easy_align_config
 augroup END
 " }}}
 
+" Nerdtree.vim {{{
+augroup nerdtree
+  autocmd!
+  autocmd StdinReadPre * let s:std_in=1
+  " Open NERDTree by default if vim is opening a directory
+  autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
+  " Open NERDTree by default if vim opens a review file
+  autocmd VimEnter */reviews/*  exe 'NERDTree' "~/reviews"
+  " Exit vim if NERDTree is the last buffer open
+  autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+augroup END
+" }}}
+
 " RainbowParenthesis.vim {{{
 augroup rainbow_parenthesis_config
   autocmd!
@@ -489,19 +502,20 @@ nmap <F8> :TagbarToggle<CR>
 
 " Load plugins {{{
   
-  call plug#begin('~/.vim/plugged')
+call plug#begin('~/.vim/plugged')
 
-  Plug 'ctrlpvim/ctrlp.vim'
-  Plug 'junegunn/goyo.vim'
-  Plug 'scrooloose/nerdcommenter'
-  Plug 'junegunn/rainbow_parentheses.vim'
-  Plug 'scrooloose/syntastic'
-  Plug 'majutsushi/tagbar'
-  Plug 'vim-airline/vim-airline'
-  Plug 'junegunn/vim-easy-align'
-  Plug 'fatih/vim-go'
-  
-  call plug#end()
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'junegunn/goyo.vim'
+Plug 'scrooloose/nerdcommenter'
+Plug 'scrooloose/nerdtree'
+Plug 'junegunn/rainbow_parentheses.vim'
+Plug 'scrooloose/syntastic'
+Plug 'majutsushi/tagbar'
+Plug 'vim-airline/vim-airline'
+Plug 'junegunn/vim-easy-align'
+Plug 'fatih/vim-go'
+
+call plug#end()
 " }}}
 
 " Enable top leveol folds for .vimrc only
