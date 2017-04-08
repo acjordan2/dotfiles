@@ -28,10 +28,6 @@ alias v="vim"
 # File size
 alias fs="stat -f \"%z bytes\""
 
-# Use macports versions
-alias vim /opt/local/bin/vim
-alias ctags /opt/local/bin/ctags
-
 # Add stuff to Yoink dropbox
 alias yoink="open -a Yoink"  
 alias msfc="msfconsole"
