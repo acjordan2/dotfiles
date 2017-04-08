@@ -37,3 +37,6 @@ alias scratchpad='vim -c "let g:auto_save = 1" ~/scratchpad/`date +"%m_%d_%Y"`.t
 
 # Use tmux with 256 colors
 alias tmux="TERM=xterm-256color tmux"
+
+# System airport utility
+alias airport="/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport"
