@@ -1,0 +1,23 @@
+#!/bin/bash
+
+function ftrim() {
+  case "$1" in 
+    -h|--help)
+      echo "Usage: ftrim {-b|-e} BYTES FILE"
+      echo "Remove N bytes from the beginning or end of the file"
+      echo " "
+      echo "options: "
+      echo "-h, --help        Show this help"
+      echo "-b, --begin       Remove bytes from the beginning"
+      echo "-e, --end         Remove bytes from the end"
+      ;;
+    -b|--begin)
+      bytes=$(($(stat -f '%z' $3) - $2))
+      tail -c $bytes $3
+      ;;
+    -e|--end)
+      bytes=$(($(stat -f '%z' $3) - $2))
+      head -c $bytes $3
+    ;;
+   esac
+}
