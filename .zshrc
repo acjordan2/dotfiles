@@ -29,7 +29,7 @@ done
 #alias pip="/usr/local/bin/pip"
 
 # Check if tmux is installed, done before alias
-condition=$(tmux 2>&1 | grep -v "not found" | wc -l)
+condition=$(tmux -V 2>&1 | grep -v "not found" | wc -l)
 
 # start in tmux session
 if [ $condition -eq 0 ] ; then
