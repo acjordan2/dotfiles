@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo purt selfupdate
+sudo port selfupdate
 sudo port upgrade outdated
 sudo port install \ 
     nmap \
