@@ -19,5 +19,9 @@ function ftrim() {
       bytes=$(($(stat -f '%z' $3) - $2))
       head -c $bytes $3
     ;;
+    *)
+      echo "Usage: ftrim {-b|-e} BYTES FILE"
+      echo "ftrim -h for more info"
+      ;;
    esac
 }
