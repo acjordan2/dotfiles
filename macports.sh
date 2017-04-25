@@ -11,4 +11,5 @@ sudo port install \
     grep \
     tmux \
     zsh \
-    go
+    go \
+    the_silver_searcher
