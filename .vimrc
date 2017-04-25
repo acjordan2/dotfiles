@@ -441,7 +441,11 @@ augroup ctrlp_config
   autocmd!
   let g:ctrlp_clear_cache_on_exit = 0 " Do not clear filenames cache, to improve CtrlP startup
   let g:ctrlp_lazy_update = 350 " Set delay to prevent extra search
-  let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' } " Use python fuzzy matcher for better performance
+
+  if has('python')
+    let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' } " Use python fuzzy matcher for better performance
+  endif 
+
   let g:ctrlp_match_window_bottom = 0 " Show at top of window
   let g:ctrlp_max_files = 0 " Set no file limit, we are building a big project
   let g:ctrlp_switch_buffer = 'Et' " Jump to tab AND buffer if already open
@@ -452,6 +456,11 @@ augroup ctrlp_config
     \ 'file': '\v\.(exe|so|dll|class|png|jpg|jpeg)$',
   \}
   let g:ctrlp_working_path_mode = 'ra'
+
+  if executable("ag")
+    set grepprg=ag\ --nogroup\ --nocolor
+    let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --ignore ''.git'' --ignore ''.DS_Store'' --ignore ''node_modules'' --hidden -g ""' " Use the silver searcher instead of find
+  endif
 augroup END
 " }}}
 
@@ -505,6 +514,7 @@ nmap <F8> :TagbarToggle<CR>
 call plug#begin('~/.vim/plugged')
 
 Plug 'ctrlpvim/ctrlp.vim'
+Plug 'FelikZ/ctrlp-py-matcher'
 Plug 'junegunn/goyo.vim'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
