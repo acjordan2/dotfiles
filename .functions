@@ -3,7 +3,7 @@
 ftrim() {
   case "$1" in 
     -h|--help)
-      echo "Usage: ftrim {-b|-e} BYTES FILE"
+      echo "Usage: ftrim -{b|e} BYTES FILE"
       echo "Remove N bytes from the beginning or end of the file"
       echo " "
       echo "options: "
