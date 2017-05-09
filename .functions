@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-function ftrim() {
+ftrim() {
   case "$1" in 
     -h|--help)
       echo "Usage: ftrim {-b|-e} BYTES FILE"
@@ -20,7 +20,7 @@ function ftrim() {
       head -c $bytes $3
     ;;
     *)
-      echo "Usage: ftrim {-b|-e} BYTES FILE"
+      echo "Usage: ftrim -{b|e} BYTES FILE"
       echo "ftrim -h for more info"
       ;;
    esac
