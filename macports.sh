@@ -10,6 +10,7 @@ sudo port install \
     binutils \
     grep \
     tmux \
+    tmux-pasteboard \
     zsh \
     go \
     the_silver_searcher
