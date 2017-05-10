@@ -11,7 +11,7 @@ set nocompatible              " be iMproved, required
 " Syntax Highlighting {{{
 set background=dark
 syntax on
-colorscheme monokai
+colorscheme molokai
 " }}}
 
 " Mapleader {{{
