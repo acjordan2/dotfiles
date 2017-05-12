@@ -124,6 +124,10 @@ augroup general_config
   command! W w
   " }}}
 
+  " Remap :Q to :q {{{
+  command! Q q
+  " }}}
+ 
   " Toggle show tabs and trailing spaces (,c) {{{
   set lcs=tab:›\ ,trail:·,eol:¬,nbsp:_
   set fcs=fold:-
