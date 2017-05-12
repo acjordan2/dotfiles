@@ -393,6 +393,13 @@ augroup filetype_nu
 augroup END
 " }}}
 
+" Python {{{
+augroup filetype_python
+  autocmd!
+  let b:dispatch = 'python %'
+augroup END
+" }}}
+
 " Ruby {{{
 augroup filetype_ruby
   autocmd!
@@ -464,6 +471,13 @@ augroup ctrlp_config
 augroup END
 " }}}
 
+" Dispatch {{{
+augroup dispatch_config
+  autocmd!
+  nnoremap <F5> :Dispatch<CR>
+augroup end
+" }}}
+
 " EasyAlign.vim {{{
 augroup easy_align_config
   autocmd!
@@ -504,7 +518,10 @@ augroup END
 " }}}
 
 " Tagbar.vim {{{
-nmap <F8> :TagbarToggle<CR>
+augroup tagbar_config
+  autocmd!
+  nmap <F8> :TagbarToggle<CR>
+augroup END
 " }}}
 
 " Plugins -------------------------------------------------------------
@@ -522,8 +539,10 @@ Plug 'junegunn/rainbow_parentheses.vim'
 Plug 'scrooloose/syntastic'
 Plug 'majutsushi/tagbar'
 Plug 'vim-airline/vim-airline'
+Plug 'tpope/vim-dispatch'
 Plug 'junegunn/vim-easy-align'
 Plug 'fatih/vim-go'
+Plug 'Valloric/YouCompleteMe'
 
 call plug#end()
 " }}}
