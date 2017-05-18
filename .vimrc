@@ -162,10 +162,6 @@ augroup general_config
   nnoremap J mjJ`j
   " }}}
 
-  " Toggle folds (<Space>) {{{
-  nnoremap <silent> <space> :exe 'silent! normal! '.((foldclosed('.')>0)? 'zMzx' : 'zc')<CR>
-  " }}}
-
   " Fix page up and down {{{
   map <PageUp> <C-U>
   map <PageDown> <C-D>
