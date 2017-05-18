@@ -332,43 +332,6 @@ augroup filetype_c
 augroup END
 " }}}
 
-" Clojure {{{
-augroup filetype_clojure
-  autocmd!
-  let g:vimclojure#ParenRainbow = 1 " Enable rainbow parens
-  let g:vimclojure#DynamicHighlighting = 1 " Dynamic highlighting
-  let g:vimclojure#FuzzyIndent = 1 " Names beginning in 'def' or 'with' to be indented as if they were included in the 'lispwords' option
-augroup END
-" }}}
-
-" Coffee {{{
-augroup filetype_coffee
-  autocmd!
-  au BufNewFile,BufReadPost *.coffee setl foldmethod=indent nofoldenable
-augroup END
-" }}}
-
-" Fish {{{
-augroup filetype_fish
-  autocmd!
-  au BufRead,BufNewFile *.fish set ft=fish
-augroup END
-" }}}
-
-" Handlebars {{{
-augroup filetype_hbs
-  autocmd!
-  au BufRead,BufNewFile *.hbs,*.handlebars,*.hbs.erb,*.handlebars.erb setl ft=mustache syntax=mustache
-augroup END
-" }}}
-
-" Jade {{{
-augroup filetype_jade
-  autocmd!
-  au BufRead,BufNewFile *.jade set ft=jade syntax=jade
-augroup END
-" }}}
-
 " JavaScript {{{
 augroup filetype_javascript
   autocmd!
@@ -387,13 +350,6 @@ augroup END
 augroup filetype_markdown
   autocmd!
   let g:markdown_fenced_languages = ['ruby', 'html', 'javascript', 'css', 'erb=eruby.html', 'bash=sh']
-augroup END
-" }}}
-
-" Nu {{{
-augroup filetype_nu
-  autocmd!
-  au BufNewFile,BufRead *.nu,*.nujson,Nukefile setf nu
 augroup END
 " }}}
 
