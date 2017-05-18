@@ -296,7 +296,7 @@ augroup word_processor_mode
     map j gj
     map k gk
     setlocal smartindent
-    setlocal spell spelllang=en_ca
+    setlocal spell spelllang=en_us
     setlocal noexpandtab
     setlocal wrap
     setlocal linebreak
