@@ -117,6 +117,9 @@ if has("gui_running")
    if s:uname == "Darwin\n"
       set guifont=Inconsolata\ for\ Powerline:h15
    endif
+   source ~/notes/.vim_session
+   autocmd VimEnter * cd ~/notes
+   autocmd VimEnter * Obsess ~/notes/.vim_session
 endif
 " }}}
 
@@ -459,7 +462,7 @@ augroup nerdtree
   " Open NERDTree by default if vim is opening a directory
   autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
   " Open NERDTree by default if vim opens a review file
-  autocmd VimEnter */reviews/*  exe 'NERDTree' "~/reviews"
+  autocmd VimEnter */notes/*  exe 'NERDTree' "~/notes
   " Exit vim if NERDTree is the last buffer open
   autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 augroup END
@@ -500,6 +503,7 @@ Plug 'junegunn/goyo.vim'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
+Plug 'tpope/vim-obsession'
 Plug 'junegunn/rainbow_parentheses.vim'
 Plug 'scrooloose/syntastic'
 Plug 'majutsushi/tagbar'
