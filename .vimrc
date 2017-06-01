@@ -462,7 +462,9 @@ augroup nerdtree
   " Open NERDTree by default if vim is opening a directory
   autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
   " Open NERDTree by default if vim opens a review file
-  autocmd VimEnter */notes/*  exe 'NERDTree' "~/notes
+  autocmd VimEnter */notes/*  exe 'NERDTree' "~/notes"
+  " Go to previous (last accessed) window
+  autocmd VimEnter * wincmd p
   " Exit vim if NERDTree is the last buffer open
   autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 augroup END
