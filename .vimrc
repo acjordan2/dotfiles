@@ -32,7 +32,6 @@ set clipboard=unnamed " System clipboard integration
 set diffopt=filler " Add vertical spaces to keep right and left aligned
 set diffopt+=iwhite " Ignore whitespace changes (focus on code changes)
 set encoding=utf-8 nobomb " BOM often causes trouble
-set esckeys " Allow cursor keys in insert mode
 set expandtab " Expand tabs to spaces
 set foldcolumn=0 " Column to show folds
 set foldenable " Enable folding
@@ -84,7 +83,6 @@ set switchbuf=""
 set tags=tags " Tags file for cTags
 set title " Show the filename in the window titlebar
 set ttyfast " Send more characters at a given time
-set ttymouse=xterm " Set mouse type to xterm
 set undofile " Persistent Undo
 set viminfo=%,'9999,s512,n~/.vim/viminfo " Restore buffer list, marks are remembered for 9999 files, registers up to 512Kb are remembered
 set visualbell " Use visual bell instead of audible bell (annnnnoying)
@@ -97,6 +95,15 @@ set wildmenu " Hitting TAB in command mode will show possible completions above 
 set wildmode=list:longest " Complete only until point of ambiguity
 set winminheight=0 " Allow splits to be reduced to a single line
 set wrapscan " Searches wrap around end of file
+
+" Incompatible with Neovim {{{`
+if !has('nvim')
+  set esckeys " Allow cursor keys in insert mode
+  set ttymouse=xterm " Set mouse type to xterm
+  set viminfo=~/.vim/.viminfo " .viminfo file from vim cannot be parsed by neovim
+endif
+" }}}
+
 " }}}
 
 " }}}
