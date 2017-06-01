@@ -84,7 +84,6 @@ set tags=tags " Tags file for cTags
 set title " Show the filename in the window titlebar
 set ttyfast " Send more characters at a given time
 set undofile " Persistent Undo
-set viminfo=%,'9999,s512,n~/.vim/viminfo " Restore buffer list, marks are remembered for 9999 files, registers up to 512Kb are remembered
 set visualbell " Use visual bell instead of audible bell (annnnnoying)
 set wildchar=<TAB> " Character for CLI expansion (TAB-completion)
 set wildignore+=.DS_Store
@@ -100,7 +99,9 @@ set wrapscan " Searches wrap around end of file
 if !has('nvim')
   set esckeys " Allow cursor keys in insert mode
   set ttymouse=xterm " Set mouse type to xterm
-  set viminfo=~/.vim/.viminfo " .viminfo file from vim cannot be parsed by neovim
+  set viminfo=%,'9999,s512,n~/.vim/viminfo " Restore buffer list, marks are remembered for 9999 files, registers up to 512Kb are remembered
+else
+  set viminfo=%,'9999,s512,n~/.vim/.nviminfo " Restore buffer list, marks are remembered for 9999 files, registers up to 512Kb are remembered
 endif
 " }}}
 
