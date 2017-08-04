@@ -499,21 +499,22 @@ augroup END
   
 call plug#begin('~/.vim/plugged')
 
-Plug 'ctrlpvim/ctrlp.vim'
 Plug 'FelikZ/ctrlp-py-matcher'
+Plug 'Valloric/YouCompleteMe'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'fatih/vim-go'
 Plug 'junegunn/goyo.vim'
+Plug 'junegunn/rainbow_parentheses.vim'
+Plug 'junegunn/vim-easy-align'
 Plug 'ludovicchabant/vim-gutentags'
+Plug 'majutsushi/tagbar'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
-Plug 'tpope/vim-obsession'
-Plug 'junegunn/rainbow_parentheses.vim'
 Plug 'scrooloose/syntastic'
-Plug 'majutsushi/tagbar'
-Plug 'vim-airline/vim-airline'
 Plug 'tpope/vim-dispatch'
-Plug 'junegunn/vim-easy-align'
-Plug 'fatih/vim-go'
-Plug 'Valloric/YouCompleteMe'
+Plug 'tpope/vim-obsession'
+Plug 'vim-airline/vim-airline'
+Plug 'christoomey/vim-tmux-navigator'
 
 call plug#end()
 " }}}
