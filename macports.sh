@@ -1,16 +1,16 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 sudo port selfupdate
 sudo port upgrade outdated
 sudo port install \ 
-    nmap \
-    vim \
-    ctags \
-    coreutils \
     binutils \
+    coreutils \
+    ctags \
+    go \
     grep \
+    nmap \
+    the_silver_searcher \
     tmux \
     tmux-pasteboard \
-    zsh \
-    go \
-    the_silver_searcher
+    vim \
+    zsh 
