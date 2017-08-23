@@ -8,6 +8,7 @@ sudo port install \
     ctags \
     go \
     grep \
+    gsed \
     nmap \
     the_silver_searcher \
     tmux \
