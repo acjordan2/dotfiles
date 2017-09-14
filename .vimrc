@@ -111,18 +111,6 @@ endif
 
 " Configuration -------------------------------------------------------------
 
-" MacVim {{{
-if has("gui_running")
-   let s:uname = system("uname")
-   if s:uname == "Darwin\n"
-      set guifont=Inconsolata\ for\ Powerline:h15
-   endif
-   source ~/notes/.vim_session
-   autocmd VimEnter * cd ~/notes
-   autocmd VimEnter * Obsess ~/notes/.vim_session
-endif
-" }}}
-
 " General {{{
 augroup general_config
   autocmd!
@@ -455,21 +443,6 @@ augroup easy_align_config
 augroup END
 " }}}
 
-" Nerdtree.vim {{{
-augroup nerdtree
-  autocmd!
-  autocmd StdinReadPre * let s:std_in=1
-  " Open NERDTree by default if vim is opening a directory
-  autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
-  " Open NERDTree by default if vim opens a review file
-  autocmd VimEnter */notes/*  exe 'NERDTree' "~/notes"
-  " Go to previous (last accessed) window
-  autocmd VimEnter * wincmd p
-  " Exit vim if NERDTree is the last buffer open
-  autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-augroup END
-" }}}
-
 " RainbowParenthesis.vim {{{
 augroup rainbow_parenthesis_config
   autocmd!
@@ -482,7 +455,6 @@ augroup syntastic_config
   autocmd!
   let g:syntastic_error_symbol = '✗'
   let g:syntastic_warning_symbol = '⚠'
-  let g:syntastic_ruby_checkers = ['mri', 'rubocop']
 augroup END
 " }}}
 
@@ -504,15 +476,13 @@ Plug 'Valloric/YouCompleteMe'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'fatih/vim-go'
 Plug 'junegunn/goyo.vim'
-Plug 'junegunn/rainbow_parentheses.vim'
+Plug 'kien/rainbow_parentheses.vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'majutsushi/tagbar'
 Plug 'scrooloose/nerdcommenter'
-Plug 'scrooloose/nerdtree'
-Plug 'scrooloose/syntastic'
+Plug 'vim-syntastic/syntastic'
 Plug 'tpope/vim-dispatch'
-Plug 'tpope/vim-obsession'
 Plug 'vim-airline/vim-airline'
 Plug 'christoomey/vim-tmux-navigator'
 
