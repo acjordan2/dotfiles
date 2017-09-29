@@ -10,8 +10,7 @@ brew install \
   go \
   grep --with-default-names \
   nmap \
-  reattach-to-user-namespace
+  reattach-to-user-namespace \
   tmux \
-  tmux-pasteboard \
   vim \
   zsh
