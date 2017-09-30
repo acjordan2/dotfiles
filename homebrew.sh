@@ -5,6 +5,7 @@ brew install \
   binutils \
   coreutils \
   ctags \
+  findutils --with-default-names \
   gnu-sed \
   gnutls \
   go \
