@@ -21,3 +21,5 @@ uninstall_oh_my_zsh
 git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
 
 ln -s "${ZDOTDIR:-$HOME}"/.zprezto/runcoms/.zlogin" ${ZDOTDIR:-$HOME}"/.zlogin
+
+find .zprezto -type f -exec echo ln -s $PWD/{} ~/{} ;
