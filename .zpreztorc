@@ -1,0 +1,44 @@
+#
+# Sets Prezto options.
+#
+# Authors:
+#   Sorin Ionescu <sorin.ionescu@gmail.com>
+#
+
+#
+# General
+#
+
+# Color output (auto set to 'no' on dumb terminals).
+zstyle ':prezto:*:*' color 'yes'
+
+# Set the Zsh modules to load (man zshmodules).
+# zstyle ':prezto:load' zmodule 'attr' 'stat'
+
+# Set the Zsh functions to load (man zshcontrib).
+# zstyle ':prezto:load' zfunction 'zargs' 'zmv'
+
+# Set the Prezto modules to load (browse modules).
+# The order matters.
+zstyle ':prezto:load' pmodule \
+  'environment' \
+  'history' \
+  'history-substring-search' \
+  'completion' \
+  'prompt'
+
+#
+# Prompt
+#
+
+# Theme
+zstyle ':prezto:module:prompt' theme 'superlinh'
+
+# Set the working directory prompt display length.
+# By default, it is set to 'short'. Set it to 'long' (without '~' expansion)
+# for longer or 'full' (with '~' expansion) for even longer prompt display.
+zstyle ':prezto:module:prompt' pwd-length 'long'
+
+# Set the prompt to display the return code along with an indicator for non-zero
+# return codes. This is not supported by all prompts.
+zstyle ':prezto:module:prompt' show-return-val 'yes'
