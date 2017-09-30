@@ -17,4 +17,7 @@ cd ~/.vim/fonts
 cd ~/.vim/plugged/YouCompleteMe/
 ./install.py --clang-completer --gocode-completer --racer-completer
 
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+uninstall_oh_my_zsh
+git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
+
+ln -s "${ZDOTDIR:-$HOME}"/.zprezto/runcoms/.zlogin" ${ZDOTDIR:-$HOME}"/.zlogin
