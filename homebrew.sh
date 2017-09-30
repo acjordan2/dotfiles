@@ -8,6 +8,7 @@ brew install \
   gnu-sed \
   gnutls \
   go \
+  grc \
   grep --with-default-names \
   nmap \
   reattach-to-user-namespace \
