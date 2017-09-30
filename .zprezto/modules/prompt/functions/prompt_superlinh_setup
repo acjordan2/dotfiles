@@ -2,7 +2,7 @@
 # A simple theme that displays relevant, contextual information.
 #
 # Authors:
-#   Sorin Ionescu <sorin.ionescu@gmail.com>
+#   superlinh Ionescu <sorin.ionescu@gmail.com>
 #
 # Screenshots:
 #   http://i.imgur.com/nBEEZ.png
@@ -32,65 +32,65 @@
 # Load dependencies.
 pmodload 'helper'
 
-function prompt_sorin_pwd {
+function prompt_superlinh_pwd {
   local pwd="${PWD/#$HOME/~}"
 
   if [[ "$pwd" == (#m)[/~] ]]; then
-    _prompt_sorin_pwd="$MATCH"
+    _prompt_superlinh_pwd="$MATCH"
     unset MATCH
   else
-    _prompt_sorin_pwd="${${${${(@j:/:M)${(@s:/:)pwd}##.#?}:h}%/}//\%/%%}/${${pwd:t}//\%/%%}"
+    _prompt_superlinh_pwd="${${${${(@j:/:M)${(@s:/:)pwd}##.#?}:h}%/}//\%/%%}/${${pwd:t}//\%/%%}"
   fi
 }
 
-function prompt_sorin_git_info {
-  if (( _prompt_sorin_precmd_async_pid > 0 )); then
+function prompt_superlinh_git_info {
+  if (( _prompt_superlinh_precmd_async_pid > 0 )); then
     # Append Git status.
-    if [[ -s "$_prompt_sorin_precmd_async_data" ]]; then
+    if [[ -s "$_prompt_superlinh_precmd_async_data" ]]; then
       alias typeset='typeset -g'
-      source "$_prompt_sorin_precmd_async_data"
+      source "$_prompt_superlinh_precmd_async_data"
       RPROMPT+='${git_info:+${(e)git_info[status]}}'
       unalias typeset
     fi
 
     # Reset PID.
-    _prompt_sorin_precmd_async_pid=0
+    _prompt_superlinh_precmd_async_pid=0
 
     # Redisplay prompt.
     zle && zle reset-prompt
   fi
 }
 
-function prompt_sorin_precmd_async {
+function prompt_superlinh_precmd_async {
   # Get Git repository information.
   if (( $+functions[git-info] )); then
     git-info
-    typeset -p git_info >! "$_prompt_sorin_precmd_async_data"
+    typeset -p git_info >! "$_prompt_superlinh_precmd_async_data"
   fi
 
   # Signal completion to parent process.
   kill -WINCH $$
 }
 
-function prompt_sorin_precmd {
+function prompt_superlinh_precmd {
   setopt LOCAL_OPTIONS
   unsetopt XTRACE KSH_ARRAYS
 
   # Format PWD.
-  prompt_sorin_pwd
+  prompt_superlinh_pwd
 
   # Define prompts.
   RPROMPT='${editor_info[overwrite]}%(?:: %F{1}⏎%f)${VIM:+" %B%F{6}V%f%b"}'
 
   # Kill the old process of slow commands if it is still running.
-  if (( _prompt_sorin_precmd_async_pid > 0 )); then
-    kill -KILL "$_prompt_sorin_precmd_async_pid" &>/dev/null
+  if (( _prompt_superlinh_precmd_async_pid > 0 )); then
+    kill -KILL "$_prompt_superlinh_precmd_async_pid" &>/dev/null
   fi
 
   # Compute slow commands in the background.
-  trap prompt_sorin_git_info WINCH
-  prompt_sorin_precmd_async &!
-  _prompt_sorin_precmd_async_pid=$!
+  trap prompt_superlinh_git_info WINCH
+  prompt_superlinh_precmd_async &!
+  _prompt_superlinh_precmd_async_pid=$!
 
   # Get Ruby info
   if (( $+functions[ruby-info] )); then
@@ -108,22 +108,22 @@ function prompt_sorin_precmd {
   fi
 
   # render preprompt
-  print -P '\n%F{113}%n@%m%f %F{208}λ%f %F{6}${_prompt_sorin_pwd}%f ${ruby_info[version]} ${node_info[version]} %F{70}${PYTHON_DIST}%f ${python_info[virtualenv]}'
+  print -P '\n%F{113}%n@%m%f %F{208}λ%f %F{6}${_prompt_superlinh_pwd}%f ${ruby_info[version]} ${node_info[version]} %F{70}${PYTHON_DIST}%f ${python_info[virtualenv]}'
 
 }
 
-function prompt_sorin_setup {
+function prompt_superlinh_setup {
   setopt LOCAL_OPTIONS
   unsetopt XTRACE KSH_ARRAYS
   prompt_opts=(cr percent subst)
-  _prompt_sorin_precmd_async_pid=0
-  _prompt_sorin_precmd_async_data="${TMPPREFIX}-prompt_sorin_data"
+  _prompt_superlinh_precmd_async_pid=0
+  _prompt_superlinh_precmd_async_data="${TMPPREFIX}-prompt_sorin_data"
 
   # Load required functions.
   autoload -Uz add-zsh-hook
 
   # Add hook for calling infos before each command.
-  add-zsh-hook precmd prompt_sorin_precmd
+  add-zsh-hook precmd prompt_superlinh_precmd
 
   # Set editor-info parameters.
   zstyle ':prezto:module:editor:info:completing' format '%B%F{7}...%f%b'
@@ -164,7 +164,7 @@ function prompt_sorin_setup {
   SPROMPT='zsh: correct %F{1}%R%f to %F{2}%r%f [nyae]? '
 }
 
-function prompt_sorin_preview {
+function prompt_superlinh_preview {
   local +h PROMPT=''
   local +h RPROMPT=''
   local +h SPROMPT=''
@@ -173,4 +173,4 @@ function prompt_sorin_preview {
   prompt_preview_theme 'superlinh'
 }
 
-prompt_sorin_setup "$@"
+prompt_superlinh_setup "$@"
