@@ -22,4 +22,4 @@ git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$H
 
 ln -s "${ZDOTDIR:-$HOME}"/.zprezto/runcoms/.zlogin" ${ZDOTDIR:-$HOME}"/.zlogin
 
-find .zprezto -type f -exec echo ln -s $PWD/{} ~/{} ;
+find .zprezto -type f -exec ln -s $PWD/{} ~/{} \;
