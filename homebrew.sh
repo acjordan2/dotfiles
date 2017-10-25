@@ -11,6 +11,8 @@ brew install \
   go \
   grc \
   grep --with-default-names \
+  jq \
+  direnv \
   mitmproxy \
   nmap \
   reattach-to-user-namespace \
