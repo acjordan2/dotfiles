@@ -472,7 +472,6 @@ augroup END
 call plug#begin('~/.vim/plugged')
 
 Plug 'FelikZ/ctrlp-py-matcher'
-Plug 'Valloric/YouCompleteMe'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'fatih/vim-go'
 Plug 'junegunn/goyo.vim'
@@ -485,6 +484,14 @@ Plug 'w0rp/ale'
 Plug 'tpope/vim-dispatch'
 Plug 'vim-airline/vim-airline'
 Plug 'christoomey/vim-tmux-navigator'
+
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
 
 call plug#end()
 " }}}
