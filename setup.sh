@@ -14,8 +14,8 @@ mkdir ~/.vim/fonts
 git clone https://github.com/powerline/fonts ~/.vim/fonts
 cd ~/.vim/fonts
 ./install.sh
-cd ~/.vim/plugged/YouCompleteMe/
-./install.py --clang-completer --gocode-completer --racer-completer
+# cd ~/.vim/plugged/YouCompleteMe/
+# ./install.py --clang-completer --gocode-completer --racer-completer
 
 uninstall_oh_my_zsh
 git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
