@@ -11,6 +11,7 @@ brew install \
   go \
   grc \
   grep --with-default-names \
+  mitmproxy \
   nmap \
   reattach-to-user-namespace \
   tmux \
