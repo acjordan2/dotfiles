@@ -6,6 +6,7 @@ zstyle ':prezto:load' pmodule \
   'environment' \
   'history' \
   'history-substring-search' \
+  'syntax-highlighting' \
   'completion' \
   'prompt'
 
@@ -24,3 +25,23 @@ zstyle ':prezto:module:prompt' pwd-length 'full'
 # Set the prompt to display the return code along with an indicator for non-zero
 # return codes. This is not supported by all prompts.
 zstyle ':prezto:module:prompt' show-return-val 'yes'
+
+#
+# Syntax Highlighting
+#
+
+# Set syntax highlighters.
+# By default, only the main highlighter is enabled.
+zstyle ':prezto:module:syntax-highlighting' highlighters \
+   'main' \
+   'brackets' \
+   'pattern' \
+   'line' \
+   'cursor' \
+   'root'
+
+# Set syntax highlighting styles.
+zstyle ':prezto:module:syntax-highlighting' styles \
+   'builtin' 'bg=blue' \
+   'command' 'bg=blue' \
+   'function' 'bg=blue'
