@@ -10,7 +10,8 @@ for file in ~/.{extra,bash_prompt,exports,aliases,functions}; do
 done
 
 # Generic colouriser
-source /usr/local/etc/grc.bashrc
+source /usr/local/etc/grc.bashrc 2>/dev/null
+source /opt/local/etc/grc.d/grc.bashrc 2>/dev/null
 
 # highlighting inside manpages and elsewhere
 export LESS_TERMCAP_mb=$'\E[01;31m'       # begin blinking
@@ -21,13 +22,15 @@ export LESS_TERMCAP_so=$'\E[38;5;246m'    # begin standout-mode - info box
 export LESS_TERMCAP_ue=$'\E[0m'           # end underline
 export LESS_TERMCAP_us=$'\E[04;38;5;146m' # begin underline
 
-# Load dircolors
-eval $(dircolors ~/.dircolors)
-
 # Change auto complete colors
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 autoload -Uz compinit
 compinit
+
+# Different theme for SSH Sessions
+if [ -n "$SSH_CLIENT" ] && [ -n "$SSH_TTY" ]; then
+  prompt peepcode ">"
+fi
 
 # Check if tmux is installed
 condition=$(tmux -V 2>&1 | grep -v "not found" | wc -l)
