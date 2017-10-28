@@ -17,5 +17,5 @@ brew install \
   nmap \
   reattach-to-user-namespace \
   tmux \
-  vim \
+  vim --with-python3 \
   zsh
