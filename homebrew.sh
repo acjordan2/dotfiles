@@ -17,6 +17,7 @@ brew install \
   mitmproxy \
   nmap \
   reattach-to-user-namespace \
+  socat \
   tmux \
   vim --with-python3 \
   zsh
