@@ -3,15 +3,12 @@
 brew update
 brew install \
   binutils \
-  cfr \
+  cfr-decompiler \
   coreutils \
   ctags \
-  findutils --with-default-names \
-  gnu-sed \
   gnutls \
   go \
   grc \
-  grep --with-default-names \
   jq \
   direnv \
   mitmproxy \
@@ -19,5 +16,12 @@ brew install \
   reattach-to-user-namespace \
   socat \
   tmux \
-  vim --with-python3 \
   zsh
+
+brew install \
+  findutils \
+  gnu-sed \
+  grep \
+  --with-default-names
+
+brew install vim --with-python3
