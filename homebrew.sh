@@ -3,6 +3,7 @@
 brew update
 brew install \
   binutils \
+  cfr \
   coreutils \
   ctags \
   findutils --with-default-names \
