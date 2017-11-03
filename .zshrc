@@ -10,8 +10,10 @@ for file in ~/.{extra,bash_prompt,exports,aliases,functions}; do
 done
 
 # Generic colouriser
-source /usr/local/etc/grc.bashrc 2>/dev/null
-source /opt/local/etc/grc.d/grc.bashrc 2>/dev/null
+grc_condition=$(grc 2>&1 | grep "not found" | wc -l)
+if [ $grc_condition -eq 0 ]; then
+  source /usr/local/etc/grc.bashrc 2>/dev/null
+fi
 
 # highlighting inside manpages and elsewhere
 export LESS_TERMCAP_mb=$'\E[01;31m'       # begin blinking
@@ -37,7 +39,7 @@ condition=$(tmux -V 2>&1 | grep -v "not found" | wc -l)
 
 # start in tmux session
 if [ $condition -eq 0 ] ; then
-  echo "$tmux is not installed"
+  echo "tmux is not installed"
 else
   case $- in *i*)
     name=$(echo $TERM_SESSION_ID | cut -d ":" -f1)
@@ -49,3 +51,4 @@ else
 fi
 
 source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+eval "$(direnv hook zsh)"
