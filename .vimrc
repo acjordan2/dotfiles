@@ -352,11 +352,6 @@ augroup END
 augroup filetype_python
   autocmd!
   au Filetype python let b:dispatch = 'python %'
-  au Filetype python syntax match spaces /  / conceal cchar= "Don't forget the space after cchar!"
-  au Filetype python set concealcursor=nvi
-  au Filetype python set conceallevel=1
-  au Filetype python let g:concealbg = synIDattr(hlID("Normal"), "bg")
-  au FileType python execute 'hi Conceal ctermbg = '.g:concealbg
 augroup END
 " }}}
 
