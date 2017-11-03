@@ -17,6 +17,9 @@ alias ls='gls -AFh ${colorflag} --group-directories-first'
 alias lsd='ls -l | grep "^d"' # only directories
 alias ll='ls -l'
 
+alias grep='grep --color'
+alias sgrep='grep -R -n -H -C 5 --exclude-dir={.git,.svn,CVS} '
+
 #    `la` defined in .functions
 ###
 
