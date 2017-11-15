@@ -3,8 +3,11 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
+# replace system tools with gnutils, e.g. cp, mv, etc
+export PATH="/usr/local/opt/coreutils/libexec/gnubin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:$HOME/bin"
+export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
+
 # load extra dotfiles
-export PATH="/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:$HOME/bin"
 for file in ~/.{extra,bash_prompt,exports,aliases,functions}; do
     [ -r "$file" ] && source "$file"
 done
