@@ -34,7 +34,7 @@ compinit
 
 # Different theme for SSH Sessions
 if [ -n "$SSH_CLIENT" ] && [ -n "$SSH_TTY" ]; then
-  prompt peepcode ">"
+  prompt sorin
 fi
 
 # Check if tmux is installed
