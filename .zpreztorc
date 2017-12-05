@@ -15,7 +15,11 @@ zstyle ':prezto:load' pmodule \
 #
 
 # Theme
-zstyle ':prezto:module:prompt' theme 'superlinh'
+if [ -n "$SSH_CLIENT" ] && [ -n "$SSH_TTY" ]; then
+  zstyle ':prezto:module:prompt' theme 'sorin'
+else
+  zstyle ':prezto:module:prompt' theme 'superlinh'
+fi
 
 # Set the working directory prompt display length.
 # By default, it is set to 'short'. Set it to 'long' (without '~' expansion)

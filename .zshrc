@@ -32,11 +32,6 @@ zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 autoload -Uz compinit
 compinit
 
-# Different theme for SSH Sessions
-if [ -n "$SSH_CLIENT" ] && [ -n "$SSH_TTY" ]; then
-  prompt sorin
-fi
-
 # Check if tmux is installed
 condition=$(tmux -V 2>&1 | grep -v "not found" | wc -l)
 
