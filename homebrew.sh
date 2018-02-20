@@ -5,6 +5,7 @@ brew install \
   binutils \
   cfr-decompiler \
   coreutils \
+  caskroom/cask/wireshark \
   ctags \
   gnutls \
   go \
