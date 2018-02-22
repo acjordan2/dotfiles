@@ -334,6 +334,14 @@ augroup filetype_javascript
 augroup END
 " }}}
 
+" Go {{{
+augroup filetype_go
+  autocmd!
+  setlocal softtabstop=4 " Tab key results in 2 spaces
+  setlocal shiftwidth=4 " The # of spaces for indenting
+augroup END
+" }}}
+
 " JSON {{{
 augroup filetype_json
   autocmd!
