@@ -31,6 +31,7 @@ alias free_diskspace_report="diskspace_report"
 
 # Shortcuts
 alias v="vim"
+alias vless="vim -u ~/.vimrc.less"
 
 # File size
 alias fs="stat -f \"%z bytes\""
