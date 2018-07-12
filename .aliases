@@ -56,4 +56,4 @@ alias gstty='/usr/local/opt/coreutils/libexec/gnubin/stty'
 alias forcepull='git fetch --all && git reset --hard origin/master'
 
 # port forward VNC ports over SSH
-alias sshrdp='ssh -L 9001:localhost:9901 -L 5900:localhost:5900 -L 3283:localhost:3283'
+alias sshrdp='ssh -L 9001:localhost:9001 -L 5900:localhost:5900 -L 3283:localhost:3283'
