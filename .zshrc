@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 # Source Prezto.
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
@@ -9,12 +11,11 @@ export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
 
 # load extra dotfiles
 for file in ~/.{extra,bash_prompt,exports,aliases,functions}; do
-    [ -r "$file" ] && source "$file"
+    [ -r "${file}" ] && source "${file}"
 done
 
 # Generic colouriser
-grc_condition=$(grc 2>&1 | grep "not found" | wc -l)
-if [ $grc_condition -eq 0 ]; then
+if [ $(grc 2>&1 | grep -c "not found") -eq 0 ]; then
   source /usr/local/etc/grc.bashrc 2>/dev/null
 fi
 
@@ -32,20 +33,15 @@ zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 autoload -Uz compinit
 compinit
 
-# Check if tmux is installed
-condition=$(tmux -V 2>&1 | grep -v "not found" | wc -l)
-
 # start in tmux session
-if [ $condition -eq 0 ] ; then
+if [ $(tmux -V 2>&1 | grep -v "not found" -c) -eq 0 ] ; then
   echo "tmux is not installed"
 else
-  case $- in *i*)
     name=$(echo $TERM_SESSION_ID | cut -d ":" -f1)
     if [ -z "$TMUX" ] && [ -z "$SSH_CLIENT" ] && [ -z "$SSH_TTY" ]; then 
-      TERM=xterm-256color; tmux attach -t $name || {tmux new-session -A -s $name}; 
+      TERM=xterm-256color; tmux attach -t ${name} || { tmux new-session -A -s ${name} };
       exit; 
-    fi;;
-  esac
+    fi
 fi
 
 source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
