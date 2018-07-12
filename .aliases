@@ -16,11 +16,11 @@ export CLICOLOR_FORCE=1
 alias ls='gls -AFh ${colorflag} --group-directories-first'
 alias lsd='ls -l | grep "^d"' # only directories
 alias ll='ls -l'
+#    `la` defined in .functions
 
 alias grep='grep --color'
 alias sgrep='grep -R -n -H -C 5 --exclude-dir={.git,.svn,CVS} '
 
-#    `la` defined in .functions
 ###
 
 # Recursively delete `.DS_Store` files
@@ -51,3 +51,9 @@ alias airport="/System/Library/PrivateFrameworks/Apple80211.framework/Versions/C
 
 # gnu stty
 alias gstty='/usr/local/opt/coreutils/libexec/gnubin/stty'
+
+# force git pull, overwriting local changes
+alias forcepull='git fetch --all && git reset --hard origin/master'
+
+# port forward VNC ports over SSH
+alias sshrdp='ssh -L 9001:localhost:9901 -L 5900:localhost:5900 -L 3283:localhost:3283'
