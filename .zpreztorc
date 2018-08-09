@@ -4,11 +4,12 @@ zstyle ':prezto:*:*' color 'yes'
 # set modules The order matters.
 zstyle ':prezto:load' pmodule \
   'environment' \
+  'syntax-highlighting' \
   'history' \
   'history-substring-search' \
-  'syntax-highlighting' \
   'completion' \
-  'prompt'
+  'prompt' \
+  'autosuggestions'
 
 #
 # Prompt
@@ -49,3 +50,7 @@ zstyle ':prezto:module:syntax-highlighting' styles \
    'builtin' 'bg=blue' \
    'command' 'bg=blue' \
    'function' 'bg=blue'
+
+# Enable autosuggestion 
+zstyle ':prezto:module:autosuggestions' color 'yes'
+
