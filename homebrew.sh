@@ -3,18 +3,19 @@
 brew update
 brew install \
   binutils \
+  caskroom/cask/wireshark \
   cfr-decompiler \
   coreutils \
-  caskroom/cask/wireshark \
   ctags \
+  direnv \
   gnutls \
   go \
   grc \
   jq \
-  direnv \
   mitmproxy \
   nmap \
   reattach-to-user-namespace \
+  shellcheck \
   socat \
   tmux \
   zsh
