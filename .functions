@@ -60,3 +60,22 @@ camerausedby() {
 md() {
     pandoc ${1} | lynx -stdin
 }
+
+ipls() {
+  if [ "$(command -v ifconfig)" ]; then
+    iplist=$(ifconfig | grep "inet" | grep -v "127.0.0.1" | grep -v "::1" | 
+       cut -d" "  -f2 | cut -d"%" -f1 | sort)
+  fi
+ 
+  if [ -z "${1}" ]; then
+      echo "${iplist}"
+  fi
+
+  if [ "${1}" = "-4" ]; then
+    echo "${iplist}" | grep -v "::"
+  fi
+
+  if [ "${1}" = "-6" ]; then
+    echo "${iplist}" | grep -v "\."
+  fi
+}
