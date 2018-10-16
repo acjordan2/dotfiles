@@ -3,6 +3,7 @@
 brew update
 brew install \
   binutils \
+  binwalk \
   cfr-decompiler \
   coreutils \
   caskroom/cask/wireshark \
@@ -12,9 +13,11 @@ brew install \
   grc \
   jq \
   direnv \
+  massscan \
   mitmproxy \
   nmap \
   reattach-to-user-namespace \
+  shellcheck \
   socat \
   tmux \
   zsh
