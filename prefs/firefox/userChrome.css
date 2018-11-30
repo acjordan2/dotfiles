@@ -1,0 +1,67 @@
+:root {
+    --tabs-border: transparent !important;
+    /* active tab left & right borders - not working in 58?*/
+    --toolbox-border-bottom-color: transparent !important;
+    /* 1px line under background tabs */
+    /* --chrome-nav-bar-controls-border-color: transparent !important; */
+    /* border around url bar */
+}
+
+toolbox {
+    background-color: #000 !important;
+    color: #AAAAAA;
+}
+
+:root:-moz-any([inFullscreen], [tabsintitlebar]) #TabsToolbar:not(:-moz-lwtheme) { -moz-appearance: none !important; }
+#TabsToolbar {
+    background-color: #000000 !important;
+    margin-bottom: 0px !important;
+    margin-top: 0px !important;
+    margin-left: 100px !important;
+    max-height: 35px !important;
+}
+
+#PanelUI-menu-button {
+    display: none !important
+}
+
+
+#nav-bar-overflow-button {
+    transform: scale(0.9, 0.9) !important;
+    fill: var(--color-overflow) !important;
+}
+
+/* Hide nav buttons */
+#stop-reload-button,
+#PanelUI-button,
+#home-button,
+#customizableui-special-spring1,
+#customizableui-special-spring2,
+#library-button,
+#downloads-button,
+#sidebar-button,
+#star-button,
+/* #statuspane, */
+.urlbar-icun.urlbar-page-action,
+.titlebar-placeholder {
+    display: none !important;
+}
+
+#back-button>.toolbarbutton-icon,
+#forward-button>.toolbarbutton-icon {
+    transform: scale(0.9, 0.9) !important;
+    margin-left: -2px !important;
+    margin-right: -2px !important;
+}
+
+#pageActionButton,
+#pocket-button-box,
+ar-button,
+.autocomplete-history-dropmarker,
+/* #identity-box, */
+.urlbar-history-dropmarker.urlbar-icon.chromeclass-toolbar-additional,
+#identity-icon-labels {
+    display: none !important;
+}
+
+
