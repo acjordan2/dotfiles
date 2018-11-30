@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # vim as default
 export EDITOR="vim"
 
