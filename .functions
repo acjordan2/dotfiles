@@ -7,17 +7,17 @@ ftrim() {
       echo "Remove N bytes from the beginning or end of the file"
       echo " "
       echo "options: "
-      echo "-h, --help        Show this help"
-      echo "-b, --begin       Remove bytes from the beginning"
-      echo "-e, --end         Remove bytes from the end"
+      echo "-h|--help        Show this help"
+      echo "-b|--begin       Remove bytes from the beginning"
+      echo "-e|--end         Remove bytes from the end"
       ;;
     -b|--begin)
-      bytes=$(($(stat -f '%z' $3) - $2))
-      tail -c $bytes $3
+      bytes=$(($(/usr/bin/stat -f '%z' "${3}") - ${2}))
+      tail -c $bytes "${3}"
       ;;
     -e|--end)
-      bytes=$(($(stat -f '%z' $3) - $2))
-      head -c $bytes $3
+      bytes=$(($(/usr/bin/stat -f '%z' "${3}") - ${2}))
+      head -c $bytes "${3}"
     ;;
     *)
       echo "Usage: ftrim -{b|e} BYTES FILE"
@@ -28,12 +28,12 @@ ftrim() {
 
 # Find short hand
 f() {
-  find . -name "$1" 2>&1 | grep -v 'Permission denied'
+  find . -name "${1}" 2>&1 | grep -v 'Permission denied'
 }
 
 # List all files, long format, colorized, permissions in octal
 la(){
- 	ls -l  "$@" | awk '
+ 	ls -l  "${@}" | awk '
     {
       k=0;
       for (i=0;i<=8;i++)
@@ -46,19 +46,19 @@ la(){
 
 # Copy w/ progress
 cp_p () {
-  rsync -WavP --human-readable --progress $1 $2
+  rsync -WavP --human-readable --progress "${1}" "${2}"
 }
 
 # who is using the laptop's iSight camera?
 camerausedby() {
 	echo "Checking to see who is using the iSight camera… 📷"
 	usedby=$(lsof | grep -w "AppleCamera\|USBVDC\|iSight" | awk '{printf $2"\n"}' | xargs ps)
-	echo -e "Recent camera uses:\n$usedby"
+	echo -e "Recent camera uses:\n${usedby}"
 }
 
 # Markdown previews
 md() {
-    pandoc ${1} | lynx -stdin
+    pandoc "${1}" | lynx -stdin
 }
 
 ipls() {
