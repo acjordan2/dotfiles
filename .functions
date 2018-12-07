@@ -3,7 +3,7 @@
 ftrim() {
   case "$1" in 
     -h|--help)
-      echo "Usage: ftrim -{b|e} BYTES FILE"
+      echo "Usage: ftrim [-b|-e] <bytes> <file>"
       echo "Remove N bytes from the beginning or end of the file"
       echo " "
       echo "options: "
@@ -20,7 +20,7 @@ ftrim() {
       head -c $bytes "${3}"
     ;;
     *)
-      echo "Usage: ftrim -{b|e} BYTES FILE"
+      echo "Usage: ftrim [-b|-e] <bytes> <file>"
       echo "ftrim -h for more info"
       ;;
    esac
@@ -78,4 +78,8 @@ ipls() {
   if [ "${1}" = "-6" ]; then
     echo "${iplist}" | grep -v "\."
   fi
+}
+
+xor() {
+  printf '%#x\n' "$((${1} ^ ${2}))"
 }
