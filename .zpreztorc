@@ -51,6 +51,6 @@ zstyle ':prezto:module:syntax-highlighting' styles \
    'command' 'bg=blue' \
    'function' 'bg=blue'
 
-# Enable autosuggestion 
+# Enable autosuggestions
 zstyle ':prezto:module:autosuggestions' color 'yes'
 
