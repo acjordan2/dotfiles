@@ -52,9 +52,6 @@ alias yoink="open -a Yoink"
 # Vim scratchpad with autosaving
 alias scratchpad='vim -c "let g:auto_save = 1" ~/scratchpad/`date +"%m_%d_%Y"`.txt'
 
-# Use tmux with 256 colors
-alias tmux="TERM=xterm-256color tmux"
-
 # System airport utility
 alias airport="/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport"
 
