@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 ftrim() {
-  case "$1" in 
+  case "${1}" in 
     -h|--help)
       echo "Usage: ftrim [-b|-e] <bytes> <file>"
       echo "Remove N bytes from the beginning or end of the file"
@@ -13,11 +13,11 @@ ftrim() {
       ;;
     -b|--begin)
       bytes=$(($(/usr/bin/stat -f '%z' "${3}") - ${2}))
-      tail -c $bytes "${3}"
+      tail -c ${bytes} "${3}"
       ;;
     -e|--end)
       bytes=$(($(/usr/bin/stat -f '%z' "${3}") - ${2}))
-      head -c $bytes "${3}"
+      head -c ${bytes} "${3}"
     ;;
     *)
       echo "Usage: ftrim [-b|-e] <bytes> <file>"
