@@ -6,7 +6,7 @@ if [ ! "$(tmux -V 2>/dev/null)" ] ; then
 else
     name="$(echo "$TERM_SESSION_ID" | cut -d ":" -f1)"
     if [ -z "$TMUX" ] && [ -z "$SSH_CLIENT" ] && [ -z "$SSH_TTY" ]; then 
-      tmux attach -t "${name}" || { tmux new-session -A -s "${name}" };
+      TERM=xterm-256color; { tmux attach -t "${name}" ||  tmux new-session -A -s "${name}" };
       exit; 
     fi
 fi
