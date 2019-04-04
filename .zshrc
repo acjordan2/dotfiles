@@ -1,14 +1,14 @@
 #!/usr/bin/env zsh
 
 # start in tmux session first
-if [ ! "$(tmux -V 2>/dev/null)" ] ; then
-  echo "tmux is not installed"
+if command tmux -V >/dev/null 2>&1; then
+  TMUX_SESSION_ID="$(echo "$TERM_SESSION_ID" | cut -d ":" -f1)"
+  if [ -z "$TMUX" ] && [ -z "$SSH_CLIENT" ] && [ -z "$SSH_TTY" ]; then 
+    TERM=xterm-256color; tmux new-session -A -s "${TMUX_SESSION_ID}"
+    exit; 
+  fi
 else
-    name="$(echo "$TERM_SESSION_ID" | cut -d ":" -f1)"
-    if [ -z "$TMUX" ] && [ -z "$SSH_CLIENT" ] && [ -z "$SSH_TTY" ]; then 
-      TERM=xterm-256color; { tmux attach -t "${name}" ||  tmux new-session -A -s "${name}" };
-      exit; 
-    fi
+  echo "tmux is not installed" 1>&2
 fi
 
 # Source Prezto.
@@ -22,7 +22,7 @@ for file in ~/.{extra,bash_prompt,exports,aliases,functions}; do
 done
 
 # Generic colouriser
-if [ "$(grc 2>/dev/null)" ]; then
+if grc >/dev/null 2>&1; then
   source /usr/local/etc/grc.bashrc 2>/dev/null
 fi
 
