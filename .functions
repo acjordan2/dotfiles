@@ -7,9 +7,8 @@ ftrim() {
       echo "Remove N bytes from the beginning or end of the file"
       echo " "
       echo "options: "
-      echo "-h|--help        Show this help"
-      echo "-b|--begin       Remove bytes from the beginning"
-      echo "-e|--end         Remove bytes from the end"
+      echo "-b, --begin       Remove bytes from the beginning"
+      echo "-e, --end         Remove bytes from the end"
       ;;
     -b|--begin)
       bytes=$(($(/usr/bin/stat -f '%z' "${3}") - ${2}))
@@ -62,22 +61,45 @@ md() {
 }
 
 ipls() {
-  if [ "$(command -v ifconfig)" ]; then
-    iplist=$(ifconfig | grep "inet" | grep -v "127.0.0.1" | grep -v "::1" | 
-       cut -d" "  -f2 | cut -d"%" -f1 | sort)
-  fi
- 
-  if [ -z "${1}" ]; then
-      echo "${iplist}"
+  local action
+  local output
+
+  action="${1}"
+  output=""
+
+  if command -v ifconfig >/dev/null; then
+    if [[ "${action}" != "-a" ]] && [[ "${action}" != "--all" ]]; then
+        output="$(ifconfig | grep "inet" | grep -v "127.0.0.1" | grep -v "::1" | cut -d" "  -f2 | cut -d"%" -f1 | sort)"
+    else 
+      # list all interfaces
+      ifconfig -a | sed -E 's/[[:space:]:].*//;/^$/d' | while read -r interface; do
+        # get IP for each interface
+        ifconfig "${interface}" | grep "inet" | cut -d" "  -f2 | cut -d"%" -f1 | while read -r ip; do
+          if [ -n "${ip}" ]; then
+            output="${output}${interface}: ${ip}\n"
+          fi
+        done
+      done
+   fi
   fi
 
-  if [ "${1}" = "-4" ]; then
-    echo "${iplist}" | grep -v "::"
-  fi
-
-  if [ "${1}" = "-6" ]; then
-    echo "${iplist}" | grep -v "\."
-  fi
+  case "${action}" in 
+    -4)
+        echo "${output}" | grep -v "::"
+        ;;
+    -6)
+        echo "${output}" | grep -v "\."
+        ;;
+    -h|--help)
+        echo "usage: ipls [-4|-6|-a]"
+        echo ""
+        echo "options"
+        echo "-4, -6        Show only IPv4 or IPv6 addresses"
+        echo "-a, --all     Label all IPs with interface label"
+        ;;
+    *)
+      echo "${output}"
+  esac
 }
 
 xor() {
