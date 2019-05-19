@@ -7,10 +7,7 @@ if command tmux -V >/dev/null 2>&1; then
   TMUX_LOG_DIR="$XDG_DATA_HOME/tmux/log"
   TMUX_SESSION_ID="$(echo "$TERM_SESSION_ID" | cut -d ":" -f1)"
   if [ -z "$TMUX" ] && [ -z "$SSH_CLIENT" ] && [ -z "$SSH_TTY" ]; then 
-      if [ ! -d "${TMUX_LOG_DIR}" ]; then
-        mkdir -p "${TMUX_LOG_DIR}"
-    fi
-    cd "${TMUX_LOG_DIR}"
+    cd "${TMUX_LOG_DIR}" || { mkdir -p "${TMUX_LOG_DIR}" && cd "${TMUX_LOG_DIR}" }
     TERM=xterm-256color; tmux new-session -A -s "${TMUX_SESSION_ID}" -c "$HOME"
     exit; 
   fi
