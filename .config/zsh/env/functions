@@ -85,7 +85,7 @@ ipls() {
 
   case "${action}" in 
     -4)
-        echo "${output}" | grep -v "::"
+        echo "${output}" | grep -v ":"
         ;;
     -6)
         echo "${output}" | grep -v "\."

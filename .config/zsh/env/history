@@ -1,0 +1,16 @@
+#!/usr/bin/env zsh
+
+# Options
+setopt BANG_HIST                # Treat the '!' character specially during expansion.
+setopt EXTENDED_HISTORY         # Write the history file in the ':start:elapsed;command' format.
+setopt SHARE_HISTORY            # Share history between all sessions.
+setopt HIST_EXPIRE_DUPS_FIRST   # Expire a duplicate event first when trimming history.
+setopt HIST_IGNORE_SPACE        # Do not record an event starting with a space.
+setopt HIST_VERIFY              # Do not execute immediately upon history expansion.
+
+HISTFILE="${ZSH_LOG:-$HOME}/.zhistory"
+HISTSIZE=10000
+SAVEHIST=1000000
+
+# Lists the ten most used commands.
+alias history-stat="history 0 | awk '{print \$2}' | sort | uniq -c | sort -n -r | head"

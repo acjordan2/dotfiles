@@ -1,6 +1,13 @@
 #!/usr/bin/env zsh
 
-source "$HOME/.path"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CACHE_HOME="$HOME/.cache"
+
+export ZSH_CONFIG="$XDG_CONFIG_HOME/zsh"
+export ZSH_LOG="$XDG_DATA_HOME/zsh"
+
+source "$ZSH_CONFIG/env/path"
 
 # start in tmux session first
 if command tmux -V >/dev/null 2>&1; then
@@ -15,13 +22,8 @@ else
   echo "tmux is not installed" 1>&2
 fi
 
-# Source Prezto.
-if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
-  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
-fi
-
 # load extra dotfiles
-for file in ~/.{extra,bash_prompt,exports,aliases,functions}; do
+for file in $ZSH_CONFIG/env/{extra,bash_prompt,exports,aliases,functions,plugins,history}; do
     [ -r "${file}" ] && source "${file}"
 done
 
@@ -30,10 +32,16 @@ if grc >/dev/null 2>&1; then
   source /usr/local/etc/grc.bashrc 2>/dev/null
 fi
 
+## Theme configs
+precmd() { print "" } # Add new line before rending pmrot
+PROMPT=$'%F{113}%n@%m%f %F{208}λ%f %F{6}%~\n%B%F{1}❯%F{3}❯%F{2}❯%f%b '
+
 # Change auto complete colors
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 autoload -Uz compinit
 compinit
 
-# source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 eval "$(direnv hook zsh)"
+
+# shortcuts
+bindkey -e
