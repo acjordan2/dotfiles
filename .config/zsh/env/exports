@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# ZSH paths
+export ZSH_CONFIG="$XDG_CONFIG_HOME/zsh"
+export ZSH_LOG="$XDG_DATA_HOME/zsh"
+
 # vim as default
 export EDITOR="nvim"
 
@@ -19,3 +23,4 @@ export LESS_TERMCAP_us=$'\E[04;38;5;146m' # begin underline
 # here's LS_COLORS
 command -v gdircolors >/dev/null 2>&1 || alias gdircolors="dircolors"
 eval "$(gdircolors -b "$XDG_CONFIG_HOME/zsh/env/dircolors")"
+

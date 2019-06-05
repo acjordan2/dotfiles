@@ -1,13 +1,14 @@
 #!/usr/bin/env zsh
 
-export XDG_DATA_HOME="$HOME/.local/share"
+# replace system tools with gnutils, e.g. cp, mv, etc
+export PATH="/usr/local/opt/coreutils/libexec/gnubin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$HOME/bin"
+export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
+
 export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CACHE_HOME="$HOME/.cache"
 
-export ZSH_CONFIG="$XDG_CONFIG_HOME/zsh"
-export ZSH_LOG="$XDG_DATA_HOME/zsh"
-
-source "$ZSH_CONFIG/env/path"
+source "$XDG_CONFIG_HOME/zsh/env/exports"
 
 # start in tmux session first
 if command tmux -V >/dev/null 2>&1; then
@@ -23,7 +24,7 @@ else
 fi
 
 # load extra dotfiles
-for file in $ZSH_CONFIG/env/{extra,bash_prompt,exports,aliases,functions,plugins,history}; do
+for file in $ZSH_CONFIG/env/{extra,aliases,functions,plugins,history}; do
     [ -r "${file}" ] && source "${file}"
 done
 
@@ -32,8 +33,10 @@ if grc >/dev/null 2>&1; then
   source /usr/local/etc/grc.bashrc 2>/dev/null
 fi
 
-## Theme configs
-precmd() { print "" } # Add new line before rending pmrot
+# Shortcuts
+bindkey -e
+
+precmd() { print "" } # Add new line before rending prompt 
 PROMPT=$'%F{113}%n@%m%f %F{208}λ%f %F{6}%~\n%B%F{1}❯%F{3}❯%F{2}❯%f%b '
 
 # Change auto complete colors
@@ -43,5 +46,3 @@ compinit
 
 eval "$(direnv hook zsh)"
 
-# shortcuts
-bindkey -e
