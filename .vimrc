@@ -480,22 +480,22 @@ augroup END
   
 call plug#begin('~/.vim/plugged')
 
+" Plug 'Chiel92/vim-autoformat'
+" Plug 'davidhalter/jedi-vim'
+" Plug 'junegunn/vim-easy-align'
+" Plug 'kien/rainbow_parentheses.vim'
+" Plug 'tpope/vim-dispatch'
 Plug 'FelikZ/ctrlp-py-matcher'
+Plug 'christoomey/vim-tmux-navigator'
 Plug 'ctrlpvim/ctrlp.vim'
+Plug 'ervandew/supertab'
 Plug 'fatih/vim-go'
 Plug 'junegunn/goyo.vim'
-Plug 'kien/rainbow_parentheses.vim'
-Plug 'junegunn/vim-easy-align'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'majutsushi/tagbar'
 Plug 'scrooloose/nerdcommenter'
-Plug 'w0rp/ale'
-Plug 'tpope/vim-dispatch'
 Plug 'vim-airline/vim-airline'
-Plug 'christoomey/vim-tmux-navigator'
-" Plug 'davidhalter/jedi-vim'
-Plug 'ervandew/supertab'
-Plug 'Chiel92/vim-autoformat'
+Plug 'w0rp/ale'
 
 call plug#end()
 " }}}
