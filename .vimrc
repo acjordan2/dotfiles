@@ -57,7 +57,8 @@ set incsearch " Highlight dynamically as pattern is typed
 set laststatus=2 " Always show status line
 set lazyredraw " Don't redraw when we don't have to
 set magic " Enable extended regexes
-set modelines=1
+set modelines=0 " Disable modeline
+set nomodeline
 set mouse=a " Enable mouse in all in all modes
 set noerrorbells " Disable error bells
 set nojoinspaces " Only insert single space after a '.', '?' and '!' with a join command
@@ -492,7 +493,7 @@ Plug 'w0rp/ale'
 Plug 'tpope/vim-dispatch'
 Plug 'vim-airline/vim-airline'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'davidhalter/jedi-vim'
+" Plug 'davidhalter/jedi-vim'
 Plug 'ervandew/supertab'
 Plug 'Chiel92/vim-autoformat'
 
