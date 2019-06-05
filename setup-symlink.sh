@@ -180,6 +180,30 @@ main() {
 
     done
 
+    for i in $(pwd)/.config/*; do
+
+        sourceFile="$i"
+        targetFile="$HOME/.config/$(printf "%s" "$i" | sed "s/.*\/\(.*\)/\1/g")"
+
+        if [ -e "$targetFile" ]; then
+            if [ "$(readlink "$targetFile")" != "$sourceFile" ]; then
+
+                ask_for_confirmation "'$targetFile' already exists, do you want to overwrite it?"
+                if answer_is_yes; then
+                    rm -rf "$targetFile"
+                    execute "ln -fs $sourceFile $targetFile" "$targetFile → $sourceFile"
+                else
+                    print_error "$targetFile → $sourceFile"
+                fi
+
+            else
+                print_success "$targetFile → $sourceFile"
+            fi
+        else
+            execute "ln -fs $sourceFile $targetFile" "$targetFile → $sourceFile"
+        fi
+
+    done
     sourceFile=$(pwd)/.ssh/config
     targetFile=$HOME/.ssh/config
 
