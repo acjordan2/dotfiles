@@ -72,14 +72,14 @@ ipls() {
         output="$(ifconfig | grep "inet" | grep -v "127.0.0.1" | grep -v "::1" | cut -d" "  -f2 | cut -d"%" -f1 | sort)"
     else 
       # list all interfaces
-      ifconfig -a | sed -E 's/[[:space:]:].*//;/^$/d' | while read -r interface; do
+      while read -r interface; do
         # get IP for each interface
-        ifconfig "${interface}" | grep "inet" | cut -d" "  -f2 | cut -d"%" -f1 | while read -r ip; do
+        while read -r ip; do
           if [ -n "${ip}" ]; then
-            output="${output}${interface}: ${ip}\n"
-          fi
-        done
-      done
+            output="${output}${interface}: ${ip}\n"j
+            fi 
+        done < <(ifconfig "${interface}" | grep "inet" | cut -d" "  -f2 | cut -d"%" -f1)
+      done < <(ifconfig -a | sed -E 's/[[:space:]:].*//;/^$/d')
    fi
   fi
 
