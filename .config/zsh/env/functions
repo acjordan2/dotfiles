@@ -76,7 +76,7 @@ ipls() {
         # get IP for each interface
         while read -r ip; do
           if [ -n "${ip}" ]; then
-            output="${output}${interface}: ${ip}\n"j
+            output="${output}${interface}: ${ip}\n"
             fi 
         done < <(ifconfig "${interface}" | grep "inet" | cut -d" "  -f2 | cut -d"%" -f1)
       done < <(ifconfig -a | sed -E 's/[[:space:]:].*//;/^$/d')
@@ -95,7 +95,7 @@ ipls() {
         echo ""
         echo "options"
         echo "-4, -6        Show only IPv4 or IPv6 addresses"
-        echo "-a, --all     Label all IPs with interface label"
+        echo "-a, --all     Show interface label" 
         ;;
     *)
       echo "${output}"
