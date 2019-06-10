@@ -33,16 +33,36 @@ if grc >/dev/null 2>&1; then
   source /usr/local/etc/grc.bashrc 2>/dev/null
 fi
 
-# Shortcuts
+# emacs bindings 
 bindkey -e
 
-precmd() { print "" } # Add new line before rending prompt 
-PROMPT=$'%F{113}%n@%m%f %F{208}λ%f %F{6}%~\n%B%F{1}❯%F{3}❯%F{2}❯%f%b '
+# Add new line before rending prompt 
+precmd() { print "" } 
+
+# {green}$user@$host{/green} {orange}λ{/orange} {blue}$PWD{/blue}
+PROMPT=$'%F{113}%n@%m%f %F{208}λ%f %F{6}%~\n'
+
+# ❯❯❯
+PROMPT="${PROMPT}%B%F{1}❯%F{3}❯%F{2}❯%f%b "
 
 # Change auto complete colors
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+
+# Case insensitive tab completion
+zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}'
+
+# tab completion for PID :D
+zstyle ':completion:*:*:kill:*' menu yes select
+zstyle ':completion:*:kill:*' force-list always
+
+## ignores filenames already in the line
+zstyle ':completion:*:(rm|kill|diff):*' ignore-line yes
+
+## Ignore completion functions for commands you don't have:
+zstyle ':completion:*:functions' ignored-patterns '_*'
+
 autoload -Uz compinit
-compinit
+compinit -d "$XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION"
 
 eval "$(direnv hook zsh)"
 
