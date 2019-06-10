@@ -3,6 +3,8 @@
 ZSH_AUTOSUGGEST_USE_ASYNC=1
 source "$ZSH_CONFIG/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
 
+# ZSH Completions
+fpath=($ZSH_CONFIG/plugins/zsh-completions/src $fpath)
 
 # Syntax highlighter, source close to last
 typeset -A ZSH_HIGHLIGHT_STYLES
