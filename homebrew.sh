@@ -4,6 +4,7 @@ brew update
 brew install \
   binutils \
   binwalk \
+  bat \
   cfr-decompiler \
   coreutils \
   caskroom/cask/wireshark \
