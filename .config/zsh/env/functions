@@ -69,7 +69,8 @@ ipls() {
 
   if command -v ifconfig >/dev/null; then
     if [[ "${action}" != "-a" ]] && [[ "${action}" != "--all" ]]; then
-        output="$(ifconfig | grep "inet" | grep -v "127.0.0.1" | grep -v "::1" | cut -d" "  -f2 | cut -d"%" -f1 | sort)"
+#        output="$(ifconfig | grep "inet" | grep -v "127.0.0.1" | grep -v "::1" | cut -d" "  -f2 | cut -d"%" -f1 | sort)"
+        output=$(ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)' | awk '{ sub(/inet6? (addr:)? ?/, ""); print }')
     else 
       # list all interfaces
       while read -r interface; do
@@ -104,4 +105,20 @@ ipls() {
 
 xor() {
   printf '%#x\n' "$((${1} ^ ${2}))"
+}
+
+tmux_colors() {
+  for i in {0..255}; do
+    printf "\x1b[38;5;%smcolour%s\x1b[0m\n" "${i}" "${i}"
+  done
+}
+
+timezsh() {
+  shell=${1-$SHELL}
+  for i in $(seq 1 10); do /usr/bin/time $shell -i -c exit; done
+}
+
+profzsh() {
+  shell=${1-$SHELL}
+  ZPROF=true $shell -i -c exit
 }
