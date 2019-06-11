@@ -68,7 +68,7 @@ alias forcepull='git fetch --all && git reset --hard origin/master'
 alias sshrdp='ssh -L 9001:localhost:9001 -L 5900:localhost:5900 -L 3283:localhost:3283'
 
 # Grepable history file, with sequential dupes and timestamps removed 
-alias hist='cat $XDG_DATA_HOME/zsh/.zhistory | cut -d";" -f2 | uniq'
+alias hist='cat $XDG_DATA_HOME/zsh/.zhistory | cut -d";" -f2 | uniq | head -n -1'
 
 # Show active network interfaces
 alias ifactive="ifconfig | pcregrep -M -o '^[^\t:]+:([^\n]|\n\t)*status: active'"
