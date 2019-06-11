@@ -14,6 +14,9 @@ alias mv='mv -v'
 alias rm='rm -v'
 alias cp='cp -v'
 
+# less with colors
+alias less="less -FSRXc"
+
 # use coreutils `ls` if possible…
 hash gls >/dev/null 2>&1 || alias gls="ls"
 
@@ -66,3 +69,23 @@ alias sshrdp='ssh -L 9001:localhost:9001 -L 5900:localhost:5900 -L 3283:localhos
 
 # Grepable history file, with sequential dupes and timestamps removed 
 alias hist='cat $XDG_DATA_HOME/zsh/.zhistory | cut -d";" -f2 | uniq'
+
+# Show active network interfaces
+alias ifactive="ifconfig | pcregrep -M -o '^[^\t:]+:([^\n]|\n\t)*status: active'"
+
+# Show/hide hidden files in Finder
+alias show="defaults write com.apple.finder AppleShowAllFiles -bool true && killall Finder"
+alias hide="defaults write com.apple.finder AppleShowAllFiles -bool false && killall Finder"
+
+# Hide/show all desktop icons (useful when presenting)
+alias hidedesktop="defaults write com.apple.finder CreateDesktop -bool false && killall Finder"
+alias showdesktop="defaults write com.apple.finder CreateDesktop -bool true && killall Finder"
+
+# URL-encode strings
+alias urlencode='python -c "import sys, urllib as ul; print ul.quote_plus(sys.argv[1]);"'
+
+# Reload the shell (i.e. invoke as a login shell)
+alias reload="exec ${SHELL} -l"
+
+# Print each PATH entry on a separate line
+alias path='echo -e ${PATH//:/\\n}'
