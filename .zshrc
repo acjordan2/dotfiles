@@ -36,6 +36,10 @@ fi
 # emacs bindings 
 bindkey -e
 
+# ZSH options
+setopt noautoremoveslash    # keep the slash when resolving symlinks 
+setopt auto_cd              # auto CD into path 
+
 # Add new line before rending prompt 
 precmd() { print "" } 
 
