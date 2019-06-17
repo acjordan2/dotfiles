@@ -61,6 +61,8 @@ main() {
     local sourceFile
     local targetFile
 
+    shopt -s dotglob
+
     # dotfiles in $HOME
     while read -r; do
         FILES_TO_SYMLINK+=("$(echo "${REPLY}" | sed -e 's|//|/|' | sed -e 's|./.|.|')")
@@ -68,7 +70,9 @@ main() {
 
     # config files in $XDG_CONFIG_HOME
     for dir in .config/*; do
-        FILES_TO_SYMLINK+=("${dir}")
+        if [ "$(basename "${dir}")" != ".DS_Store" ]; then
+            FILES_TO_SYMLINK+=("${dir}")
+        fi
     done
 
     # SSH configs only
@@ -98,7 +102,7 @@ main() {
                 print_success "${targetFile} → ${sourceFile}"
             fi
         else 
-            execute "ln -fs $sourceFile $targetFile" "$targetFile → $sourceFile"
+            execute "ln -fs ${sourceFile} ${targetFile}" "${targetFile} → ${sourceFile}"
         fi
     done
 }
