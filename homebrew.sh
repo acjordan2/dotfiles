@@ -2,22 +2,24 @@
 
 brew update
 brew install \
+  bat \
   binutils \
   binwalk \
-  bat \
+  caskroom/cask/wireshark \
   cfr-decompiler \
   coreutils \
-  caskroom/cask/wireshark \
   ctags \
+  direnv \
   gnutls \
   go \
   grc \
   jq \
-  direnv \
   massscan \
   mitmproxy \
   nmap \
+  neovim \
   reattach-to-user-namespace \
+  ripgrep \
   shellcheck \
   socat \
   tmux \
