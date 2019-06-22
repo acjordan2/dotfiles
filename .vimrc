@@ -204,8 +204,8 @@ augroup END
 augroup buffer_control
   autocmd!
 
-  " Prompt for buffer to select (,bs) {{{
-  nnoremap <leader>bs :CtrlPBuffer<CR>
+  " " Prompt for buffer to select (,bs) {{{
+  " nnoremap <leader>bs :CtrlPBuffer<CR>
   " }}}
   
   " Buffer navigation (,,) (gb) (gB) (,ls) {{{
@@ -337,9 +337,12 @@ augroup END
 
 " Go {{{
 augroup filetype_go
+  " Use go style guidlines
   autocmd!
-  setlocal softtabstop=4 " Tab key results in 2 spaces
-  setlocal shiftwidth=4 " The # of spaces for indenting
+  autocmd FileType go set noexpandtab
+  autocmd FileType go set shiftwidth=4
+  autocmd FileType go set softtabstop=4
+  autocmd FileType go set tabstop=4
 augroup END
 " }}}
 
@@ -398,7 +401,7 @@ augroup END
 augroup airline_config
   autocmd!
   let g:airline_powerline_fonts = 1
-  let g:airline_enable_syntastic = 1
+  let g:airline_enable_ale = 1
   let g:airline#extensions#tabline#buffer_nr_format = '%s '
   let g:airline#extensions#tabline#buffer_nr_show = 1
   let g:airline#extensions#tabline#enabled = 1
@@ -408,38 +411,38 @@ augroup END
 " }}}
 
 " CtrlP.vim {{{
-augroup ctrlp_config
-  autocmd!
-  let g:ctrlp_clear_cache_on_exit = 0 " Do not clear filenames cache, to improve CtrlP startup
-  let g:ctrlp_lazy_update = 350 " Set delay to prevent extra search
+" augroup ctrlp_config
+  " autocmd!
+  " let g:ctrlp_clear_cache_on_exit = 0 " Do not clear filenames cache, to improve CtrlP startup
+  " let g:ctrlp_lazy_update = 350 " Set delay to prevent extra search
 
-  if has('python')
-    let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' } " Use python fuzzy matcher for better performance
-  endif 
+  " if has('python')
+    " let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' } " Use python fuzzy matcher for better performance
+  " endif 
 
-  let g:ctrlp_match_window_bottom = 0 " Show at top of window
-  let g:ctrlp_max_files = 0 " Set no file limit, we are building a big project
-  let g:ctrlp_switch_buffer = 'Et' " Jump to tab AND buffer if already open
-  let g:ctrlp_open_new_file = 'r' " Open newly created files in the current window
-  let g:ctrlp_open_multiple_files = 'ij' " Open multiple files in hidden buffers, and jump to the first one
-  let g:ctrlp_custom_ignore = {
-    \ 'dir':  '\v[\/](\.(git|hg|svn)|\_site)$',
-    \ 'file': '\v\.(exe|so|dll|class|png|jpg|jpeg)$',
-  \}
-  let g:ctrlp_working_path_mode = 'ra'
+  " let g:ctrlp_match_window_bottom = 0 " Show at top of window
+  " let g:ctrlp_max_files = 0 " Set no file limit, we are building a big project
+  " let g:ctrlp_switch_buffer = 'Et' " Jump to tab AND buffer if already open
+  " let g:ctrlp_open_new_file = 'r' " Open newly created files in the current window
+  " let g:ctrlp_open_multiple_files = 'ij' " Open multiple files in hidden buffers, and jump to the first one
+  " let g:ctrlp_custom_ignore = {
+    " \ 'dir':  '\v[\/](\.(git|hg|svn)|\_site)$',
+    " \ 'file': '\v\.(exe|so|dll|class|png|jpg|jpeg)$',
+  " \}
+  " let g:ctrlp_working_path_mode = 'ra'
 
-  if executable("ag")
-    set grepprg=ag\ --nogroup\ --nocolor
-    let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --ignore ''.git'' --ignore ''.DS_Store'' --ignore ''node_modules'' --hidden -g ""' " Use the silver searcher instead of find
-  endif
-augroup END
+  " if executable("ag")
+    " set grepprg=ag\ --nogroup\ --nocolor
+    " let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --ignore ''.git'' --ignore ''.DS_Store'' --ignore ''node_modules'' --hidden -g ""' " Use the silver searcher instead of find
+  " endif
+" augroup END
 " }}}
 
 " Dispatch {{{
 augroup dispatch_config
   autocmd!
   nnoremap <F5> :Dispatch<CR>
-augroup end
+augroup END
 " }}}
 
 " EasyAlign.vim {{{
@@ -459,18 +462,109 @@ augroup rainbow_parenthesis_config
 augroup END
 " }}}
 
-" Syntastic.vim {{{
-augroup syntastic_config
-  autocmd!
-  let g:syntastic_error_symbol = '✗'
-  let g:syntastic_warning_symbol = '⚠'
-augroup END
-" }}}
-
 " Tagbar.vim {{{
 augroup tagbar_config
   autocmd!
   nmap <F8> :TagbarToggle<CR>
+augroup END
+" }}}
+
+" FZF.vim {{{
+augroup fzf_config
+  autocmd!
+  nnoremap <silent> <leader><space> :Files<CR>
+  nnoremap <silent> <leader>bs :Buffers<CR>
+
+  " Customize fzf colors to match your color scheme
+  let g:fzf_colors =
+  \ { 'fg':      ['fg', 'Normal'],
+    \ 'bg':      ['bg', '#5f5f87'],
+    \ 'hl':      ['fg', 'Comment'],
+    \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+    \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+    \ 'hl+':     ['fg', 'Statement'],
+    \ 'info':    ['fg', 'PreProc'],
+    \ 'border':  ['fg', 'Ignore'],
+    \ 'prompt':  ['fg', 'Conditional'],
+    \ 'pointer': ['fg', 'Exception'],
+    \ 'marker':  ['fg', 'Keyword'],
+    \ 'spinner': ['fg', 'Label'],
+    \ 'header':  ['fg', 'Comment'] }
+
+  let g:fzf_commits_log_options = '--graph --color=always
+    \ --format="%C(yellow)%h%C(red)%d%C(reset)
+  \ - %C(bold green)(%ar)%C(reset) %s %C(blue)<%an>%C(reset)"'
+
+  let g:fzf_buffers_jump = 1
+
+  if executable('rg')
+    let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!.git/*"'
+    set grepprg=rg\ --vimgrep
+    command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
+  endif
+
+  if exists('*nvim_open_win')
+    let $FZF_DEFAULT_OPTS='--layout=reverse'
+    let g:fzf_layout = { 'window': 'call FloatingFZF()' }
+  endif
+
+  function! FloatingFZF()
+    if exists('*nvim_open_win')
+      let buf = nvim_create_buf(v:false, v:true)
+      call setbufvar(buf, 'number', 'no')
+
+      let height = float2nr(&lines/2)
+      let width = float2nr(&columns - (&columns * 2 / 10))
+      "let width = &columns
+      let row = float2nr(&lines / 3)
+      let col = float2nr((&columns - width) / 3)
+
+      let opts = {
+            \ 'relative': 'editor',
+            \ 'row': row,
+            \ 'col': col,
+            \ 'width': width,
+            \ 'height':height,
+            \ }
+      let win =  nvim_open_win(buf, v:true, opts)
+      call setwinvar(win, '&number', 0)
+      call setwinvar(win, '&relativenumber', 0)
+    endif
+  endfunction
+
+  " Files + devicons
+  function! Fzf_dev()
+    let l:fzf_files_options = ' --preview "rougify {2..-1} | head -'.&lines.'"'
+
+    function! s:files()
+      let l:files = split(system($FZF_DEFAULT_COMMAND), '\n')
+      return s:prepend_icon(l:files)
+    endfunction
+
+    function! s:prepend_icon(candidates)
+      let l:result = []
+      for l:candidate in a:candidates
+        let l:filename = fnamemodify(l:candidate, ':p:t')
+        let l:icon = WebDevIconsGetFileTypeSymbol(l:filename, isdirectory(l:filename))
+        call add(l:result, printf('%s %s', l:icon, l:candidate))
+      endfor
+
+      return l:result
+    endfunction
+
+    function! s:edit_file(item)
+      let l:pos = stridx(a:item, ' ')
+      let l:file_path = a:item[pos+1:-1]
+      execute 'silent e' l:file_path
+    endfunction
+
+    call fzf#run({
+          \ 'source': <sid>files(),
+          \ 'sink':   function('s:edit_file'),
+          \ 'options': '-m ' . l:fzf_files_options,
+          \ 'down':    '40%' ,
+          \ 'window': 'call FloatingFZF()'})
+  endfunction
 augroup END
 " }}}
 
@@ -481,17 +575,18 @@ augroup END
 call plug#begin('~/.vim/plugged')
 
 " Plug 'Chiel92/vim-autoformat'
-" Plug 'davidhalter/jedi-vim'
 " Plug 'junegunn/vim-easy-align'
 " Plug 'kien/rainbow_parentheses.vim'
 " Plug 'tpope/vim-dispatch'
-Plug 'FelikZ/ctrlp-py-matcher'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug '/usr/local/opt/fzf'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'ctrlpvim/ctrlp.vim'
 Plug 'ervandew/supertab'
 Plug 'fatih/vim-go'
+Plug 'junegunn/fzf.vim'
 Plug 'junegunn/goyo.vim'
-Plug 'ludovicchabant/vim-gutentags'
+" Latest version seems to be broken 
+" Plug 'ludovicchabant/vim-gutentags'
 Plug 'majutsushi/tagbar'
 Plug 'scrooloose/nerdcommenter'
 Plug 'vim-airline/vim-airline'
