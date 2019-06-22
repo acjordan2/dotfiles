@@ -42,7 +42,9 @@ alias diskspace_report="df -P -kHl"
 alias free_diskspace_report="diskspace_report"
 
 # Shortcuts
-alias v="vim"
+alias vim=nvim
+alias vi=nvim
+alias v="nvim"
 alias vless="vim -u ~/.vimrc.less"
 alias msfc="msfconsole"
 
