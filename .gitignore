@@ -3,6 +3,9 @@
 .vim/swaps/*
 .vim/undo
 .vim/backups
+.vim/fonts
+.vim/plugged
+.vim/.nviminfo
 .netrwhist
 
 # Folder view configuration files
@@ -18,4 +21,4 @@ Thumbs.db
 .Trashes
 
 .extra
-.config/zsh/env/extra
+.config/zsh/env/extra.zsh
