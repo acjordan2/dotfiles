@@ -10,14 +10,16 @@ brew install \
   coreutils \
   ctags \
   direnv \
+  fzf \
   gnutls \
   go \
   grc \
   jq \
   massscan \
   mitmproxy \
-  nmap \
   neovim \
+  nmap \
+  node \
   reattach-to-user-namespace \
   ripgrep \
   shellcheck \
