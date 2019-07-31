@@ -1,36 +1,60 @@
 #!/usr/bin/env bash
 
 brew update
-brew install \
-  bat \
-  binutils \
-  binwalk \
-  caskroom/cask/wireshark \
-  cfr-decompiler \
-  coreutils \
-  ctags \
-  direnv \
-  fzf \
-  gnutls \
-  go \
-  grc \
-  jq \
-  massscan \
-  mitmproxy \
-  neovim \
-  nmap \
-  node \
-  reattach-to-user-namespace \
-  ripgrep \
-  shellcheck \
-  socat \
-  tmux \
+brew upgrade
+
+declare -a install=(
+  bat 
+  binutils
+  binwalk
+  cfr-decompiler
+  coreutils
+  ctags
+  direnv
+  fzf
+  findutils
+  gnu-sed
+  gawk
+  gnutls
+  go
+  grc
+  grep
+  jq
+  masscan
+  mitmproxy
+  neovim
+  nmap
+  node
+  reattach-to-user-namespace
+  ripgrep
+  shellcheck
+  socat
+  tmux
+  vim
   zsh
+)
 
-brew install \
-  findutils \
-  gnu-sed \
-  grep \
-  --with-default-names
+declare -a cask=(
+  wireshark
+)
 
-brew install vim --with-python3
+echo "## Homebrew packages"
+for item in "${install[@]}"; do
+  if brew info "${item}" | grep --quiet "Not installed"; then 
+    brew install "${item}"
+    echo -e "\e[32m${item}\e[49m"
+  else
+    echo -e "\e[31m${item}\e[49m"
+  fi
+done
+
+echo "## Cask"
+for item in "${cask[@]}"; do
+  echo -e "\e[32m${item}"
+  if brew cask info "${item}" | grep --quiet "Not installed"; then
+    brew cask install "${item}"
+    echo -e "\e[32m${item}\e[49m"
+  else
+    echo -e "\e[31m${item}\e[49m"
+  fi
+done
