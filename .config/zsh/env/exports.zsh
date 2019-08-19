@@ -12,3 +12,6 @@ export LESS_TERMCAP_us=$'\E[04;38;5;146m' # begin underline
 # here's LS_COLORS
 command -v gdircolors >/dev/null 2>&1 || alias gdircolors="dircolors"
 eval "$(gdircolors -b "$XDG_CONFIG_HOME/zsh/env/dircolors")"
+
+# Turn off analytics for homeberw
+export HOMEBREW_NO_ANALYTICS=1

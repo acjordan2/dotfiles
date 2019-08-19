@@ -25,6 +25,7 @@ declare -a install=(
   neovim
   nmap
   node
+  pipenv
   reattach-to-user-namespace
   ripgrep
   shellcheck
@@ -36,6 +37,7 @@ declare -a install=(
 
 declare -a cask=(
   wireshark
+  kitty
 )
 
 echo "## Homebrew packages"
