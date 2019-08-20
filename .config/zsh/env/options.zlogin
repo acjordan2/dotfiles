@@ -37,7 +37,7 @@ ZSH_AUTOSUGGEST_USE_ASYNC=1
 # ZSH Syntax highlight
 typeset -A ZSH_HIGHLIGHT_STYLES
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
-ZSH_HIGHLIGHT_STYLES[alias]='bg=blue'
+ZSH_HIGHLIGHT_STYLES[alias]='fg=blue'
 ZSH_HIGHLIGHT_STYLES[function]='fg=magenta'
 ZSH_HIGHLIGHT_STYLES[builtin]='fg=yellow'
 
