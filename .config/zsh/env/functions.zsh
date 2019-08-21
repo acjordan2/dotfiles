@@ -136,9 +136,9 @@ zsh-list-completions() {
 }
 
 reload(){
-  if [ "${1}" = "-f"]; then
+  if [ "${1}" = "-f" ]; then
     # force cache files to be rebuilt
-    rm -rf "${XDG_CACHE_HOME}/zsh/zcompdump*"
+    rm -rf ${XDG_CACHE_HOME}/zsh/zcompdump* >/dev/null
   fi
 
   # Reload the shell (i.e. invoke as a login shell)
