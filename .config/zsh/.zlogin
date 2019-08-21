@@ -16,7 +16,7 @@ else
 fi
 
 # Generic colouriser
-source /usr/local/etc/grc.bashrc 2>/dev/null
+source /usr/local/etc/grc.zsh 2>/dev/null
 
 # Source last
 source "${ZDOTDIR}/env/compinit.zlogin"
