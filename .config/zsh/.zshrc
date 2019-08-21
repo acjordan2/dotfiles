@@ -6,7 +6,7 @@ if [ ! -z "${ZLOGIN}" ]; then
 fi
 
 # load extra dotfiles
-for file in $ZSH_CONFIG/env/*.zsh; do
+for file in ${ZDOTDIR}/env/*.zsh; do
     source "${file}"
 done
 
