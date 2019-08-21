@@ -128,3 +128,19 @@ profzsh() {
   shell=${1-$SHELL}
   ZPROF=true $shell -i -c exit
 }
+
+zsh-list-completions() {
+  for command completion in ${(kv)_comps:#-*(-|-,*)}; do
+    printf "%-32s %s\n" $command $completion
+  done | sort
+}
+
+reload(){
+  if [ "${1}" = "-f"]; then
+    # force cache files to be rebuilt
+    rm -rf "${XDG_CACHE_HOME}/zsh/zcompdump*"
+  fi
+
+  # Reload the shell (i.e. invoke as a login shell)
+  exec ${SHELL} -l
+}
