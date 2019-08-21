@@ -65,6 +65,11 @@ if [[ "$TERM" != dumb ]] && (( $+commands[grc] )) ; then
 
   alias colourify="grc -es --colour=auto"
 
+  if command grc >/dev/null; then
+    alias sudo='sudo '
+    sudo() { grc sudo "${@}" }
+  fi
+
   # Clean up variables
   unset cmds cmd
 fi
