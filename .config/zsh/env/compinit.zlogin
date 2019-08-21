@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 autoload -Uz compinit
-if [ $(date +'%j') != $(/usr/bin/stat -f '%Sm' -t '%j' "$XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION") ]; then
+if [ $(date +'%j') != $(/usr/bin/stat -f '%Sm' -t '%j' "$XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION" 2>/dev/null || echo 0) ]; then
     compinit -d "$XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION"
 else
     compinit -C -d "$XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION"
