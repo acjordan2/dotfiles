@@ -86,9 +86,6 @@ alias showdesktop="defaults write com.apple.finder CreateDesktop -bool true && k
 # URL-encode strings
 alias urlencode='python -c "import sys, urllib as ul; print ul.quote_plus(sys.argv[1]);"'
 
-# Reload the shell (i.e. invoke as a login shell)
-alias reload="exec ${SHELL} -l"
-
 # Print each PATH entry on a separate line
 alias path='echo -e ${PATH//:/\\n}'
 
