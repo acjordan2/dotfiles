@@ -43,6 +43,7 @@ if [[ "$TERM" != dumb ]] && (( $+commands[grc] )) ; then
     mount \
     mtr \
     netstat \
+    nmap \
     ping \
     ping6 \
     ps \
@@ -62,7 +63,7 @@ if [[ "$TERM" != dumb ]] && (( $+commands[grc] )) ; then
     fi
   done
 
-  alias colourify="$GRC -es --colour=auto"
+  alias colourify="grc -es --colour=auto"
 
   # Clean up variables
   unset cmds cmd
