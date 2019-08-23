@@ -1,6 +1,13 @@
 # emacs bindings 
 bindkey -e
 
+# Enable Ctrl-x-e to edit command line
+autoload -U edit-command-line
+# Emacs style
+zle -N edit-command-line
+bindkey '^xe' edit-command-line
+bindkey '^x^e' edit-command-line
+
 # ZSH options
 setopt noautoremoveslash    # keep the slash when resolving symlinks 
 setopt auto_cd              # auto CD into path 
