@@ -11,6 +11,10 @@ bindkey '^x^e' edit-command-line
 # ZSH options
 setopt noautoremoveslash    # keep the slash when resolving symlinks 
 setopt auto_cd              # auto CD into path 
+setopt auto_pushd           # push old directory onto the stack
+setopt pushd_ignore_dups    # dont push duplicate directories
+setopt pushd_silent         # dont print stack
+setopt pushd_to_home        # push $home when no arg is supplied
 
 # Add new line before rending prompt 
 precmd() { print "" } 

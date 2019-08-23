@@ -89,4 +89,8 @@ alias urlencode='python -c "import sys, urllib as ul; print ul.quote_plus(sys.ar
 # Print each PATH entry on a separate line
 alias path='echo -e ${PATH//:/\\n}'
 
+# Kitty CLI helper
 alias kitty='/Applications/Kitty.app/Contents/MacOS/kitty'
+
+# cd into directories on the stack
+for index ({1..9}) alias "$index"="cd +${index}"; unset index
