@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-if [[ "$TERM" != dumb ]] && (( $+commands[grc] )) ; then
+if [[ "${TERM}" != dumb ]] && (( ${+commands[grc]} )) ; then
 
 # Prevent grc aliases from overriding zsh completions.
   setopt COMPLETE_ALIASES
@@ -57,15 +57,14 @@ if [[ "$TERM" != dumb ]] && (( $+commands[grc] )) ; then
   );
 
   # Set alias for available commands.
-  for cmd in $cmds ; do
-    if (( $+commands[$cmd] )) ; then
-      alias $cmd="grc --colour=auto $(whence $cmd)"
+  for cmd in ${cmds} ; do if (( ${+commands[$cmd]} )) ; then
+      alias ${cmd}="grc --colour=auto $(whence ${cmd})"
     fi
   done
 
   alias colourify="grc -es --colour=auto"
 
-  if command grc >/dev/null; then
+  if [ ${+command[grc]} = "1" ]; then
     alias sudo='sudo '
     sudo() { grc sudo "${@}" }
   fi
