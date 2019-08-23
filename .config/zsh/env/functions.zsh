@@ -144,3 +144,9 @@ reload(){
   # Reload the shell (i.e. invoke as a login shell)
   exec ${SHELL} -l
 }
+
+ql() {
+  if (( $# > 0 )); then
+    qlmanage -p "$@" &> /dev/null
+  fi
+}
