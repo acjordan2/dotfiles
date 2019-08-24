@@ -40,18 +40,3 @@ zstyle ':completion:*:(rm|kill|diff):*' ignore-line yes
 
 ## Ignore completion functions for commands you don't have:
 zstyle ':completion:*:functions' ignored-patterns '_*'
-
-## Plugin Options
-# ZSH AutoSuggestions
-ZSH_AUTOSUGGEST_USE_ASYNC=1
-
-# ZSH Syntax highlight
-typeset -A ZSH_HIGHLIGHT_STYLES
-ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
-ZSH_HIGHLIGHT_STYLES[alias]='fg=cyan'
-ZSH_HIGHLIGHT_STYLES[function]='fg=magenta'
-ZSH_HIGHLIGHT_STYLES[builtin]='fg=yellow'
-
-# ZSH history substring search
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down

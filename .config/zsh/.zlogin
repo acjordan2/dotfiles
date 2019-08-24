@@ -1,8 +1,5 @@
 #!/usr/bin/env zsh
-
-source "${ZDOTDIR}/env/plugins.zlogin"
-source "${ZDOTDIR}/env/options.zlogin"
-
+#
 # start in tmux session first
 if command tmux -V >/dev/null 2>&1; then
   if [ -z "$TMUX" ] && [ -z "$SSH_CLIENT" ] && [ -z "$SSH_TTY" ]; then 
@@ -15,8 +12,25 @@ else
   echo "tmux is not installed" 1>&2
 fi
 
-# Generic colouriser
-source "${ZDOTDIR}/env/grc.zlogin"
+for file in ${ZDOTDIR}/env/*.zlogin; do
+  source "${file}"
+done
 
-# Source last
-source "${ZDOTDIR}/env/compinit.zlogin"
+autoload -Uz compinit
+if [ $(date +'%j') != $(/usr/bin/stat -f '%Sm' -t '%j' "$XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION" 2>/dev/null) ]; then
+    compinit -d "$XDG_CACHE_HOME/zsh/zcompdump-${ZSH_VERSION}"
+
+    # make sure this check only happens once a day
+    touch "${XDG_CACHE_HOME}/zsh/zcompdump-${ZSH_VERSION}"
+else
+    compinit -C -d "$XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION"
+fi
+
+# Execute code in the background to not affect the current session
+{
+  # Compile zcompdump, if modified, to increase startup speed.
+  zcompdump="$XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION"  
+  if [[ -s "$zcompdump" && (! -s "${zcompdump}.zwc" || "$zcompdump" -nt "${zcompdump}.zwc") ]]; then
+    zcompile "$zcompdump"
+  fi
+} &!
