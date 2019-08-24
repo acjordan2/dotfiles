@@ -51,8 +51,29 @@ answer_is_yes() {
 }
 
 execute() {
-    ${1} &> /dev/null
+    eval "${1}" #&> /dev/null
     print_result $? "${2:-$1}"
+}
+
+symlink() {
+  sourceFile="${1}"
+  targetFile="${2}"
+
+  if [ -e "${targetFile}" ]; then
+      if [ "$(readlink "${targetFile}")" != "${sourceFile}" ]; then
+          ask_for_confirmation "'${targetFile}' already exists, do you want to overwrite it?"
+          if answer_is_yes; then
+              rm -rf "${targetFile}"
+              execute "ln -fs ${sourceFile} ${targetFile}" "${targetFile} → ${sourceFile}"
+          else
+              print_error "${targetFile} → ${sourceFile}"
+          fi
+      else
+          print_success "${targetFile} → ${sourceFile}"
+      fi
+  else 
+      execute "ln -fs \"${sourceFile}\" \"${targetFile}\"" "${targetFile} → ${sourceFile}"
+  fi
 }
 
 main() {
@@ -70,7 +91,7 @@ main() {
 
     # config files in $XDG_CONFIG_HOME
     for dir in .config/*; do
-        if [ "$(basename "${dir}")" != ".DS_Store" ]; then
+      if [ "$(basename "${dir}")" != ".DS_Store" ]; then
             FILES_TO_SYMLINK+=("${dir}")
         fi
     done
@@ -89,22 +110,19 @@ main() {
         sourceFile="$(pwd)/${file}"
         targetFile="$HOME/$(printf "%s" "${file}")" 
 
-        if [ -e "${targetFile}" ]; then
-            if [ "$(readlink "${targetFile}")" != "${sourceFile}" ]; then
-                ask_for_confirmation "'${targetFile}' already exists, do you want to overwrite it?"
-                if answer_is_yes; then
-                    rm -rf "${targetFile}"
-                    execute "ln -fs ${sourceFile} ${targetFile}" "${targetFile} → ${sourceFile}"
-                else
-                    print_error "${targetFile} → ${sourceFile}"
-                fi
-            else
-                print_success "${targetFile} → ${sourceFile}"
-            fi
-        else 
-            execute "ln -fs ${sourceFile} ${targetFile}" "${targetFile} → ${sourceFile}"
-        fi
+        symlink "${sourceFile}" "${targetFile}"
     done
+
+    if [[ "${OSTYPE}" == "darwin"* ]]; then
+      # Firefox Config
+      for prof in "${HOME}"/Library/Application\ Support/Firefox/profiles/*; do
+        if [[ "${prof}" == *"Default"* ]]; then
+          for file in "${XDG_CONFIG_HOME}"/firefox/profiles/Default/*; do
+            symlink "${file}" "${prof}/$(basename "${file}")"
+          done
+        fi
+      done
+    fi
 }
 
 main
