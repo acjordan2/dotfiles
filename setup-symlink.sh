@@ -76,6 +76,26 @@ symlink() {
   fi
 }
 
+create_dirs() {
+  config="$HOME/.config"
+  data="$HOME/.local/share"
+  cache="$HOME/.cache"
+
+
+  dirs=("${config}" "${data}" "${cache}")
+  extra_dirs=("zsh" "tmux" "nvim")
+
+  for i in "${dirs[@]}"; do
+      if [ "${i}" != "${config}" ]; then
+         for k in "${extra_dirs[@]}"; do
+              execute "mkdir -p ${i}/${k}" "mkdir '${i}/${k}'"
+         done
+      else 
+              execute "mkdir -p ${i}" "mkdir '${i}'"
+      fi
+  done
+}
+
 main() {
     local FILES_TO_SYMLINK=()
     local file
@@ -105,6 +125,8 @@ main() {
         fi
         FILES_TO_SYMLINK+=("${file}")
     done
+
+    create_dirs
 
     for file in "${FILES_TO_SYMLINK[@]}"; do
         sourceFile="$(pwd)/${file}"
