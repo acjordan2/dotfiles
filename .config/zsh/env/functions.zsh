@@ -114,18 +114,13 @@ tmux_colors() {
 }
 
 timezsh() {
-  if [ "${1}" = "--zlogin" ]; then
-    export ZLOGIN=true
-    shell=${SHELL}
-  else
-    shell=${1-$SHELL}
-  fi
+  shell=${1-$SHELL}
   for i in $(seq 1 10); do /usr/bin/time ${shell} -i -c exit; done
   unset ZLOGIN
 }
 
 profzsh() {
-  shell=${1-$SHELL}
+  shell=${1-${SHELL}}
   ZPROF=true $shell -i -c exit
 }
 
