@@ -48,6 +48,7 @@ fi
 # Shortcuts
 alias vi="vim"
 alias v="vim"
+alias PlugInstall="vim +PlugInstall"
 alias vless="vim -u ~/.vimrc.less"
 alias msfc="msfconsole"
 
