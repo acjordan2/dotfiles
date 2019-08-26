@@ -41,10 +41,13 @@ alias cleanup_dsstore="find . -name '*.DS_Store' -type f -ls -delete"
 alias diskspace_report="df -P -kHl"
 alias free_diskspace_report="diskspace_report"
 
+if [[ ${+commands[nvim]} == 1 ]];then
+  alias vim="nvim"
+fi
+
 # Shortcuts
-alias vim=nvim
-alias vi=nvim
-alias v="nvim"
+alias vi="vim"
+alias v="vim"
 alias vless="vim -u ~/.vimrc.less"
 alias msfc="msfconsole"
 
