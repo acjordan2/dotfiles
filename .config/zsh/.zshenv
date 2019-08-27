@@ -1,15 +1,9 @@
 #!/usr/bin/env zsh
-# replace system tools with gnutils, e.g. cp, mv, etc
-export PATH="/usr/local/opt/coreutils/libexec/gnubin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$HOME/bin"
-export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
-
-# XDG Base dirs
-export XDG_CONFIG_HOME="$HOME/.config"
-export XDG_DATA_HOME="$HOME/.local/share"
-export XDG_CACHE_HOME="$HOME/.cache"
+# Path Stuff
+export PATH="${PATH}:${HOME}/bin"
+export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:${MANPATH}"
 
 # ZSH dirs
-export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 export ZSH_LOG="$XDG_DATA_HOME/zsh"
 
 # Prefer US English and use UTF-8

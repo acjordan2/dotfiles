@@ -1,5 +1,14 @@
 #!/usr/bin/env zsh
 
+if [[ "${OSTYPE}" == "darwin"* ]]; then
+  # Add homebrew and coreutils stuff for macOSj 
+  export PATH="/usr/local/opt/coreutils/libexec/gnubin:${PATH}"
+  export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:${MANPATH}"
+
+  # Turn off analytics for homeberw
+  export HOMEBREW_NO_ANALYTICS=1
+fi
+
 # start in tmux session unless already in a tmux session
 # or in an SSH session
 if [ -z "${TMUX}" ] && [ -z "${SSH_CLIENT}" ] && [ -z "${SSH_TTY}" ]; then 
