@@ -97,7 +97,7 @@ create_dirs() {
 }
 
 main() {
-    local FILES_TO_SYMLINK=()
+    local FILES_TO_SYMLINK=(.vim)
     local file
     local sourceFile
     local targetFile
