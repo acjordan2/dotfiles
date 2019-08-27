@@ -10,6 +10,6 @@ export LESS_TERMCAP_ue=$'\E[0m'           # end underline
 export LESS_TERMCAP_us=$'\E[04;38;5;146m' # begin underline
 
 # here's LS_COLORS
-# command -v gdircolors >/dev/null 2>&1 || alias gdircolors="dircolors"
-# eval "$(gdircolors -b "$XDG_CONFIG_HOME/zsh/env/dircolors")"
+command -v gdircolors >/dev/null 2>&1 || alias gdircolors="dircolors"
+eval "$(gdircolors -b "$XDG_CONFIG_HOME/zsh/env/dircolors")"
 
