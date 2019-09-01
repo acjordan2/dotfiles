@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 # Symlink dotfiles, configs in $XDG_CONFIG_HOME, and a baseline SSH Config
 #
 # this is safe to run multiple times and will prompt you about anything unclear
@@ -138,7 +138,7 @@ main() {
     if [[ "${OSTYPE}" == "darwin"* ]]; then
       # Firefox Config
       for prof in "${HOME}"/Library/Application\ Support/Firefox/profiles/*; do
-        if [[ "${prof}" == *"Default"* ]]; then
+        if [[ "${prof:l}" == *"default"* ]]; then
           for file in "${XDG_CONFIG_HOME}"/firefox/profiles/Default/*; do
             symlink "${file}" "${prof}/$(basename "${file}")"
           done
