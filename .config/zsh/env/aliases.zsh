@@ -80,6 +80,9 @@ alias kitty='/Applications/Kitty.app/Contents/MacOS/kitty'
 # cd into directories on the stack
 for index ({1..9}) alias "$index"="cd +${index}"; unset index
 
+# allow aliases to be sudoed
+alias sudo='sudo '
+
 # macOS aliases
 if [[ "${OSTYPE}" == "darwin"* ]]; then
   # Recursively delete `.DS_Store` files
