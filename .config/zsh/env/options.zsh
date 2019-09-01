@@ -22,6 +22,11 @@ zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 # Case insensitive tab completion
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}'
 
+# Fuzzy Autocompletion
+zstyle ':completion:*' completer _complete _match _approximate
+zstyle ':completion:*:approximate:*' max-errors 3 numeric
+zstyle ':completion:*' matcher-list 'm:{a-z}={  A-Z}' # match upper from lower case
+
 # tab completion for PID :D
 zstyle ':completion:*:*:kill:*' menu yes select
 zstyle ':completion:*:kill:*' force-list always
