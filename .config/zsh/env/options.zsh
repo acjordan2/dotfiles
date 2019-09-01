@@ -16,23 +16,6 @@ setopt pushd_ignore_dups    # dont push duplicate directories
 setopt pushd_silent         # dont print stack
 setopt pushd_to_home        # push $home when no arg is supplied
 
-# Add new line before rending prompt 
-precmd() { print "" } 
-
-if [ -z "${SSH_CLIENT}" ] && [ -z "${SSH_TTY}" ]; then
-  # {green}$user@$host{/green} {orange}λ{/orange} {blue}$PWD{/blue}
-  PROMPT=$'%F{113}%n@%m%f %F{208}λ%f %F{6}%~\n'
-  # ❯❯❯
-  PROMPT="${PROMPT}%B%F{1}❯%F{3}❯%F{2}❯%f%b "
-else
-  # @TODO make this look better
-  # {red}$user@$host{/green} {orange}λ{/orange} {green}$PWD{/green}
-  PROMPT=$'%F{9}%n@%m%f %F{208}λ%f %F{118}%~\n'
-  # $
-  PROMPT="$PROMPT%F{226}$ "
-fi
-
-
 # Change auto complete colors
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 
