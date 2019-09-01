@@ -182,7 +182,6 @@ grc-refresh() {
       last \
       ld \
       ldap \
-      ls \
       lsblk \
       lsof \
       lspci \
