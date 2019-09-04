@@ -56,14 +56,14 @@ if [[ "${TERM}" != dumb ]] && (( ${+commands[grc]} )) ; then
   );
 
   # Set alias for available commands.
+  alias colorify="grc -es --colour=auto "
+  alias colourify="grc -es --colour=auto "
   for cmd in ${cmds} ; do
     if (( ${+commands[$cmd]} )) ; then
-      alias ${cmd}="grc --colour=auto $(whence "${cmd}")"
+      alias ${cmd}="colourify ${cmd}"
     fi
   done
 
-  alias colorify="grc -es --colour=auto"
-  alias colourify="grc -es --colour=auto"
 
   # Clean up variables
   unset cmds cmd

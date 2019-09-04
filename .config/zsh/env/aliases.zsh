@@ -48,10 +48,11 @@ alias v="vim"
 alias PlugInstall="vim +PlugInstall"
 alias vless="vim -u ~/.vimrc.less"
 alias msfc="msfconsole"
+alias zdot="cd ${ZDOTDIR}"
+alias zshrc="vim ${ZDOTDIR}/.zshrc"
 
 # File size
 alias fs="/usr/bin/stat -f \"%z bytes\""
-
 
 # Vim scratchpad with autosaving
 alias scratchpad='vim -c "let g:auto_save = 1" ~/scratchpad/`date +"%m_%d_%Y"`.txt'
@@ -73,9 +74,6 @@ alias urlencode='python -c "import sys, urllib as ul; print ul.quote_plus(sys.ar
 
 # Print each PATH entry on a separate line
 alias path='echo -e ${PATH//:/\\n}'
-
-# Kitty CLI helper
-alias kitty='/Applications/Kitty.app/Contents/MacOS/kitty'
 
 # cd into directories on the stack
 for index ({1..9}) alias "$index"="cd +${index}"; unset index
@@ -104,4 +102,10 @@ if [[ "${OSTYPE}" == "darwin"* ]]; then
 
   # Add stuff to Yoink dropbox
   alias yoink="open -a Yoink"  
+  
+  # Kitty CLI helper
+  alias kitty='/Applications/Kitty.app/Contents/MacOS/kitty'
+
+  # Homebrew
+  alias brewup="brew update && { brew upgrade; brew cask upgrade; brew cleanup && brew doctor}"
 fi
