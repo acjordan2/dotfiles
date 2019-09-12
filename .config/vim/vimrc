@@ -4,6 +4,23 @@
 
 " Preamble {{{
 
+" Local Directories and cache files {{{
+set undodir=$XDG_DATA_HOME/vim/undo//
+set directory=$XDG_DATA_HOME/vim/swaps//
+set backupdir=$XDG_DATA_HOME/vim/backups//
+set runtimepath=$XDG_CONFIG_HOME/vim,$VIMRUNTIME,$XDG_CONFIG_HOME/vim/after
+
+" Incompatible with Neovim {{{`
+if !has('nvim')
+  set esckeys " Allow cursor keys in insert mode
+  set ttymouse=xterm " Set mouse type to xterm
+  set viminfo=%,'9999,s512,n$XDG_CACHE_HOME/vim/viminfo " Restore buffer list, marks are remembered for 9999 files, registers up to 512Kb are remembered
+else
+  set viminfo=%,'9999,s512,n$XDG_CACHE_HOME/nvim/nviminfo " Restore buffer list, marks are remembered for 9999 files, registers up to 512Kb are remembered
+endif
+
+" }}}
+
 " Make vim more useful {{{
 set nocompatible              " be iMproved, required
 " }}}
@@ -18,11 +35,6 @@ colorscheme molokai
 let mapleader=","
 " }}}
 
-" Local Directories {{{
-set backupdir=~/.vim/backups//
-set directory=~/.vim/swaps//
-set undodir=~/.vim/undo//
-" }}}
 
 " Set some junk {{{
 set autoindent " Copy indent from last line when starting new line
@@ -96,14 +108,6 @@ set wildmode=list:longest " Complete only until point of ambiguity
 set winminheight=0 " Allow splits to be reduced to a single line
 set wrapscan " Searches wrap around end of file
 
-" Incompatible with Neovim {{{`
-if !has('nvim')
-  set esckeys " Allow cursor keys in insert mode
-  set ttymouse=xterm " Set mouse type to xterm
-  set viminfo=%,'9999,s512,n~/.vim/viminfo " Restore buffer list, marks are remembered for 9999 files, registers up to 512Kb are remembered
-else
-  set viminfo=%,'9999,s512,n~/.vim/.nviminfo " Restore buffer list, marks are remembered for 9999 files, registers up to 512Kb are remembered
-endif
 " }}}
 
 " }}}
@@ -572,7 +576,7 @@ augroup END
 
 " Load plugins {{{
   
-call plug#begin('~/.vim/plugged')
+call plug#begin('$XDG_CONFIG_HOME/vim/plugged')
 
 " Plug 'Chiel92/vim-autoformat'
 " Plug 'junegunn/vim-easy-align'

@@ -149,3 +149,11 @@ ql() {
   fi
 }
 
+# vim as pager
+vless() {
+  if [ -z "${1}" ] || [ "${1}" = "-" ]
+    vim -u $xdg_config_home/vim/vimrc.less -
+  else
+    vim -u $xdg_config_home/vim/vimrc.less "${@}"
+  fi
+}

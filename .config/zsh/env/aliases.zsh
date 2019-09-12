@@ -46,7 +46,6 @@ fi
 alias vi="vim"
 alias v="vim"
 alias PlugInstall="vim +PlugInstall"
-alias vless="vim -u ~/.vimrc.less"
 alias msfc="msfconsole"
 alias zdot="cd ${ZDOTDIR}"
 alias zshrc="vim ${ZDOTDIR}/.zshrc"

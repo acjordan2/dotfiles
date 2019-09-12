@@ -13,3 +13,5 @@ export LESS_TERMCAP_us=$'\E[04;38;5;146m' # begin underline
 command -v gdircolors >/dev/null 2>&1 || alias gdircolors="dircolors"
 eval "$(gdircolors -b "${XDG_CONFIG_HOME}/zsh/env/dircolors")"
 
+# force vim to follow XDG spec
+export VIMINIT=":source ${XDG_CONFIG_HOME}/vim/vimrc"
