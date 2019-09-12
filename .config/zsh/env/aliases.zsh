@@ -38,8 +38,8 @@ alias sgrep='grep -R -n -H -C 5 --exclude-dir={.git,.svn,CVS} '
 alias diskspace_report="df -P -kHl"
 alias free_diskspace_report="diskspace_report"
 
-if [[ ${+commands[nvim]} == 1 ]];then
-  alias vim="nvim"
+if (( ${+commands[nvim]} ));then
+  alias vim="nvim "
 fi
 
 # Shortcuts
@@ -51,8 +51,6 @@ alias msfc="msfconsole"
 alias zdot="cd ${ZDOTDIR}"
 alias zshrc="vim ${ZDOTDIR}/.zshrc"
 
-# File size
-alias fs="/usr/bin/stat -f \"%z bytes\""
 
 # Vim scratchpad with autosaving
 alias scratchpad='vim -c "let g:auto_save = 1" ~/scratchpad/`date +"%m_%d_%Y"`.txt'
@@ -64,7 +62,7 @@ alias forcepull='git fetch --all && git reset --hard origin/master'
 alias sshrdp='ssh -L 9001:localhost:9001 -L 5900:localhost:5900 -L 3283:localhost:3283'
 
 # Grepable history file, with sequential dupes and timestamps removed 
-alias hist='cat $XDG_DATA_HOME/zsh/.zhistory | cut -d";" -f2 | uniq | head -n -1'
+alias hist='cat ${XDG_DATA_HOME}/zsh/.zhistory | cut -d";" -f2 | uniq | head -n -1'
 
 # Show active network interfaces
 alias ifactive="ifconfig | pcregrep -M -o '^[^\t:]+:([^\n]|\n\t)*status: active'"
@@ -93,6 +91,9 @@ if [[ "${OSTYPE}" == "darwin"* ]]; then
   # Hide/show all desktop icons (useful when presenting)
   alias hidedesktop="defaults write com.apple.finder CreateDesktop -bool false && killall Finder"
   alias showdesktop="defaults write com.apple.finder CreateDesktop -bool true && killall Finder"
+
+  # File size; relies on BSD stat
+  alias fs="/usr/bin/stat -f \"%z bytes\""
 
   # System airport utility
   alias airport="/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport"
