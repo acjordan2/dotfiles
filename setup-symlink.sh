@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 # Symlink dotfiles, configs in $XDG_CONFIG_HOME, and a baseline SSH Config
 #
 # this is safe to run multiple times and will prompt you about anything unclear
@@ -97,7 +97,7 @@ create_dirs() {
 }
 
 main() {
-    local FILES_TO_SYMLINK=(.vim)
+    local FILES_TO_SYMLINK=()
     local file
     local sourceFile
     local targetFile
@@ -129,8 +129,12 @@ main() {
     create_dirs
 
     for file in "${FILES_TO_SYMLINK[@]}"; do
-        sourceFile="$(pwd)/${file}"
-        targetFile="$HOME/$(printf "%s" "${file}")" 
+        # Use relative path for symlinks, sometimes I mount my home dir
+        sourceFile=$(echo "$(pwd)/${file}" | sed "s/$(echo "${HOME}" | sed 's/\//\\\//g')\///g")
+        targetFile="${HOME}/${file}" 
+        if [ "${sourceFile:13:7}" = ".config" ] || [ "${sourceFile:13:4}" = ".ssh" ]; then
+          sourceFile="../${sourceFile}" 
+        fi
 
         symlink "${sourceFile}" "${targetFile}"
     done
