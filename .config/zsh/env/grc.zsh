@@ -2,8 +2,12 @@
 
 if [[ "${TERM}" != dumb ]] && (( ${+commands[grc]} )) ; then
 
-# Prevent grc aliases from overriding zsh completions.
+  # Prevent grc aliases from overriding zsh completions.
   setopt COMPLETE_ALIASES
+
+  # Set alias for available commands.
+  alias colorify="grc -es --colour=auto "
+  alias colourify="grc -es --colour=auto "
 
   # Supported commands
   cmds=(
@@ -55,15 +59,11 @@ if [[ "${TERM}" != dumb ]] && (( ${+commands[grc]} )) ; then
     iwconfig \
   );
 
-  # Set alias for available commands.
-  alias colorify="grc -es --colour=auto "
-  alias colourify="grc -es --colour=auto "
   for cmd in ${cmds} ; do
     if (( ${+commands[$cmd]} )) ; then
       alias ${cmd}="colourify ${cmd}"
     fi
   done
-
 
   # Clean up variables
   unset cmds cmd

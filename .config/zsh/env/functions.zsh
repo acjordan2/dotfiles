@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+# remove N bytes from the start or end of a file
 ftrim() {
   case "${1}" in 
     -h|--help)
@@ -60,6 +61,7 @@ md() {
     pandoc "${1}" | lynx -stdin
 }
 
+# list only the IPs for all interfaces
 ipls() {
   local action
   local output
@@ -70,7 +72,7 @@ ipls() {
   if command -v ifconfig >/dev/null; then
     if [[ "${action}" != "-a" ]] && [[ "${action}" != "--all" ]]; then
 #        output="$(ifconfig | grep "inet" | grep -v "127.0.0.1" | grep -v "::1" | cut -d" "  -f2 | cut -d"%" -f1 | sort)"
-        output=$(ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)' | awk '{ sub(/inet6? (addr:)? ?/, ""); print }')
+        output=$(command ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)' | awk '{ sub(/inet6? (addr:)? ?/, ""); print }')
     else 
       # list all interfaces
       while read -r interface; do
@@ -79,8 +81,8 @@ ipls() {
           if [ -n "${ip}" ]; then
             output="${output}${interface}: ${ip}\n"
             fi 
-        done < <(ifconfig "${interface}" | grep "inet" | cut -d" "  -f2 | cut -d"%" -f1)
-      done < <(ifconfig -a | sed -E 's/[[:space:]:].*//;/^$/d')
+        done < <(command ifconfig "${interface}" | grep "inet" | cut -d" "  -f2 | cut -d"%" -f1)
+      done < <(command ifconfig -a | sed -E 's/[[:space:]:].*//;/^$/d')
    fi
   fi
 
@@ -107,7 +109,7 @@ xor() {
   printf '%#x\n' "$((${1} ^ ${2}))"
 }
 
-tmux_colors() {
+tmux-colors() {
   for i in {0..255}; do
     printf "\x1b[38;5;%smcolour%s\x1b[0m\n" "${i}" "${i}"
   done
@@ -140,6 +142,7 @@ reload(){
   exec ${SHELL} -l
 }
 
+# quick look on macOS
 ql() {
   if (( $# > 0 )); then
     qlmanage -p "$@" &> /dev/null

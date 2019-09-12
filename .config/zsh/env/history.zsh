@@ -12,8 +12,8 @@ setopt HIST_IGNORE_SPACE        # Do not record an event starting with a space.
 setopt HIST_VERIFY              # Do not execute immediately upon history expansion.
 setopt HIST_REDUCE_BLANKS       # Remove excess blanks
 
-HISTFILE="${ZSH_LOG:-$HOME}/.zhistory"
-HISTSIZE=10000
+HISTFILE="${XDG_DATA_HOME}/zsh/.zhistory"
+HISTSIZE=1000000
 SAVEHIST=1000000
 
 # Lists the ten most used commands.
