@@ -83,7 +83,7 @@ create_dirs() {
 
 
   dirs=("${config}" "${data}" "${cache}")
-  extra_dirs=("zsh" "tmux" "nvim")
+  extra_dirs=("zsh" "tmux" "nvim" "vim")
 
   for i in "${dirs[@]}"; do
       if [ "${i}" != "${config}" ]; then
@@ -94,6 +94,8 @@ create_dirs() {
               execute "mkdir -p ${i}" "mkdir '${i}'"
       fi
   done
+
+  execute "mkdir -p $HOME/.local/share/vim/{undo,swaps,backups}" "mkdir '$HOME/.local/share/vim/{undo,swaps,backups}'"
 }
 
 main() {
