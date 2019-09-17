@@ -7,5 +7,5 @@ if [ -z "${SSH_CLIENT}" ] && [ -z "${SSH_TTY}" ]; then
   # ❯❯❯
   PROMPT="${PROMPT}%B%F{1}❯%F{3}❯%F{2}❯%f%b "
 else
-  PROMPT=$'%F{154}%n@%M%f:%f%F{6}%~ $ '
+  PROMPT=$'%F{154}%n@%M%f:%f%F{6}%~ $ %F{255}'
 fi
