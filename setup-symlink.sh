@@ -134,7 +134,7 @@ main() {
         # Use relative path for symlinks, sometimes I mount my home dir
         sourceFile=$(echo "$(pwd)/${file}" | sed "s/$(echo "${HOME}" | sed 's/\//\\\//g')\///g")
         targetFile="${HOME}/${file}" 
-        if [ "${sourceFile:13:7}" = ".config" ] || [ "${sourceFile:13:4}" = ".ssh" ]; then
+        if [[ "${sourceFile}" = *"/.config/"* ]] || [[ "${sourceFile}" = *"/.ssh/"* ]]; then
           sourceFile="../${sourceFile}" 
         fi
 

@@ -4,6 +4,7 @@ brew update
 brew upgrade
 
 declare -a install=(
+  bash
   bat 
   binutils
   binwalk
@@ -38,6 +39,7 @@ declare -a install=(
 declare -a cask=(
   wireshark
   kitty
+  docker
 )
 
 echo "## Homebrew packages"
