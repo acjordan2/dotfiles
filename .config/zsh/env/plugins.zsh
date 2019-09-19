@@ -1,7 +1,5 @@
 #!/usr/bin/env zsh
 
-HIGHLIGHTER="fsh"
-
 # ZSH Completoins
 fpath=(
   ${ZDOTDIR}/plugins/zsh-completions/src
@@ -10,25 +8,20 @@ fpath=(
 )
 
 ## ZSH AutoSuggestions
-source "${ZDOTDIR}/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
-ZSH_AUTOSUGGEST_USE_ASYNC=1
+source "${ZDOTDIR}/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" 2>/dev/null && 
+{
+  ZSH_AUTOSUGGEST_USE_ASYNC=1
+  ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=244'
+}
 
-# easy switch between highlighters if needed
-if [ "${HIGHLIGHTER}" = "fsh" ]; then
-  # Fast syntax highlighting
-  FAST_WORK_DIR="${ZDOTDIR}/plugins/fast-syntax-highlighting-data"
-  source "${ZDOTDIR}/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh"
-else
-  ## ZSH Syntax highlight
-  source "${ZDOTDIR}/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" # Source before zsh-history-substring-search
-  typeset -A ZSH_HIGHLIGHT_STYLES
-  ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
-  ZSH_HIGHLIGHT_STYLES[alias]='fg=cyan'
-  ZSH_HIGHLIGHT_STYLES[function]='fg=magenta'
-  ZSH_HIGHLIGHT_STYLES[builtin]='fg=yellow'
-fi
+# Fast syntax highlighting
+FAST_WORK_DIR="${ZDOTDIR}/plugins/fast-syntax-highlighting-data"
+source "${ZDOTDIR}/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh" 2>/dev/null
 
-# ZSH history substring search
-source "${ZDOTDIR}/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh" # Source last
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
+# ZSH history substring search, # Source last
+source "${ZDOTDIR}/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh" 2>/dev/null && 
+{
+  # dont set unless we are able to source the plugin
+  bindkey '^[[A' history-substring-search-up
+  bindkey '^[[B' history-substring-search-down 
+}
