@@ -8,7 +8,6 @@ This will pull the following submodules:
 - [ZSh Auto Sugesstions](https://github.com/zsh-users/zsh-autosuggestions)
 - [ZSH-Completions](https://github.com/zsh-users/zsh-completions)
 - [ZSH-History-Substring Search](https://github.com/zsh-users/zsh-history-substring-search)
-- [ZSH-Syntax-Highlighting](https://github.com/zsh-users/zsh-syntax-highlighting) (Soon to be removed)
 
 run `./setup-symlink.sh`, this will create relative symlinks in your home directory. This is safe to run multiple times and will prompt you about anything unclear. 
 
