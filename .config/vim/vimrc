@@ -28,7 +28,7 @@ set nocompatible              " be iMproved, required
 " Syntax Highlighting {{{
 set background=dark
 syntax on
-colorscheme molokai
+colorscheme gruvbox
 " }}}
 
 " Mapleader {{{
