@@ -24,3 +24,4 @@ Thumbs.db
 
 .extra
 .config/zsh/env/extra.zsh
+*.zwc
