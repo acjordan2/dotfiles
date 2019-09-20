@@ -1,13 +1,17 @@
 #!/usr/bin/env zsh
 
-if [[ "${TERM}" != dumb ]] && (( ${+commands[grc]} )) ; then
+if [[ "${TERM}" != dumb ]] && hash grc >/dev/null 2>&1 ; then
 
-  # Prevent grc aliases from overriding zsh completions.
-  setopt COMPLETE_ALIASES
+  if [ -n "$ZSH_VERSION" ]; then
+    # Prevent grc aliases from overriding zsh completions.
+    setopt COMPLETE_ALIASES
+  fi
 
   # Set alias for available commands.
   alias colorify="grc -es --colour=auto "
   alias colourify="grc -es --colour=auto "
+
+  declare -a cmds
 
   # Supported commands
   cmds=(
@@ -59,10 +63,10 @@ if [[ "${TERM}" != dumb ]] && (( ${+commands[grc]} )) ; then
     iwconfig \
   );
 
-  for cmd in ${cmds} ; do
-    if (( ${+commands[$cmd]} )) ; then
-      alias ${cmd}="colourify ${cmd}"
-    fi
+  for cmd in ${cmds[@]} ; do
+    # if (( ${+commands[$cmd]} )) ; then
+    hash "${cmd}" >/dev/null 2>&1 && alias ${cmd}="colourify ${cmd}"
+    # fi
   done
 
   # Clean up variables

@@ -83,7 +83,7 @@ create_dirs() {
 
 
   dirs=("${config}" "${data}" "${cache}")
-  extra_dirs=("zsh" "tmux" "nvim" "vim")
+  extra_dirs=("zsh" "tmux" "nvim" "vim" "bash")
 
   for i in "${dirs[@]}"; do
       if [ "${i}" != "${config}" ]; then

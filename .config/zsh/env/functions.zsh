@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# General functions go here. shell specific functions go in 
+# $XDG_CONFIG_HOME/<shell>/env/functions/
+
 # remove N bytes from the start or end of a file
 ftrim() {
   case "${1}" in 
@@ -121,16 +124,6 @@ timezsh() {
   unset ZLOGIN
 }
 
-profzsh() {
-  shell=${1-${SHELL}}
-  ZPROF=true $shell -i -c exit
-}
-
-zsh-list-completions() {
-  for command completion in ${(kv)_comps:#-*(-|-,*)}; do
-    printf "%-32s %s\n" $command $completion
-  done | sort
-}
 
 reload(){
   if [ "${1}" = "-f" ]; then

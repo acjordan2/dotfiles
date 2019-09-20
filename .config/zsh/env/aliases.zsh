@@ -20,27 +20,24 @@ alias less="less -FSRXc"
 # use coreutils `ls` if possible…
 hash gls >/dev/null 2>&1 || alias gls="ls"
 
+# use neovim instead of vim
+hash nvim >/dev/null 2>&1 && alias vim="nvim "
+
 # always use color, even when piping (to awk,grep,etc)
 if gls --color > /dev/null 2>&1; then colorflag="--color"; else colorflag="-G"; fi;
 export CLICOLOR_FORCE=1
 
 # ls options: A = include hidden (but not . or ..), F = put `/` after folders, h = byte unit suffixes
+# `la` defined in .functions
 alias ls='gls -AFh ${colorflag} --group-directories-first'
 alias lsd='ls -l | grep "^d"' # only directories
 alias ll='ls -l'
-#    `la` defined in .functions
 
 alias grep='grep --color'
 alias sgrep='grep -R -n -H -C 5 --exclude-dir={.git,.svn,CVS} '
 
-###
-
 alias diskspace_report="df -P -kHl"
 alias free_diskspace_report="diskspace_report"
-
-if (( ${+commands[nvim]} ));then
-  alias vim="nvim "
-fi
 
 # Shortcuts
 alias vi="vim"
@@ -49,7 +46,6 @@ alias PlugInstall="vim +PlugInstall"
 alias msfc="msfconsole"
 alias zdot="cd ${ZDOTDIR}"
 alias zshrc="vim ${ZDOTDIR}/.zshrc"
-
 
 # Vim scratchpad with autosaving
 alias scratchpad='vim -c "let g:auto_save = 1" ~/scratchpad/`date +"%m_%d_%Y"`.txt'
@@ -73,7 +69,7 @@ alias urlencode='python -c "import sys, urllib as ul; print ul.quote_plus(sys.ar
 alias path='echo -e ${PATH//:/\\n}'
 
 # cd into directories on the stack
-for index ({1..9}) alias "$index"="cd +${index}"; unset index
+for index in {1..9}; do alias "$index"="cd +${index}"; done; unset index
 
 # allow aliases to be sudoed
 alias sudo='sudo '
