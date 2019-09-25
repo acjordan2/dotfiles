@@ -9,14 +9,14 @@ if [[ "${OSTYPE}" == "darwin"* ]]; then
   export HOMEBREW_NO_ANALYTICS=1
 fi
 
-# start in tmux session unless already in a tmux session
-# or in an SSH session
+# start in tmux session unless already in tmux or connected via SSH
 if [ -z "${TMUX}" ] && [ -z "${SSH_CLIENT}" ] && [ -z "${SSH_TTY}" ]; then 
   if command tmux -V >/dev/null 2>&1; then
     TMUX_LOG_DIR="${XDG_DATA_HOME}/tmux/log"
-    TMUX_SESSION_ID="${${TERM_SESSION_ID%%:*}:-${KITTY_WINDOW_ID}}"
+    WINDOW_ID="${${TERM_SESSION_ID%%:*}:-${KITTY_WINDOW_ID}}"
+    TMUX_SESSION_ID="${WINDOW_ID:-1}"
     cd "${TMUX_LOG_DIR}" || { mkdir -p "${TMUX_LOG_DIR}" && cd "${TMUX_LOG_DIR}" || exit; }
-    TERM=xterm-256color; tmux -f "${XDG_CONFIG_HOME}/tmux/tmux.conf" new-session -A -s "${TMUX_SESSION_ID}" -c "$HOME" && exit
+    tmux -f "${XDG_CONFIG_HOME}/tmux/tmux.conf" new-session -A -s "${TMUX_SESSION_ID}" -c "${HOME}" && exit
   else
     echo "tmux is not installed" 1>&2
   fi
