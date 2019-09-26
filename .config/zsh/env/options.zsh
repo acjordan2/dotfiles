@@ -36,3 +36,11 @@ zstyle ':completion:*:(rm|kill|diff):*' ignore-line yes
 
 ## Ignore completion functions for commands you don't have:
 zstyle ':completion:*:functions' ignored-patterns '_*'
+
+# Level of dir expansion in prompt
+# options are:
+
+# short   first letter of each dir in path, full dirname of the last dir
+# long    Full path without expanding '~' 
+# full    Full path with '~' expansion
+zstyle ":prompt:*" pwd-length 'short'
