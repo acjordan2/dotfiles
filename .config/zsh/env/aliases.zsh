@@ -50,6 +50,9 @@ alias zshrc="vim ${ZDOTDIR}/.zshrc"
 # Vim scratchpad with autosaving
 alias scratchpad='vim -c "let g:auto_save = 1" ~/scratchpad/`date +"%m_%d_%Y"`.txt'
 
+# wordprocessor
+alias wp='vim --cmd "let g:wp_mode = 1" +WP'
+
 # force git pull, overwriting local changes
 alias forcepull='git fetch --all && git reset --hard origin/master'
 

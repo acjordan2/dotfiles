@@ -322,8 +322,10 @@ augroup word_processor_mode
     endif
   endfunction
 
-  autocmd! User GoyoEnter call <SID>goyo_enter()
-  autocmd! User GoyoLeave call <SID>goyo_leave()
+  if exists("g:wp_mode")
+    autocmd! User GoyoEnter call <SID>goyo_enter()
+    autocmd! User GoyoLeave call <SID>goyo_leave()
+  endif
 
 augroup END
 " }}}
