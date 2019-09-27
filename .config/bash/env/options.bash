@@ -35,4 +35,3 @@ shopt -s cdable_vars            # Define a variable containing a path and you wi
 
 ## Defines where CD looks for targets
 CDPATH="."
-

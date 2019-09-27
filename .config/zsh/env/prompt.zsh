@@ -26,7 +26,7 @@ promptcmd() {
 
   if [ -z "${SSH_CLIENT}" ] && [ -z "${SSH_TTY}" ]; then
     # {green}$user@$host{/green} {orange}λ{/orange} {blue}$PWD{/blue}
-    PROMPT=$'%F{113}%n@%m%f %F{208}$%f %F{6} ${ret_directory}\n'
+    PROMPT=$'%F{113}%n@%m%f %F{208}$%f %F{6}${ret_directory}\n'
 
     # ❯❯❯
     PROMPT="${PROMPT}%B%F{1}❯%F{3}❯%F{2}❯%f%b "

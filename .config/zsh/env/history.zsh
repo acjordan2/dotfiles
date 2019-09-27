@@ -15,6 +15,7 @@ setopt HIST_REDUCE_BLANKS       # Remove excess blanks
 HISTFILE="${XDG_DATA_HOME}/zsh/.zhistory"
 HISTSIZE=1000000
 SAVEHIST=1000000
+HISTORY_IGNORE="(&|[ ]*|exit|ls|bg|fg|history|clear)"  # Don't record some commands
 
 # Lists the ten most used commands.
 alias history-stat="history 0 | awk '{print \$2}' | sort | uniq -c | sort -n -r | head"
