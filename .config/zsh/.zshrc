@@ -23,7 +23,7 @@ if [ -z "${TMUX}" ] && [ -z "${SSH_CLIENT}" ] && [ -z "${SSH_TTY}" ]; then
 fi
 
 # load extra dotfiles
-for file in "${ZDOTDIR}"/env/*.zsh; do
+for file in {"${ZDOTDIR}"/env/*.zsh,"${ZDOTDIR}"/env/functions/*.zsh}; do
     source "${file}"
 done
 

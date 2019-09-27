@@ -34,3 +34,13 @@ promptcmd() {
     PROMPT=$'%F{154}%n@%M%f:%f%F{6}%~ $ %F{255}'
   fi
 }
+
+
+
+function bindkey-all {
+  local keymap=''
+  for keymap in $(bindkey -l); do
+    [[ "$#" -eq 0 ]] && printf "#### %s\n" "${keymap}" 1>&2
+    bindkey -M "${keymap}" "$@"
+  done
+}
