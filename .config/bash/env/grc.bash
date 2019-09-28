@@ -1,1 +1,1 @@
-../../zsh/env/grc.zsh
+../../zsh/modules/grc/init.zsh
