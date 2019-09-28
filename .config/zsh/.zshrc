@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 if [[ "${OSTYPE}" == "darwin"* ]]; then
-  # Add homebrew and coreutils stuff for macOSj 
+  # Add homebrew and coreutils stuff for macOS 
   export PATH="/usr/local/opt/coreutils/libexec/gnubin:${PATH}"
   export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:${MANPATH}"
 
@@ -39,5 +39,3 @@ for file in "${ZDOTDIR}"/env/*.zsh; do
 done
 
 source "${ZDOTDIR}/modules/init.zsh"
-
-# eval "$(direnv hook zsh)"
