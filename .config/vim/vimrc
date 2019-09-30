@@ -117,6 +117,11 @@ set wrapscan " Searches wrap around end of file
 
 " Configuration -------------------------------------------------------------
 
+" FastEscape {{{
+" Speed up transition from modes
+set ttimeoutlen=10 timeoutlen=1000
+" }}}
+
 " General {{{
 augroup general_config
   autocmd!
@@ -185,8 +190,10 @@ augroup general_config
   " imap <right> <nop>
   " }}}
  
-  " jj to <ESC> {{{
+  " jj, jk, kj to <ESC> {{{
    imap jj <Esc>
+   imap jk <Esc>
+   imap kj <Esc>
   " }}}
 
   " Disable Ex-MOde {{{
