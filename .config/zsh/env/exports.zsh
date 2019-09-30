@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# tmux unsets this for some reason
+export XDG_RUNTIME_DIR="${TMPDIR:-/tmp}"
+
 # highlighting inside manpages and elsewhere
 export LESS_TERMCAP_mb=$'\E[01;31m'       # begin blinking
 export LESS_TERMCAP_md=$'\E[01;38;5;74m'  # begin bold
@@ -16,7 +19,7 @@ export VIMINIT=":source ${XDG_CONFIG_HOME}/vim/vimrc"
 export HISTFILE="${XDG_DATA_HOME}/bash/bash_history"
 
 # XDG spec for TMUX
-export TMUX_TMPDIR="$XDG_RUNTIME_DIR"
+export TMUX_TMPDIR="${XDG_RUNTIME_DIR}"
 
 # here's LS_COLORS
 command -v gdircolors >/dev/null 2>&1 || alias gdircolors="dircolors"
