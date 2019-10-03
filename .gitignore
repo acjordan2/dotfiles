@@ -23,5 +23,6 @@ Thumbs.db
 .Trashes
 
 .extra
+extra.*
 .config/zsh/env/extra.zsh
 *.zwc

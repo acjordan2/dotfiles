@@ -1,13 +1,4 @@
-#!/usr/bin/env bash
-
-if [[ "${OSTYPE}" == "darwin"* ]]; then
-  # Add homebrew and coreutils stuff for macOSj 
-  export PATH="/usr/local/opt/coreutils/libexec/gnubin:${PATH}"
-  export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:${MANPATH}"
-
-  # Turn off analytics for homeberw
-  export HOMEBREW_NO_ANALYTICS=1
-fi
+export TMUX_TMPDIR="${XDG_RUNTIME_DIR:-/tmp}"
 
 # start in tmux session unless already in tmux or connected via SSH
 if [ -z "${TMUX}" ] && [ -z "${SSH_CLIENT}" ] && [ -z "${SSH_TTY}" ]; then 
@@ -21,10 +12,3 @@ if [ -z "${TMUX}" ] && [ -z "${SSH_CLIENT}" ] && [ -z "${SSH_TTY}" ]; then
     echo "tmux is not installed" 1>&2
   fi
 fi
-
-# load extra dotfiles
-for file in "${BDOTDIR}"/bashrc.d/*.bash; do
-    source "${file}"
-done
-
-# eval "$(direnv hook zsh)"

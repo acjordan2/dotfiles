@@ -1,6 +1,6 @@
 # Settings for history substring search
 
-source "${ZDOTDIR}/modules/history-substring-search/extenal/zsh-history-substring-search.zsh" 2>/dev/null && 
+source "${ZDOTDIR}/modules/history-substring-search/external/zsh-history-substring-search.zsh" 
 
 if [[ -n "$key_info" ]]; then
   # Emacs
@@ -13,9 +13,11 @@ if [[ -n "$key_info" ]]; then
 
   # Emacs and Vi
   for keymap in 'emacs' 'viins'; do
-    bindkey -M "$keymap" "$key_info[Up]" history-substring-search-up
-    bindkey -M "$keymap" "$key_info[Down]" history-substring-search-down
+    bindkey -M "$keymap" '^[[A' history-substring-search-up
+    bindkey -M "$keymap" '^[[B' history-substring-search-down
   done
 
   unset keymap
 fi
+
+zstyle ':modules:compinit' run true

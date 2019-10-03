@@ -1,0 +1,1 @@
+../../zsh/zshrc.d/aliases.zsh

@@ -1,20 +1,23 @@
-function load_modules() {
-  local i
-  for i in ${plugins[@]}; do
-    source "${ZDOTDIR}/modules/${i}/init.zsh"
-  done
+function load_module() {
+  if ! zstyle -m ':module:'${1} loaded 'true'; then
+    source "${ZDOTDIR}/modules/${1}/init.zsh" && 
+       zstyle ':module:'${1} loaded 'true' ||
+       echo "error loading '${1}' plugin'" >&2
+  fi
 }
 
 # load line-editor helper that is used by other plugins
-source "${ZDOTDIR}/modules/line-editor/init.zsh"
+load_module line-editor
 
 # load optional plugins
-load_modules
+for i in ${plugins[@]}; do
+  load_module "${i}"
+done
 
 # load prompt
-source "${ZDOTDIR}/modules/prompt/init.zsh"
+load_module prompt
 
-if [[ "${#plugins[@]}" -gt 0 ]]; then
+if zstyle -m ':modules:compinit' run true; then
   # run compinit
   zcachedir="${XDG_CACHE_HOME}/zsh/"
   [[ -d "$zcachedir" ]] || mkdir -p "$zcachedir"
