@@ -4,15 +4,16 @@ declare -a plugins
 
 # order matters
 plugins=( 
-          homebrew \
-          tmux \
-          autosuggestions \
-          directory \
-          fast-syntax-highlighting \
-          grc \
-          history \
-          history-substring-search \
-        )
+  tmux \
+  gnu-utility \
+  grc \
+  history \
+  directory \
+  completions \
+  autosuggestions \
+  fast-syntax-highlighting \
+  history-substring-search \
+)
 
 # load ze plugins
 source "${ZDOTDIR}/modules/init.zsh"

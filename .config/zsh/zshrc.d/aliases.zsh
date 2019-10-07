@@ -104,4 +104,7 @@ if [[ "${OSTYPE}" == "darwin"* ]]; then
   
   # Kitty CLI helper
   alias kitty='/Applications/Kitty.app/Contents/MacOS/kitty'
+
+  # Update all the brews 
+  alias brewup="brew update && { brew upgrade; brew cask upgrade; brew cleanup && brew doctor }"
 fi
