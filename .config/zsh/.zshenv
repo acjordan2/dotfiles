@@ -16,5 +16,5 @@ export LC_ALL="en_US.UTF-8"
 export LANG="en_US"
 
 # neovim as default editor
-export EDITOR="vim"
+export EDITOR="${HOME}/bin/editor"
 export VISUAL="${EDITOR}"

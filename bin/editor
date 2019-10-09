@@ -1,0 +1,15 @@
+#/usr/bin/env bash
+
+declare -a editors
+
+editors=(
+  nvim
+  /usr/local/bin/vim
+  vim
+)
+
+for ed in ${editors[@]}; do
+  hash ${ed} && ${ed} "${@}" && break
+done
+
+unset ed editors

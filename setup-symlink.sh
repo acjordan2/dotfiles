@@ -128,13 +128,18 @@ main() {
         FILES_TO_SYMLINK+=("${file}")
     done
 
+    for file in bin/*; do
+      FILES_TO_SYMLINK+=("${file}")
+    done
+
     create_dirs
 
     for file in "${FILES_TO_SYMLINK[@]}"; do
         # Use relative path for symlinks, sometimes I mount my home dir
         sourceFile=$(echo "$(pwd)/${file}" | sed "s/$(echo "${HOME}" | sed 's/\//\\\//g')\///g")
         targetFile="${HOME}/${file}" 
-        if [[ "${sourceFile}" = *"/.config/"* ]] || [[ "${sourceFile}" = *"/.ssh/"* ]]; then
+        if [[ "${sourceFile}" = *"/.config/"* ]] || [[ "${sourceFile}" = *"/.ssh/"* ]] || 
+          [[ "${sourceFile}" = *"/bin/"* ]] ; then
           sourceFile="../${sourceFile}" 
         fi
 
