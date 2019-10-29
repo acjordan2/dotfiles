@@ -118,9 +118,9 @@ list-colors() {
   done
 }
 
-timezsh() {
+timeshell() {
   shell=${1-$SHELL}
-  for i in $(seq 1 10); do /usr/bin/time ${shell} -i -c exit; done
+  for i in $(seq 1 10); do export TIMESHELL='true'; /usr/bin/time ${shell} -i -c "exit"; done
 }
 
 

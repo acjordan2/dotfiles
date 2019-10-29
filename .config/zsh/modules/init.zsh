@@ -51,3 +51,8 @@ if zstyle -m ':modules:compinit' run true; then
   _update_zcomp "${zcachedir}"
   unfunction _update_zcomp
 fi
+
+
+if zstyle -m ':module:instant-zsh' loaded 'true'; then
+  instant-zsh-post
+fi

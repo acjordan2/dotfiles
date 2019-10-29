@@ -4,6 +4,7 @@ declare -a plugins
 
 # order matters
 plugins=( 
+  instant-zsh \
   tmux \
   gnu-utility \
   grc \
@@ -22,3 +23,4 @@ source "${ZDOTDIR}/modules/init.zsh"
 for file in "${ZDOTDIR}"/zshrc.d/{aliases,functions,exports,extra}.zsh; do
   source "${file}"
 done
+
