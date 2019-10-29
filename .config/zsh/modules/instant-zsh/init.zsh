@@ -34,4 +34,6 @@ if [ -z "${TIMESHELL}" ]; then
   # PROMPT=$'%F{113}%n@%m%f %F{208}$%f %F{6}\n'
   # PROMPT="${PROMPT}%B%F{1}❯%F{3}❯%F{2}❯%f%b "
   instant-zsh-pre "${PROMPT}"
+  instant-zsh-post
 fi
+
