@@ -21,6 +21,6 @@ source "${ZDOTDIR}/modules/init.zsh"
 
 # load extra dotfiles
 for file in "${ZDOTDIR}"/zshrc.d/{aliases,functions,exports,extra}.zsh; do
-  source "${file}"
+  [ -f "${file}" ] && source "${file}"
 done
 
