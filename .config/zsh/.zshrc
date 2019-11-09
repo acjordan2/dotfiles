@@ -4,7 +4,6 @@ declare -a plugins
 
 # order matters
 plugins=( 
-  instant-zsh \
   tmux \
   gnu-utility \
   grc \
