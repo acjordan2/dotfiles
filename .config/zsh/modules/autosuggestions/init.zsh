@@ -1,5 +1,5 @@
 ## ZSH AutoSuggestions
-source "${ZDOTDIR}/modules/autosuggestions/external/zsh-autosuggestions.zsh" || return 1
+source "${ZDOTDIR}/modules/autosuggestions/external/zsh-autosuggestions.zsh" 2>/dev/null || return 1
 
 ZSH_AUTOSUGGEST_USE_ASYNC=1
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=244'
