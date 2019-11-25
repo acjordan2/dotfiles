@@ -13,3 +13,6 @@
 [submodule ".config/zsh/modules/completions/external"]
 	path = .config/zsh/modules/completions/external
 	url = https://github.com/zsh-users/zsh-completions
+[submodule ".config/zsh/modules/zsh-defer/external"]
+	path = .config/zsh/modules/zsh-defer/external
+	url = https://github.com/romkatv/zsh-defer

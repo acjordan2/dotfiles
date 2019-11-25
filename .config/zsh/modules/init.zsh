@@ -1,17 +1,24 @@
 function load_module() {
   if ! zstyle -m ':module:'${1} loaded 'true'; then
+    # pre-compile zshmodules to byte code for faster loading
+    if [[ ! "${ZCACHEDIR}/${1}.zsh.zwc" -nt "${ZDOTDIR}/modules/${1}/init.zsh" ]]; then
+      zcompile "${ZCACHEDIR}/${1}.zsh.zwc" "${ZDOTDIR}/modules/${1}/init.zsh" 
+    fi
     source "${ZDOTDIR}/modules/${1}/init.zsh" && 
        zstyle ':module:'${1} loaded 'true' ||
        echo "error loading '${1}' plugin'" >&2
   fi
 }
 
+# deferred execution for module loading
+load_module zsh-defer
+
 # load line-editor helper that is used by other plugins
 load_module line-editor
 
 # load optional plugins
 for i in ${plugins[@]}; do
-  load_module "${i}"
+  zsh-defer load_module "${i}"
 done
 
 # load prompt
