@@ -16,9 +16,16 @@ load_module zsh-defer
 # load line-editor helper that is used by other plugins
 load_module line-editor
 
+declare -a deferred
+
 # load optional plugins
 for i in ${plugins[@]}; do
-  zsh-defer load_module "${i}"
+  IFS=':' read -r -A array <<< "${i}"
+  if [[ "${array[2]}" == "defer" ]]; then
+    zsh-defer load_module ${array[1]}
+  else
+    load_module "${i}"
+  fi
 done
 
 # load prompt
@@ -55,6 +62,6 @@ if zstyle -m ':modules:compinit' run true; then
           zcompile -M "${zcompf}" &!
       fi
   }
-  _update_zcomp "${zcachedir}"
+  zsh-defer _update_zcomp "${zcachedir}"
   unfunction _update_zcomp
 fi

@@ -4,15 +4,15 @@ declare -a plugins
 
 # order matters
 plugins=( 
-  tmux \
-  gnu-utility \
-  grc \
   history \
   directory \
-  completions \
-  autosuggestions \
-  fast-syntax-highlighting \
-  history-substring-search \
+  gnu-utility \
+  grc \
+  tmux \
+  completions:defer \
+  autosuggestions:defer \
+  fast-syntax-highlighting:defer \
+  history-substring-search:defer \
 )
 
 # load ze plugins
@@ -20,6 +20,7 @@ source "${ZDOTDIR}/modules/init.zsh"
 
 # load extra dotfiles
 for file in "${ZDOTDIR}"/zshrc.d/{aliases,functions,exports,extra}.zsh; do
-  [ -f "${file}" ] && source "${file}"
+  if [ -f "${file}" ]; then 
+    source "${file}"
+  fi
 done
-
