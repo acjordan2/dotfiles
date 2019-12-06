@@ -62,6 +62,6 @@ if zstyle -m ':modules:compinit' run true; then
           zcompile -M "${zcompf}" &!
       fi
   }
-  zsh-defer _update_zcomp "${zcachedir}"
+  _update_zcomp "${zcachedir}"
   unfunction _update_zcomp
 fi
