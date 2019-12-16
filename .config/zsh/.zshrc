@@ -5,11 +5,12 @@ declare -a plugins
 # order matters
 plugins=( 
   history \
+  homebrew \
+  tmux \
   directory \
   gnu-utility \
   grc \
-  tmux \
-  completions:defer \
+  completions \
   autosuggestions:defer \
   fast-syntax-highlighting:defer \
   history-substring-search:defer \
