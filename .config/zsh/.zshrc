@@ -14,6 +14,7 @@ plugins=(
   autosuggestions:defer \
   fast-syntax-highlighting:defer \
   history-substring-search:defer \
+  fzf:defer \
 )
 
 # load ze plugins
