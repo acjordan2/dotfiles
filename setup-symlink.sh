@@ -156,6 +156,9 @@ main() {
         fi
       done
     fi
+    
+    # Auto pull submodules when updating repo
+    git config submodule.recurse true
 }
 
 main
