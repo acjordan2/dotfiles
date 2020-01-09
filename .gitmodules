@@ -16,3 +16,6 @@
 [submodule ".config/zsh/modules/zsh-defer/external"]
 	path = .config/zsh/modules/zsh-defer/external
 	url = https://github.com/romkatv/zsh-defer
+[submodule ".config/zsh/modules/prompt/themes/powerlevel10k/external"]
+	path = .config/zsh/modules/prompt/themes/powerlevel10k/external
+	url = https://github.com/romkatv/powerlevel10k.git
