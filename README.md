@@ -9,6 +9,8 @@ This will pull the following submodules:
 - [ZSH-Completions](https://github.com/zsh-users/zsh-completions)
 - [ZSH-History-Substring Search](https://github.com/zsh-users/zsh-history-substring-search)
 - [ZSH-defer](https://github.com/romkatv/zsh-defer)
+- [Powerlevel10k](https://github.com/romkatv/powerlevel10k)
+- [Kitty-Themes](https://github.com/dexpota/kitty-themes)
 
 Running `./setup-symlink.sh` will create relative symlinks in your home directory for anything relevant. This is safe to run multiple times and will prompt about anything unclear. 
 
