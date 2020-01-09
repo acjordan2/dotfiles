@@ -16,3 +16,6 @@
 [submodule ".config/zsh/modules/prompt/themes/powerlevel10k/external"]
 	path = .config/zsh/modules/prompt/themes/powerlevel10k/external
 	url = https://github.com/romkatv/powerlevel10k.git
+[submodule ".config/kitty/themes"]
+	path = .config/kitty/themes
+	url = https://github.com/dexpota/kitty-themes
