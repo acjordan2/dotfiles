@@ -150,3 +150,80 @@ vless() {
     vim -u $xdg_config_home/vim/vimrc.less "${@}"
   fi
 }
+
+rand() {
+  local charset='[:hex:]'
+  local count
+  local output=""
+  local retval
+  local seperator="-"
+  local words=false
+
+  while getopts "hwc:s:" opt; do
+    case "${opt}" in
+      c)
+        count="${OPTARG}"
+        ;;
+      s)
+        seperator="${OPTARG}"
+        ;;
+      w)
+        words=true
+        ;;
+      h)
+        echo "usage: rand [<options>] [<character set>]"
+        echo ""
+        echo "Generate a random string of words or characters from a given character set (default is '[:hex:]')"
+        echo ""
+        echo "Arguments:"
+        echo "-c          Character/word count."
+        echo "              Default character count: 16"
+        echo "              Default word count: 4"
+        echo "-w          Random words"
+        echo "-s          Word Seperator"
+        echo "              Default: '-'" 
+        return
+        ;;
+      *)
+        return 1
+        ;;
+    esac
+  done
+  shift $((OPTIND -1))
+
+  if [ -z "${count}" ]; then
+    ${words} && count=4 || count=16
+  fi
+  
+  if [ -n "${1}" ]; then
+    charset="${1}"
+  fi
+
+  if ${words}; then
+    while read -r; do 
+      if [ -n "${output}" ]; then
+        output="${output}${seperator}"
+      fi
+
+      # Capitalize first letter
+      if [ -n "$ZSH_VERSION" ]; then
+        output="${output}${(C)REPLY}"
+      elif [ -n "$BASH_VERSION" ]; then
+        output="${output}${REPLY^}"
+      fi
+
+    done< <(shuf /usr/share/dict/words -n "${count}") 
+    echo $output
+  else
+    if [[ "${charset}" == "[:hex:]" ]]; then
+      xxd -p -c "${count}" < /dev/urandom | command head -c "${count}"
+      retval=$?
+    else
+      LC_ALL=C tr -dc "${charset}" < /dev/urandom | command head -c "${count}"
+      retval=$?
+    fi
+  fi
+  echo ""
+
+  return $?
+}
