@@ -154,15 +154,21 @@ vless() {
 rand() {
   local charset='[:hex:]'
   local count
-  local output=""
+  local number_of_results=1
+  local output
   local retval
   local seperator="-"
   local words=false
 
-  while getopts "hwc:s:" opt; do
+  OPTIND=1
+
+  while getopts "hwc:s:n:" opt; do
     case "${opt}" in
       c)
         count="${OPTARG}"
+        ;;
+      n)
+        number_of_results="${OPTARG}"
         ;;
       s)
         seperator="${OPTARG}"
@@ -179,6 +185,7 @@ rand() {
         echo "-c          Character/word count."
         echo "              Default character count: 16"
         echo "              Default word count: 4"
+        echo "-n          Number of strings to generate"
         echo "-w          Random words"
         echo "-s          Word Seperator"
         echo "              Default: '-'" 
@@ -194,36 +201,38 @@ rand() {
   if [ -z "${count}" ]; then
     ${words} && count=4 || count=16
   fi
-  
-  if [ -n "${1}" ]; then
-    charset="${1}"
-  fi
 
-  if ${words}; then
-    while read -r; do 
-      if [ -n "${output}" ]; then
-        output="${output}${seperator}"
-      fi
+  for ((i=1;i<=number_of_results;i++)); do
+    if ${words}; then
+        output=""
+        while read -r; do 
+          if [ -n "${output}" ]; then
+            output="${output}${seperator}"
+          fi
 
-      # Capitalize first letter
-      if [ -n "$ZSH_VERSION" ]; then
-        output="${output}${(C)REPLY}"
-      elif [ -n "$BASH_VERSION" ]; then
-        output="${output}${REPLY^}"
-      fi
+          # Capitalize first letter
+          if [ -n "$ZSH_VERSION" ]; then
+            output="${output}${(C)REPLY}"
+          elif [ -n "$BASH_VERSION" ]; then
+            output="${output}${REPLY^}"
+          fi
 
-    done< <(shuf /usr/share/dict/words -n "${count}") 
-    echo $output
-  else
-    if [[ "${charset}" == "[:hex:]" ]]; then
-      xxd -p -c "${count}" < /dev/urandom | command head -c "${count}"
-      retval=$?
+        done< <(shuf --random-source=/dev/urandom /usr/share/dict/words -n "${count}") 
+        echo $output
     else
-      LC_ALL=C tr -dc "${charset}" < /dev/urandom | command head -c "${count}"
-      retval=$?
+      if [ -n "${1}" ]; then
+        charset="${1}"
+      fi
+      if [[ "${charset}" == "[:hex:]" ]]; then
+        xxd -p -c "${count}" < /dev/urandom | command head -c "${count}"
+        retval=$?
+      else
+        LC_ALL=C tr -dc "${charset}" < /dev/urandom | command head -c "${count}"
+        retval=$?
+      fi
+      echo ""
     fi
-  fi
-  echo ""
+  done
 
-  return $?
+  return $retval
 }
