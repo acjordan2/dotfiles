@@ -165,22 +165,49 @@ rand() {
   local const=('b' 'c' 'd' 'f' 'g' 'h' 'j' 'k' 'l' 'm' 'n' 'p' 'r' 's' 't' 'v' 'w' 'x' 'y' 'z')
   local vowels=('a' 'e' 'i' 'o' 'u')
 
+  local DEFAULT_CHAR_COUNT=32
+  local DEFAULT_WORD_COUNT=4
+  local DEFAULT_PRONOUNCE_COUNT=8
 
   OPTIND=1
+  optspec=":-:hpPwc:C:s:n:"
 
-  while getopts "hpPwc:s:n:" opt; do
+  while getopts "${optspec}" opt; do
     case "${opt}" in
+      -)
+        case "${OPTARG}" in
+          charset)
+            # Indirect expansion that works with ZSH and Bash
+            eval "charset=\"\${$OPTIND}\""
+            OPTIND=$(( $OPTIND + 1 ))
+            ;;
+          *)
+            echo "rand: unrecognized option '--${OPTARG}'" >&2
+            return 1
+            ;;
+          esac
+        ;;
       c)
-        count="${OPTARG}"
+        if [[ "${OPTARG}" =~ ^[0-9]+$ ]]; then
+          count="${OPTARG}"
+        else 
+          printf "rand: argument '%s' expects an integer but recieved '%s'\n" "${opt}" "${OPTARG}"
+          return 1
+        fi
         ;;
       n)
-        number_of_results="${OPTARG}"
+        if [[ "${OPTARG}" =~ ^[0-9]+$ ]]; then
+          number_of_results="${OPTARG}"
+        else 
+          printf "rand: argument '%s' expects an integer but recieved '%s'\n" "${opt}" "${OPTARG}"
+          return 1
+        fi
         ;;
       p)
         charset='[:graph:]'
         ;;
       P)
-        pronoucneable=true
+        pronounceable=true
         ;;
       s)
         seperator="${OPTARG}"
@@ -189,23 +216,30 @@ rand() {
         words=true
         ;;
       h)
-        echo "usage: rand [<options>] [<character set>]"
+        echo "usage: rand [-cnpPsw] [--charset <character set>]"
         echo ""
         echo "Generate a secure random string of words or characters from a given character set (default is '[:hex:]')"
         echo ""
         echo "Arguments:"
         echo "-c          Character/word count."
-        echo "              Default character count: 16"
-        echo "              Default word count: 4"
+        echo "              Default character count: ${DEFAULT_CHAR_COUNT}"
+        echo "              Default word count: ${DEFAULT_WORD_COUNT}"
+        echo "              Default pronounceable count: ${DEFAULT_PRONOUNCE_COUNT}"
+        echo "--charset   Character set to use"
         echo "-n          Number of strings to generate"
-        echo "-p          Generate a password (shorthand for rand -c16 '[:graph:]')"
+        echo "-p          Generate a password (shorthand for rand '[:graph:]')"
         echo "-P          Generate a pronounceable word"
         echo "-w          Random words"
         echo "-s          Word Seperator"
         echo "              Default: '-'" 
         return
         ;;
-      *)
+      :)
+        printf "rand: option requires and argument -- %s\n" "${OPTARG}"
+        return 2
+        ;;
+      ?)
+        printf "rand: unrecognized option '%s'\n" "${OPTARG}"
         return 1
         ;;
     esac
@@ -213,7 +247,13 @@ rand() {
   shift $((OPTIND -1))
 
   if [ -z "${count}" ]; then
-    ${words} && count=4 || count=16
+    if ${words}; then
+      count="${DEFAULT_WORD_COUNT}"
+    elif ${pronounceable}; then
+      count="${DEFAULT_PRONOUNCE_COUNT}" 
+    else
+      count="${DEFAULT_CHAR_COUNT}"
+    fi
   fi
 
   for ((i=1;i<=number_of_results;i++)); do
@@ -245,9 +285,9 @@ rand() {
       done
       echo ""
     else
-      if [ -n "${1}" ]; then
-        charset="${1}"
-      fi
+      # if [ -n "${1}" ]; then
+        # charset="${1}"
+      # fi
       if [[ "${charset}" == "[:hex:]" ]]; then
         xxd -p -c "${count}" < /dev/urandom | command head -c "${count}"
         retval=$?
