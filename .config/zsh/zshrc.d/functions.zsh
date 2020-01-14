@@ -290,10 +290,14 @@ rand() {
     elif ${pronounceable}; then
       for ((j=1;j<=count;j++)); do
         if [ $((j % 2)) -eq 0 ]; then
-          r=$(shuf -i1-5 -n1 --random-source=/dev/urandom)
+          r=$(shuf -i1-${#vowels[@]} -n1 --random-source=/dev/urandom)
+          # Bash arrays start at 0
+          [ -n "${BASH_VERSION}" ] && r=$((r-1))
           printf '%s' "${vowels[$r]}"
         else
-          r=$(shuf -i1-21 -n1 --random-source=/dev/urandom)
+          r=$(shuf -i1-${#const[@]} -n1 --random-source=/dev/urandom)
+          # Bash arrays start at 0
+          [ -n "${BASH_VERSION}" ] && r=$((r-1))
           printf '%s' "${const[$r]}"
         fi
       done
