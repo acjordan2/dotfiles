@@ -131,8 +131,22 @@ reload(){
     rm -rf ${XDG_CACHE_HOME}/zsh/*.zwc >/dev/null
   fi
 
+  # Get the path of the current shell's PID
+  # to ensure we are reloading the correct
+  # shell 
+  #
+  # @todo replace with proper login shell detection
+  # if needed
+  if [[ "${OSTYPE}" == "darwin"* ]]; then
+    r_shell=$(ps -o comm= -p $$)
+  else 
+    r_shell=$(readlink /proc/$$/exe)
+  fi
+
   # Reload the shell (i.e. invoke as a login shell)
-  exec ${SHELL} -l
+  if [[ "${SHELL}" == "${r_shell}" ]]; then
+    exec "${r_shell}" -l
+  fi
 }
 
 # quick look on macOS
@@ -145,9 +159,9 @@ ql() {
 # vim as pager
 vless() {
   if [ -z "${1}" ] || [ "${1}" = "-" ]; then
-    vim -u $xdg_config_home/vim/vimrc.less -
+    vim -u ${XDG_CONFIG_HOME}/vim/vimrc.less -
   else
-    vim -u $xdg_config_home/vim/vimrc.less "${@}"
+    vim -u ${XDG_CONFIG_HOME}/vim/vimrc.less "${@}"
   fi
 }
 
