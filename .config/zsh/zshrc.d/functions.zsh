@@ -159,16 +159,28 @@ rand() {
   local retval
   local seperator="-"
   local words=false
+  local pronounceable=false
+
+  declare -a const vowels 
+  local const=('b' 'c' 'd' 'f' 'g' 'h' 'j' 'k' 'l' 'm' 'n' 'p' 'r' 's' 't' 'v' 'w' 'x' 'y' 'z')
+  local vowels=('a' 'e' 'i' 'o' 'u')
+
 
   OPTIND=1
 
-  while getopts "hwc:s:n:" opt; do
+  while getopts "hpPwc:s:n:" opt; do
     case "${opt}" in
       c)
         count="${OPTARG}"
         ;;
       n)
         number_of_results="${OPTARG}"
+        ;;
+      p)
+        charset='[:graph:]'
+        ;;
+      P)
+        pronoucneable=true
         ;;
       s)
         seperator="${OPTARG}"
@@ -179,13 +191,15 @@ rand() {
       h)
         echo "usage: rand [<options>] [<character set>]"
         echo ""
-        echo "Generate a random string of words or characters from a given character set (default is '[:hex:]')"
+        echo "Generate a secure random string of words or characters from a given character set (default is '[:hex:]')"
         echo ""
         echo "Arguments:"
         echo "-c          Character/word count."
         echo "              Default character count: 16"
         echo "              Default word count: 4"
         echo "-n          Number of strings to generate"
+        echo "-p          Generate a password (shorthand for rand -c16 '[:graph:]')"
+        echo "-P          Generate a pronounceable word"
         echo "-w          Random words"
         echo "-s          Word Seperator"
         echo "              Default: '-'" 
@@ -219,6 +233,17 @@ rand() {
 
         done< <(shuf --random-source=/dev/urandom /usr/share/dict/words -n "${count}") 
         echo $output
+    elif ${pronounceable}; then
+      for ((j=1;j<=count;j++)); do
+        if [ $((j % 2)) -eq 0 ]; then
+          r=$(shuf -i1-5 -n1 --random-source=/dev/urandom)
+          printf '%s' "${vowels[$r]}"
+        else
+          r=$(shuf -i1-21 -n1 --random-source=/dev/urandom)
+          printf '%s' "${const[$r]}"
+        fi
+      done
+      echo ""
     else
       if [ -n "${1}" ]; then
         charset="${1}"
