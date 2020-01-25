@@ -174,8 +174,9 @@ rand() {
   local seperator="-"
   local words=false
   local pronounceable=false
+  local range
 
-  declare -a const vowels 
+  declare -a const vowels range
   local const=('b' 'c' 'd' 'f' 'g' 'h' 'j' 'k' 'l' 'm' 'n' 'p' 'r' 's' 't' 'v' 'w' 'x' 'y' 'z')
   local vowels=('a' 'e' 'i' 'o' 'u')
 
@@ -184,7 +185,7 @@ rand() {
   local DEFAULT_PRONOUNCE_COUNT=8
 
   OPTIND=1
-  optspec=":-:hpPwc:C:s:n:"
+  optspec=":-:hpPwc:C:s:n:d:"
 
   while getopts "${optspec}" opt; do
     case "${opt}" in
@@ -205,7 +206,21 @@ rand() {
         if [[ "${OPTARG}" =~ ^[0-9]+$ ]]; then
           count="${OPTARG}"
         else 
-          printf "rand: argument '%s' expects an integer but recieved '%s'\n" "${opt}" "${OPTARG}"
+          printf "${0}: argument '%s' expects an integer but recieved '%s'\n" "${opt}" "${OPTARG}" 1>&2
+          return 1
+        fi
+        ;;
+      d)
+        if [ -z "$BASH_VERSION" ]; then
+          IFS='-,' read -r -A range <<< "${OPTARG}" 
+        else
+          IFS='-,' read -r -a range <<< "${OPTARG}" 
+        fi
+        
+        if [ "${#range[@]}" -eq 1 ]; then
+          range=( 1 ${range[@]} )
+        elif [ "${#range[@]}" -ne 2 ]; then
+          printf "${0}: Invalid format, expected range: %s\n" "${OPTARG}" 1>&2 
           return 1
         fi
         ;;
@@ -213,7 +228,7 @@ rand() {
         if [[ "${OPTARG}" =~ ^[0-9]+$ ]]; then
           number_of_results="${OPTARG}"
         else 
-          printf "rand: argument '%s' expects an integer but recieved '%s'\n" "${opt}" "${OPTARG}"
+          printf "${0}: argument '%s' expects an integer but recieved '%s'\n" "${opt}" "${OPTARG}" 1>&2
           return 1
         fi
         ;;
@@ -230,7 +245,7 @@ rand() {
         words=true
         ;;
       h)
-        echo "usage: rand [-cnpPsw] [--charset <character set>]"
+        echo "usage: ${0} [-cdnpPsw] [--charset <character set>]"
         echo ""
         echo "Generate a secure random string of words or characters from a given character set (default is '[:hex:]')"
         echo ""
@@ -239,6 +254,8 @@ rand() {
         echo "              Default character count: ${DEFAULT_CHAR_COUNT}"
         echo "              Default word count: ${DEFAULT_WORD_COUNT}"
         echo "              Default pronounceable count: ${DEFAULT_PRONOUNCE_COUNT}"
+        echo "-d          Generate a random number from a given range (e.g x-y), if only 1"
+        echo "            one number is provided, x defaults to 1"
         echo "--charset   Character set to use"
         echo "-n          Number of strings to generate"
         echo "-p          Generate a password (shorthand for rand '[:graph:]')"
@@ -249,11 +266,11 @@ rand() {
         return
         ;;
       :)
-        printf "rand: option requires and argument -- %s\n" "${OPTARG}"
+        printf "${0}: option requires and argument -- %s\n" "${OPTARG}" 1>&2
         return 2
         ;;
       ?)
-        printf "rand: unrecognized option '%s'\n" "${OPTARG}"
+        printf "${0}: unrecognized option '%s'\n" "${OPTARG}" 1>&2
         return 1
         ;;
     esac
@@ -290,22 +307,17 @@ rand() {
     elif ${pronounceable}; then
       for ((j=1;j<=count;j++)); do
         if [ $((j % 2)) -eq 0 ]; then
-          r=$(shuf -i1-${#vowels[@]} -n1 --random-source=/dev/urandom)
-          # Bash arrays start at 0
-          [ -n "${BASH_VERSION}" ] && r=$((r-1))
-          printf '%s' "${vowels[$r]}"
+          r=$(shuf -i0-$((${#vowels[@]}-1)) -n1 --random-source=/dev/urandom)
+          printf '%s' "${vowels[@]:${r}:1}"
         else
-          r=$(shuf -i1-${#const[@]} -n1 --random-source=/dev/urandom)
-          # Bash arrays start at 0
-          [ -n "${BASH_VERSION}" ] && r=$((r-1))
-          printf '%s' "${const[$r]}"
+          r=$(shuf -i0-$((${#const[@]}-1)) -n1 --random-source=/dev/urandom)
+          printf '%s' "${const[@]:${r}:1}"
         fi
       done
       echo ""
+    elif [ -n "${range}" ]; then
+      shuf -i${range[@]:0:1}-${range[@]:1:1} -n1 --random-source=/dev/urandom
     else
-      # if [ -n "${1}" ]; then
-        # charset="${1}"
-      # fi
       if [[ "${charset}" == "[:hex:]" ]]; then
         xxd -p -c "${count}" < /dev/urandom | command head -c "${count}"
         retval=$?
