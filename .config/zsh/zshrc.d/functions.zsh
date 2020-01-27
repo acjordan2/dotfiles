@@ -174,6 +174,7 @@ rand() {
   local seperator="-"
   local words=false
   local pronounceable=false
+  local raw=false
   local range
 
   declare -a const vowels range
@@ -185,7 +186,7 @@ rand() {
   local DEFAULT_PRONOUNCE_COUNT=8
 
   OPTIND=1
-  optspec=":-:hpPwc:C:s:n:d:"
+  optspec=":-:hpPRwc:C:s:n:d:"
 
   while getopts "${optspec}" opt; do
     case "${opt}" in
@@ -241,6 +242,9 @@ rand() {
       s)
         seperator="${OPTARG}"
         ;;
+      R)
+        raw=true
+        ;;
       w)
         words=true
         ;;
@@ -260,6 +264,7 @@ rand() {
         echo "-n          Number of strings to generate"
         echo "-p          Generate a password (shorthand for rand '[:graph:]')"
         echo "-P          Generate a pronounceable word"
+        echo "-R          Raw random data"
         echo "-w          Random words"
         echo "-s          Word Seperator"
         echo "              Default: '-'" 
@@ -317,6 +322,9 @@ rand() {
       echo ""
     elif [ -n "${range}" ]; then
       shuf -i${range[@]:0:1}-${range[@]:1:1} -n1 --random-source=/dev/urandom
+    elif ${raw}; then
+      command head -c "${count}" < /dev/urandom 
+      retval=$?
     else
       if [[ "${charset}" == "[:hex:]" ]]; then
         xxd -p -c "${count}" < /dev/urandom | command head -c "${count}"
