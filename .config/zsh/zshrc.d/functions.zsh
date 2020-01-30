@@ -249,17 +249,18 @@ rand() {
         words=true
         ;;
       h)
-        echo "usage: ${0} [-cdnpPsw] [--charset <character set>]"
+        echo "usage: ${0} [-cdnpPRsw] [--charset <character set>]"
         echo ""
-        echo "Generate a secure random string of words or characters from a given character set (default is '[:hex:]')"
+        echo "Generate a secure random dataset within a given range" 
+        echo "or character set (default is '[:hex:]')"
         echo ""
         echo "Arguments:"
         echo "-c          Character/word count."
         echo "              Default character count: ${DEFAULT_CHAR_COUNT}"
         echo "              Default word count: ${DEFAULT_WORD_COUNT}"
         echo "              Default pronounceable count: ${DEFAULT_PRONOUNCE_COUNT}"
-        echo "-d          Generate a random number from a given range (e.g x-y), if only 1"
-        echo "            one number is provided, x defaults to 1"
+        echo "-d          Generate a random number from a given range (e.g x-y)"
+        echo "              if only one number is provided, x defaults to 1"
         echo "--charset   Character set to use"
         echo "-n          Number of strings to generate"
         echo "-p          Generate a password (shorthand for rand '[:graph:]')"
