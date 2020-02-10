@@ -176,6 +176,10 @@ rand() {
   local pronounceable=false
   local raw=false
   local range
+  local min
+  local max
+  local num
+  local shuf_arg
 
   declare -a const vowels range
   local const=('b' 'c' 'd' 'f' 'g' 'h' 'j' 'k' 'l' 'm' 'n' 'p' 'r' 's' 't' 'v' 'w' 'x' 'y' 'z')
@@ -195,6 +199,14 @@ rand() {
           charset)
             # Indirect expansion that works with ZSH and Bash
             eval "charset=\"\${$OPTIND}\""
+            OPTIND=$(( $OPTIND + 1 ))
+            ;;
+          max)
+            eval "max=\"\${$OPTIND}\""
+            OPTIND=$(( $OPTIND + 1 ))
+            ;;
+          min)
+            eval "min=\"\${$OPTIND}\""
             OPTIND=$(( $OPTIND + 1 ))
             ;;
           *)
@@ -267,6 +279,8 @@ rand() {
         echo "-P          Generate a pronounceable word"
         echo "-R          Raw random data"
         echo "-w          Random words"
+        echo "--max       Maximum word size"
+        echo "--min       Minimum word size"
         echo "-s          Word Seperator"
         echo "              Default: '-'" 
         return
@@ -293,23 +307,36 @@ rand() {
     fi
   fi
 
+  if [ -z "${max}" ] && [ -z "${min}" ]; then
+    shuf_arg="-n ${count}"
+  fi
+
   for ((i=1;i<=number_of_results;i++)); do
     if ${words}; then
         output=""
+        num=1
         while read -r; do 
-          if [ -n "${output}" ]; then
-            output="${output}${seperator}"
+          if ( [[ "${#REPLY}" -le "${max}" ]] || [[ -z "${max}" ]] ) &&
+            ( [[ "${#REPLY}" -ge "${min}" ]] || [[ -z "${min}" ]] ); then
+            if [ -n "${output}" ]; then
+              output="${output}${seperator}"
+            fi
+
+            # Capitalize first letter
+            if [ -n "$ZSH_VERSION" ]; then
+              output="${output}${(C)REPLY}"
+            elif [ -n "$BASH_VERSION" ]; then
+              output="${output}${REPLY^}"
+            fi
+
+            if [[ "${num}" -ge "${count}" ]]; then
+              break
+            fi
+            ((num++))
           fi
 
-          # Capitalize first letter
-          if [ -n "$ZSH_VERSION" ]; then
-            output="${output}${(C)REPLY}"
-          elif [ -n "$BASH_VERSION" ]; then
-            output="${output}${REPLY^}"
-          fi
-
-        done< <(shuf --random-source=/dev/urandom /usr/share/dict/words -n "${count}") 
-        echo $output
+        done< <(shuf --random-source=/dev/urandom /usr/share/dict/words ${shuf_arg})
+        echo "${output}"
     elif ${pronounceable}; then
       for ((j=1;j<=count;j++)); do
         if [ $((j % 2)) -eq 0 ]; then
