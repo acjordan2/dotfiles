@@ -204,13 +204,21 @@ rand() {
           max)
             eval "max=\"\${$OPTIND}\""
             OPTIND=$(( $OPTIND + 1 ))
+            if [[ ! "${max}" =~ ^[0-9]+$ ]]; then
+              printf "${0}: argument '%s' expects an integer but recieved '%s'\n" "${OPTARG}" "${max}" 1>&2
+              return 1
+            fi
             ;;
           min)
             eval "min=\"\${$OPTIND}\""
             OPTIND=$(( $OPTIND + 1 ))
+            if [[ ! "${min}" =~ ^[0-9]+$ ]]; then
+              printf "${0}: argument '%s' expects an integer but recieved '%s'\n" "${OPTARG}" "${min}" 1>&2
+              return 1
+            fi
             ;;
           *)
-            echo "rand: unrecognized option '--${OPTARG}'" >&2
+            echo "${0}: unrecognized option '--${OPTARG}'" >&2
             return 1
             ;;
           esac
@@ -297,6 +305,12 @@ rand() {
   done
   shift $((OPTIND -1))
 
+  if [ -n "${max}" ] && [ "${min}" -gt "${max}" ]; then
+    echo $min - $max
+    printf "rand: min value cannot be greater than max\n" 1>&2
+    return 2
+  fi
+
   if [ -z "${count}" ]; then
     if ${words}; then
       count="${DEFAULT_WORD_COUNT}"
@@ -338,6 +352,23 @@ rand() {
         done< <(shuf --random-source=/dev/urandom /usr/share/dict/words ${shuf_arg})
         echo "${output}"
     elif ${pronounceable}; then
+      tmp_count="${count}"
+
+      if [ -z "${max}" ] && [ -n "${min}" ]; then
+        max="${count}"
+      elif [ -z "${min}" ] && [ -n "${max}" ]; then
+        min=2
+      elif [ -z "${min}" ] && [ -z "${max}" ]; then
+        max="${count}"
+        min="${count}"
+      fi
+      
+      if [ "${min}" -eq "${max}" ]; then
+        count="${max}"
+      else 
+        count=$(shuf -i"${min}-${max}" -n1 --random-source=/dev/urandom)
+      fi
+
       for ((j=1;j<=count;j++)); do
         if [ $((j % 2)) -eq 0 ]; then
           r=$(shuf -i0-$((${#vowels[@]}-1)) -n1 --random-source=/dev/urandom)
@@ -348,6 +379,7 @@ rand() {
         fi
       done
       echo ""
+      count="${tmp_count}"
     elif [ -n "${range}" ]; then
       shuf -i${range[@]:0:1}-${range[@]:1:1} -n1 --random-source=/dev/urandom
     elif ${raw}; then
