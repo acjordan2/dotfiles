@@ -10,6 +10,11 @@ zstyle -s ':module:gnu-utility' prefix '_gnu_utility_p' || _gnu_utility_p='g'
 # man pages for gnutls
 MANPATH="/usr/local/opt/coreutils/libexec/gnuman:${MANPATH}"
 
+# Not needed on GNU Linux
+if [[ "${OSTYPE}" == "linux-gnu" ]]; then
+  return 
+fi
+
 # Return if requirements are not found.
 if (( ! ${+commands[${_gnu_utility_p}whoami]} )); then
   return 1
