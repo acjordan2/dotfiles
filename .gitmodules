@@ -8,7 +8,7 @@
 	path = .config/zsh/modules/fast-syntax-highlighting/external
 	url = https://github.com/zdharma/fast-syntax-highlighting
 [submodule ".config/zsh/modules/autosuggestions/external"]
-	path = .config/zsh/modules/autosuggestions/external
+	path = .config/zsh/modules/autosuggestions/external.fix
 	url = https://github.com/zsh-users/zsh-autosuggestions
 [submodule ".config/zsh/modules/zsh-defer/external"]
 	path = .config/zsh/modules/zsh-defer/external
