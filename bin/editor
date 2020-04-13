@@ -6,6 +6,7 @@ editors=(
   nvim
   /usr/local/bin/vim
   vim
+  vi
 )
 
 for ed in ${editors[@]}; do
