@@ -96,6 +96,7 @@ create_dirs() {
   done
 
   execute "mkdir -p $HOME/.local/share/vim/{undo,swaps,backups}" "mkdir '$HOME/.local/share/vim/{undo,swaps,backups}'"
+  execute "mkdir -p $HOME/bin" "mkdir $HOME/bin"
 }
 
 main() {
