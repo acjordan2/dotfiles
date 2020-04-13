@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 # Path Stuff
-export PATH="${PATH}:${HOME}/bin"
+export PATH="${HOME}/.cargo/bin:${PATH}:${HOME}/bin"
 
 # Prefer US English and use UTF-8
 export LC_ALL="en_US.UTF-8"
