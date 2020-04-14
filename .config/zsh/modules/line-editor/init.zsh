@@ -11,6 +11,15 @@ zle -N edit-command-line
 bindkey '^xe' edit-command-line
 bindkey '^x^e' edit-command-line
 
+# Alt-. to copy final arg of previous command
+# Alt-, to copy final arg of current command
+autoload copy-earlier-word
+zle -N copy-earlier-word
+bindkey '^[,' copy-earlier-word
+
+bindkey '^[f' forward-word
+bindkey '^[b' backward-word
+
 # Use human-friendly identifiers.
 zmodload zsh/terminfo
 typeset -gA key_info
