@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
 _rand() {
+  cmd=${0##*/}
+
   local charset='[:hex:]'
   local count
   local number_of_results=1
@@ -12,9 +14,8 @@ _rand() {
   local max
   local mode
   local num
-  local shuf_arg
 
-  declare -a const vowels range
+  declare -a const vowels range shuf_arg
   local const=('b' 'c' 'd' 'f' 'g' 'h' 'j' 'k' 'l' 'm' 'n' 'p' 'r' 's' 't' 'v' 'w' 'x' 'y' 'z')
   local vowels=('a' 'e' 'i' 'o' 'u')
 
@@ -23,7 +24,7 @@ _rand() {
   local DEFAULT_PRONOUNCE_COUNT=8
 
   OPTIND=1
-  optspec=":-:hpPRwc:C:s:n:d:"
+  optspec=":-:hpPRwc:s:n:d:"
 
   while getopts "${optspec}" opt; do
     case "${opt}" in
@@ -32,26 +33,26 @@ _rand() {
           charset)
             # Indirect expansion that works with ZSH and Bash
             eval "charset=\"\${$OPTIND}\""
-            OPTIND=$(( $OPTIND + 1 ))
+            OPTIND=$(( OPTIND + 1 ))
             ;;
           max)
             eval "max=\"\${$OPTIND}\""
-            OPTIND=$(( $OPTIND + 1 ))
+            OPTIND=$(( OPTIND + 1 ))
             if [[ ! "${max}" =~ ^[0-9]+$ ]]; then
-              printf "${0}: argument '%s' expects an integer but recieved '%s'\n" "${OPTARG}" "${max}" 1>&2
+              printf "${cmd}: argument '%s' expects an integer but recieved '%s'\n" "${OPTARG}" "${max}" 1>&2
               return 1
             fi
             ;;
           min)
             eval "min=\"\${$OPTIND}\""
-            OPTIND=$(( $OPTIND + 1 ))
+            OPTIND=$(( OPTIND + 1 ))
             if [[ ! "${min}" =~ ^[0-9]+$ ]]; then
-              printf "${0}: argument '%s' expects an integer but recieved '%s'\n" "${OPTARG}" "${min}" 1>&2
+              printf "${cmd}: argument '%s' expects an integer but recieved '%s'\n" "${OPTARG}" "${min}" 1>&2
               return 1
             fi
             ;;
           *)
-            echo "${0}: unrecognized option '--${OPTARG}'" >&2
+            echo "${cmd}: unrecognized option '--${OPTARG}'" 1>&2
             return 1
             ;;
           esac
@@ -60,7 +61,7 @@ _rand() {
         if [[ "${OPTARG}" =~ ^[0-9]+$ ]]; then
           count="${OPTARG}"
         else 
-          printf "${0}: argument '%s' expects an integer but recieved '%s'\n" "${opt}" "${OPTARG}" 1>&2
+          printf "${cmd}: argument '%s' expects an integer but recieved '%s'\n" "${opt}" "${OPTARG}" 1>&2
           return 1
         fi
         ;;
@@ -73,9 +74,9 @@ _rand() {
         fi
         
         if [ "${#range[@]}" -eq 1 ]; then
-          range=( 1 ${range[@]} )
+          range=( 1 "${range[*]}" )
         elif [ "${#range[@]}" -ne 2 ]; then
-          printf "${0}: Invalid format, expected range: %s\n" "${OPTARG}" 1>&2 
+          printf "${cmd}: Invalid format, expected range: %s\n" "${OPTARG}" 1>&2 
           return 1
         fi
         ;;
@@ -83,7 +84,7 @@ _rand() {
         if [[ "${OPTARG}" =~ ^[0-9]+$ ]]; then
           number_of_results="${OPTARG}"
         else 
-          printf "${0}: argument '%s' expects an integer but recieved '%s'\n" "${opt}" "${OPTARG}" 1>&2
+          printf "${cmd}: argument '%s' expects an integer but recieved '%s'\n" "${opt}" "${OPTARG}" 1>&2
           return 1
         fi
         ;;
@@ -103,7 +104,7 @@ _rand() {
         mode="words"
         ;;
       h)
-        echo "usage: ${0} [-cdnpPRsw] [--charset <character set>]"
+        echo "usage: ${cmd} [-cdnpPRsw] [--charset <character set>]"
         echo ""
         echo "Generate a secure random dataset within a given range" 
         echo "or character set (default is '[:hex:]')"
@@ -128,11 +129,11 @@ _rand() {
         return
         ;;
       :)
-        printf "${0}: option requires and argument -- %s\n" "${OPTARG}" 1>&2
+        printf "${cmd}: option requires an argument -- %s\n" "${OPTARG}" 1>&2
         return 2
         ;;
       ?)
-        printf "${0}: unrecognized option '%s'\n" "${OPTARG}" 1>&2
+        printf "${cmd}: unrecognized option '%s'\n" "${OPTARG}" 1>&2
         return 1
         ;;
     esac
@@ -140,7 +141,6 @@ _rand() {
   shift $((OPTIND -1))
 
   if [ -n "${max}" ] && [ "${min}" -gt "${max}" ]; then
-    echo $min - $max
     printf "rand: min value cannot be greater than max\n" 1>&2
     return 2
   fi
@@ -156,7 +156,7 @@ _rand() {
   fi
 
   if [ -z "${max}" ] && [ -z "${min}" ]; then
-    shuf_arg="-n ${count}"
+    local shuf_arg=(-n "${count}")
   fi
 
   for ((i=1;i<=number_of_results;i++)); do
@@ -165,8 +165,8 @@ _rand() {
         output=""
         num=1
         while read -r; do 
-          if ( [[ "${#REPLY}" -le "${max}" ]] || [[ -z "${max}" ]] ) &&
-            ( [[ "${#REPLY}" -ge "${min}" ]] || [[ -z "${min}" ]] ); then
+          if [[ "${#REPLY}" -le "${max}" || -z "${max}" ]] &&
+            [[ "${#REPLY}" -ge "${min}" || -z "${min}" ]]; then
             if [ -n "${output}" ]; then
               output="${output}${seperator}"
             fi
@@ -184,7 +184,7 @@ _rand() {
             ((num++))
           fi
 
-        done< <(shuf --random-source=/dev/urandom /usr/share/dict/words ${shuf_arg})
+        done< <(shuf --random-source=/dev/urandom /usr/share/dict/words "${shuf_arg[@]}")
         echo "${output}"
       ;;
     "pronounceable")
@@ -218,7 +218,7 @@ _rand() {
       count="${tmp_count}"
     ;;
   "range")
-      shuf -i${range[@]:0:1}-${range[@]:1:1} -n1 --random-source=/dev/urandom
+      shuf -i "${range[*]:0:1}-${range[*]:1:1}" -n1 --random-source=/dev/urandom
     ;;
   "raw")
       command head -c "${count}" < /dev/urandom 
@@ -240,4 +240,4 @@ _rand() {
   return $retval
 }
 
-_rand ${@}
+_rand "${@}"
