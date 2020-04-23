@@ -77,6 +77,8 @@ for index in {1..9}; do alias "$index"="cd +${index}"; done; unset index
 # allow aliases to be sudoed
 alias sudo='sudo '
 
+alias fnmap='sudo nmap -sS --open --min-rate=5000 --max-retries=2 '
+
 # macOS aliases
 if [[ "${OSTYPE}" == "darwin"* ]]; then
   # Recursively delete `.DS_Store` files
