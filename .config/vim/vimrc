@@ -109,6 +109,7 @@ set wildmode=list:longest " Complete only until point of ambiguity
 set winminheight=0 " Allow splits to be reduced to a single line
 set wrapscan " Searches wrap around end of file
 
+
 " }}}
 
 " }}}
@@ -505,6 +506,12 @@ augroup tagbar_config
 augroup END
 " }}}
 
+" Gutentags.vim {{{
+augroup gutentags_config
+  let g:gutentags_ctags_exclude = ["*.min.js", "*.min.css", "build", "vendor", ".git", "*vim/plugged/*"]
+augroup END
+" }}}
+
 " FZF.vim {{{
 augroup fzf_config
   autocmd!
@@ -621,8 +628,7 @@ Plug 'ervandew/supertab'
 Plug 'fatih/vim-go'
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/goyo.vim'
-" Latest version seems to be broken 
-" Plug 'ludovicchabant/vim-gutentags'
+Plug 'ludovicchabant/vim-gutentags'
 Plug 'majutsushi/tagbar'
 Plug 'scrooloose/nerdcommenter'
 Plug 'vim-airline/vim-airline'
