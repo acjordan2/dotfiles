@@ -119,7 +119,17 @@ list-colors() {
 }
 
 timeshell() {
-  shell=${1-$SHELL}
+  if [[ "${OSTYPE}" == "darwin"* ]]; then
+    r_shell=$(ps -o comm= -p $$)
+    if [[ "${r_shell}" == "-zsh" ]]; then
+      r_shell="zsh"
+    fi
+  else 
+    r_shell=$(readlink /proc/$$/exe)
+  fi
+
+  shell=${1-$r_shell}
+
   for i in $(seq 1 10); do export TIMESHELL='true'; /usr/bin/time ${shell} -i -c "exit"; done
 }
 
@@ -139,6 +149,9 @@ reload(){
   # if needed
   if [[ "${OSTYPE}" == "darwin"* ]]; then
     r_shell=$(ps -o comm= -p $$)
+    if [[ "${r_shell}" == "-zsh" ]]; then
+      r_shell="zsh"
+    fi
   else 
     r_shell=$(readlink /proc/$$/exe)
   fi

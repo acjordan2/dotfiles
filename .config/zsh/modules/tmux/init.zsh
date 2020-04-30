@@ -4,7 +4,7 @@ SECONDS=0
 
 # start in tmux session unless already in tmux or connected via SSH
 if [ -z "${TMUX}" ] && [ -z "${SSH_CLIENT}" ] && [ -z "${SSH_TTY}" ]; then 
-  if command tmux -V >/dev/null 2>&1 && ; then
+  if command tmux -V >/dev/null 2>&1; then
     TMUX_LOG_DIR="${XDG_DATA_HOME}/tmux/log"
     TERM_ID="${TERM_SESSION_ID%%:*}"
     WINDOW_ID="${TERM_ID:-$KITTY_WINDOW_ID}"
