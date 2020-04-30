@@ -15,52 +15,52 @@ if [[ "${TERM}" != dumb ]] && hash grc >/dev/null 2>&1 ; then
 
   # Supported commands
   cmds=(
-    as \
-    blkid \
-    cc \
-    configure \
-    cvs \
-    df \
-    diff \
-    dig \
-    docker \
-    docker-machine \
-    du \
-    env \
-    fdisk \
-    findmnt \
-    free \
-    g++ \
-    gas \
-    gcc \
-    getsebool \
-    gmake \
-    head \
-    id \
-    ifconfig \
-    ip \
-    iptables \
-    last \
-    ld \
-    ldap \
-    lsblk \
-    lsof \
-    lspci \
-    make \
-    mount \
-    mtr \
-    netstat \
-    nmap \
-    ping \
-    ping6 \
-    ps \
-    semanage \
-    tail \
-    traceroute \
-    traceroute6 \
-    wdiff \
-    whois \
-    iwconfig \
+    as 
+    blkid 
+    cc 
+    configure 
+    cvs 
+    df 
+    diff 
+    dig 
+    docker 
+    docker-machine 
+    du 
+    env 
+    fdisk 
+    findmnt 
+    free 
+    g++ 
+    gas
+    gcc 
+    getsebool 
+    gmake 
+    head 
+    id 
+    ifconfig 
+    ip 
+    iptables 
+    last 
+    ld 
+    ldap 
+    lsblk 
+    lsof 
+    lspci 
+    make 
+    mount 
+    mtr 
+    netstat 
+    nmap 
+    ping 
+    ping6 
+    ps 
+    semanage
+    tail 
+    traceroute 
+    traceroute6 
+    wdiff 
+    whois 
+    iwconfig
   );
 
   for cmd in ${cmds[@]} ; do

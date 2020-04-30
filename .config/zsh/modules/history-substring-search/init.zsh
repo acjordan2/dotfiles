@@ -1,6 +1,9 @@
 # Settings for history substring search
-
-source "${ZDOTDIR}/modules/history-substring-search/external/zsh-history-substring-search.zsh" 2>/dev/null || return 1
+if [ -f "${ZDOTDIR}/modules/history-substring-search/external/zsh-history-substring-search.zsh" ]; then  
+  source "${ZDOTDIR}/modules/history-substring-search/external/zsh-history-substring-search.zsh" 2>/dev/null
+else 
+  return
+fi
 
 if [[ -n "$key_info" ]]; then
   # Emacs
