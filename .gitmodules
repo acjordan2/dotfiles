@@ -19,3 +19,6 @@
 [submodule ".config/kitty/themes"]
 	path = .config/kitty/themes
 	url = https://github.com/dexpota/kitty-themes
+[submodule ".config/zsh/modules/autopair/external"]
+	path = .config/zsh/modules/autopair/external
+	url = https://github.com/hlissner/zsh-autopair

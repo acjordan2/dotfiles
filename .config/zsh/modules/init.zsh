@@ -1,14 +1,32 @@
+function jit() {
+  emulate -L zsh
+  [[ $1.zwc -nt $1 || ! -w ${1:h} ]] && return
+  zmodload -F zsh/files b:zf_mv b:zf_rm
+  local tmp=$1.tmp.$$.zwc
+  {
+    zcompile -R -- $tmp $1 && zf_mv -f -- $tmp $1.zwc || return
+  } always {
+    (( $? )) && zf_rm -f -- $tmp
+  }
+}
+
+function jit-source() {
+  emulate -L zsh
+  [[ -e $1 ]] && jit $1 && builtin source -- $1
+}
+
+function source() {
+  jit-source "${@}" 
+}
+
 function load_module() {
   if ! zstyle -m ':module:'${1} loaded 'true'; then
-    # pre-compile zshmodules to byte code for faster loading
-    if [[ ! "${ZCACHEDIR}/${1}.zsh.zwc" -nt "${ZDOTDIR}/modules/${1}/init.zsh" ]]; then
-      zcompile "${ZCACHEDIR}/${1}.zsh.zwc" "${ZDOTDIR}/modules/${1}/init.zsh" 
-    fi
     source "${ZDOTDIR}/modules/${1}/init.zsh" && 
        zstyle ':module:'${1} loaded 'true' ||
        echo "error loading '${1}' plugin'" >&2
   fi
 }
+
 
 # deferred execution for module loading
 load_module zsh-defer
@@ -22,7 +40,11 @@ declare -a deferred
 for i in ${plugins[@]}; do
   IFS=':' read -r -A array <<< "${i}"
   if [[ "${array[2]}" == "defer" ]]; then
-    zsh-defer load_module ${array[1]}
+    if [[ -n "${array[3]}" ]]; then
+      zsh-defer -t "${array[3]}" load_module "${array[1]}"
+    else
+      zsh-defer load_module "${array[1]}"
+    fi
   else
     load_module "${i}"
   fi

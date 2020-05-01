@@ -26,6 +26,7 @@ plugins=(
   fast-syntax-highlighting:defer
   history-substring-search:defer
   fzf:defer
+  autopair:defer
 )
 
 # load ze plugins
@@ -37,3 +38,5 @@ for file in "${ZDOTDIR}"/zshrc.d/{aliases,functions,exports,extra}.zsh; do
     source "${file}"
   fi
 done
+
+unset -f source
