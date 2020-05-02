@@ -39,4 +39,3 @@ for file in "${ZDOTDIR}"/zshrc.d/{aliases,functions,exports,extra}.zsh; do
   fi
 done
 
-unset -f source
