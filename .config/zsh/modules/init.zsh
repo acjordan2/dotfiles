@@ -63,6 +63,8 @@ _update_zcomp() {
     fi
 }
 
+declare -a compdef_plugin
+
 # load core modules and dependencies
 load_module zsh-defer
 load_module line-editor
@@ -93,6 +95,10 @@ if zstyle -m ':modules:compinit' run true; then
   [[ -d "$zcachedir" ]] || mkdir -p "$zcachedir"
 
   _update_zcomp "${zcachedir}"
+  for p in ${compdef_plugin[@]}; do
+    IFS=':' read -r -A array <<< "${p}"
+    compdef "$array[1]" "$array[2]"
+  done
   unfunction _update_zcomp
 fi
 

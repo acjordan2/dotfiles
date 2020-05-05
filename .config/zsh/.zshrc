@@ -13,6 +13,9 @@ if [ -n "${TMUX}" ] && [ -z "${TIMESHELL}" ]; then
   fi
 fi
 
+TMUX_AUTOSTART=true
+TMUX_SESSION_ID="${KITTY_WINDOW_ID}"
+
 # order matters
 plugins=( 
   history
@@ -35,7 +38,6 @@ source "${ZDOTDIR}/modules/init.zsh"
 # load extra dotfiles
 for file in "${ZDOTDIR}"/zshrc.d/{aliases,functions,exports,extra}.zsh; do
   if [ -f "${file}" ]; then 
-    source "${file}"
+    jit-source "${file}"
   fi
 done
-
