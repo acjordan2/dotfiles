@@ -178,3 +178,8 @@ vless() {
   fi
 }
 
+zdot() {
+  local dir="${ZDOTDIR}"
+  [[ -n "${1}" ]] && dir="${ZDOTDIR}/${1}"
+  cd "${dir}" || return 1
+}

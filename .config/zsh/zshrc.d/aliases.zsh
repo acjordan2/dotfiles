@@ -44,7 +44,6 @@ alias vi="vim"
 alias v="vim"
 alias PlugInstall="vim +PlugInstall"
 alias msfc="msfconsole"
-alias zdot="cd ${ZDOTDIR}"
 alias zshrc="vim ${ZDOTDIR}/.zshrc"
 
 # Vim scratchpad with autosaving
