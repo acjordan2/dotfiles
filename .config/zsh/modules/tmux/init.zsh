@@ -22,7 +22,7 @@ alias tksv="command tmux kill server"
 alias tmux="_tmux_plugin "
 
 # Config location defaults to XDG spec, fall back to tmux default
-[ ! -f "${TMUX_CONFIG}" ] && TMUX_CONFIG="${HOME}/.tmux.conf"
+[[ ! -f "${TMUX_CONFIG}" ]] && TMUX_CONFIG="${HOME}/.tmux.conf"
 
 # Enable tmux completions for our function in ZSH
 # compdef needs to be called after compinit
@@ -35,7 +35,7 @@ function _tmux_plugin() {
     # Try to guess what terminal is being used to
     # create deterministic session IDs, Thia makes it
     # easier to auto re-attach to existing sessions
-    if [ -z "${TMUX_SESSION_ID}" ]; then 
+    if [[ -z "${TMUX_SESSION_ID}" ]]; then 
       TERM_ID="${TERM_SESSION_ID%%:*}"
       WINDOW_ID="${TERM_ID:-$KITTY_WINDOW_ID}"
       TMUX_SESSION_ID="${WINDOW_ID:-1}"
@@ -43,34 +43,35 @@ function _tmux_plugin() {
     current_directory="${PWD}"
     cd "${TMUX_LOG_DIR}" || return  
     SECONDS=0
-    command tmux -f "${TMUX_CONFIG}" new-session -A -s "${TMUX_SESSION_ID}" -c "${current_directory}" 2>&1
+    command tmux -f "${TMUX_CONFIG}" new-session -A -s "${TMUX_SESSION_ID}" -c "${current_directory}" 
     ret_val="$?"
     RUNTIME="${SECONDS}"
+    cd "${current_directory}" || return
     unset SECONDS
 
     # If the tmux client and server version dont match, tmux will exit but will have an exit code of 0.
     # tmux does not provide an error message so using the SECONDS builtin, we check to see if tmux 
     # closed within $TMUX_RUMTIME_MIN seconds of spawning. If so, dont completely close the shell 
     # to allow for easier debugging 
-    if [ "${RUNTIME}" -lt "${TMUX_RUNTIME_MIN}" ] || [ "${ret_val}" != 0 ]; then
+    if [[ "${RUNTIME}" -lt "${TMUX_RUNTIME_MIN}" || "${ret_val}" != 0 ]]; then
       return 1
     fi
   fi
   return
 }
 
-if [ -n "${SSH_CLIENT}" ] || [ -n "${SSH_TTY}" ]; then
+if [[ -n "${SSH_CLIENT}" || -n "${SSH_TTY}" ]]; then
   TMUX_SSH=true
 fi
 
 # autostart tmux session 
-if [ -z "${TMUX}" ] &&
-  { [ "${TMUX_AUTOSTART}" = "true" ] && [ -z "${TMUX_SSH}" ] } || 
-    { [ ${TMUX_AUTOSTART_SSH} = "true" ] && [ "${TMUX_SSH}" = "true"}; then 
+if [[ -z "${TMUX}" ]] &&
+  [[ "${TMUX_AUTOSTART}" = "true" && -z "${TMUX_SSH}" ]] ||
+  [[ ${TMUX_AUTOSTART_SSH} = "true" && "${TMUX_SSH}" = "true" ]]; then 
   if command tmux -V &>/dev/null; then
     if ! _tmux_plugin ; then
       echo "tmux plugin: tmux exited unepectedly, please check your config and server/client version" >&2
-    elif [ "${TMUX_AUTOEXIT}" = "true" ] && [ -z "${TMUX_SSH}" ]; then
+    elif [[ "${TMUX_AUTOEXIT}" = "true" && -z "${TMUX_SSH}" ]]; then
       # Don't auto exit for SSH connections
       exit
     fi
