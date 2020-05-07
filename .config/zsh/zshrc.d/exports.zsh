@@ -13,5 +13,8 @@ export LESS_TERMCAP_us=$'\E[04;38;5;146m' # begin underline
 export VIMINIT=":source ${XDG_CONFIG_HOME}/vim/vimrc"
 
 # here's LS_COLORS
-command -v gdircolors >/dev/null 2>&1 || alias gdircolors="dircolors"
-eval "$(gdircolors -b "${XDG_CONFIG_HOME}/zsh/zshrc.d/dircolors")"
+if [[ ! -f "${ZDOTDIR}/zshrc.d/dircolors.zsh" ]]; then
+  command -v gdircolors >/dev/null 2>&1 || alias gdircolors="dircolors"
+  gdircolors -b "${ZDOTDIR}/zshrc.d/dircolors" >| "${ZDOTDIR}/zshrc.d/dircolors.zsh"
+fi
+jit-source "${ZDOTDIR}/zshrc.d/dircolors.zsh" 2>/dev/null || source "${ZDOTDIR}/zshrc.d/dircolors.zsh"
