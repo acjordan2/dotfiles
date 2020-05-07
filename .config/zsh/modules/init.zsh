@@ -1,3 +1,5 @@
+[[ -n "${TMUX}" || "${TMUX_AUTOSTART}" != "true" && "${ZSH_INSTANT_PROMPT}" == "true" ]] && source "${ZDOTDIR}/modules/instant-zsh/init.zsh"
+
 # Compile zsh code for faster exection
 # Taken from @romkatv
 function jit() {
