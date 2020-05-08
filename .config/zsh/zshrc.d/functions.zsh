@@ -138,7 +138,7 @@ reload(){
   if [ "${1}" = "-f" ]; then
     # force cache files to be rebuilt
     rm -rf ${XDG_CACHE_HOME}/zsh/zcompdump* >/dev/null
-    rm -rf ${XDG_CACHE_HOME}/zsh/*.zwc >/dev/null
+    find "${ZDOTDIR}/" -type f -name "*.zwc" -delete
   fi
 
   # Get the path of the current shell's PID
@@ -157,8 +157,10 @@ reload(){
   fi
 
   # Reload the shell (i.e. invoke as a login shell)
-  if [[ "${SHELL}" == "${r_shell}" ]]; then
+  if [[ "${SHELL}" == "${r_shell}" ]] || [[ $(which "${r_shell}") == "${SHELL}" ]]; then
     exec "${r_shell}" -l
+  else
+    exec "${r_shell}"
   fi
 }
 
