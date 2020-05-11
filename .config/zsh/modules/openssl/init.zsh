@@ -19,11 +19,32 @@ function openssl-view-pkcs12 () {
 
 # create a self signed certificate
 function openssl-generate-certificate() {
-  local project="${1}"
-  mkdir -p "/tmp/${project}"
-  openssl req -nodes -newkey rsa:2048 -keyout "/tmp/${project}/key.pem" -x509 -days 365 -out "/tmp/${project}/certificate.pem" -subj "/CN=${project}"  -passout pass:
-  echo key="/tmp/${project}/key.pem"
-  echo cert="/tmp/${project}/certificate.pem"
+  local cn="localhost" size=2048 output_path="/tmp"
+  local expiration=365
+  local usage="openssl-generate-certificate [-n localhost] [-s 2048] [-x 365] [-p /tmp]
+
+-n    common name
+-s    key size
+-x    expiration time in days
+-p    output path"
+
+  optspec="n:s:x:p:h"
+
+  while getopts "${optspec}" opt; do
+    case "${opt}" in
+      n) cn="${OPTARG}";;
+      s) size="${OPTARG}";;
+      x) expiration="${OPTARG}";;
+      p) output_path="${OPTARG}";;
+      h) echo "${usage}"; return;;
+    esac
+  done
+  
+  local dir="${output_path}/${cn}"
+  mkdir -p "${dir}"
+  openssl req -nodes -newkey "rsa:${size}" -keyout "${dir}/key.pem" -x509 -days "${expiration}" -out "${dir}/certificate.pem" -subj "/CN=${cn}"  -passout pass:
+  echo key="${dir}/key.pem"
+  echo cert="${dir}/certificate.pem"
 }
 
 # Connecting to a server (Ctrl C exits)
@@ -36,7 +57,7 @@ function openssl-server(){
 
   local cert key cn=localhost port=8443
   local optspec="k:c:p:n:h"
-  local usage="openssl-server [-k <path/to/key.pem] [-c /path/to/cert.pem] [-p 8443]"
+  local usage="openssl-server [-k <path/to/key.pem] [-c /path/to/cert.pem] [-c localhost] [-p 8443]"
 
   while getopts "${optspec}" opt; do
     case "${opt}" in
@@ -50,7 +71,7 @@ function openssl-server(){
 
   if [[ -z "${cert}" ]] && [[ -z "${key}" ]]; then
     echo "[*] Generating self signed certificate for ${cn}"
-    eval $(openssl-generate-certificate "${cn}")
+    eval $(openssl-generate-certificate -n "${cn}")
   fi
 
   if [[ -z "${cert}" && -n "${key}" ]] || 
