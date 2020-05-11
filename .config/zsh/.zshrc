@@ -19,6 +19,7 @@ plugins=(
   history-substring-search:defer
   fzf:defer
   autopair:defer
+  openssl:defer
 )
 
 # load ze plugins
