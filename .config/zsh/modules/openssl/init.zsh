@@ -100,7 +100,7 @@ function openssl-key-to-hpkp-pin() {
 
 # For setting up public key pinning (directly from the site)
 function openssl-website-to-hpkp-pin() {
-    openssl s_client -connect "${1}":443 | openssl x509 -pubkey -noout | openssl rsa -pubin -outform der | openssl dgst -sha256 -binary | openssl enc -base64
+    openssl s_client -connect "${1}" | openssl x509 -pubkey -noout | openssl rsa -pubin -outform der | openssl dgst -sha256 -binary | openssl enc -base64
 }
 
 # Combines the key and the intermediate in a unified PEM file
