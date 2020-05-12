@@ -71,7 +71,7 @@ function openssl-server(){
 
   if [[ -z "${cert}" ]] && [[ -z "${key}" ]]; then
     echo "[*] Generating self signed certificate for ${cn}"
-    eval $(openssl-generate-certificate -n "${cn}")
+    eval $(openssl-generate-certificate -n "${cn}" 2>/dev/null)
   fi
 
   if [[ -z "${cert}" && -n "${key}" ]] || 
@@ -79,9 +79,15 @@ function openssl-server(){
     echo "openssl-server: error: both key and cert need to be set. leave both empty to generate a new key/certificate pair" >&2
     return 1
   fi
-  
-  echo "[*] Listening on ${port}"
-  openssl s_server -key "${key}" -cert "${cert}" -accept "${port}" -WWW
+
+  local hpkp=$(openssl-key-to-hpkp-pin "${key}")
+ 
+  echo "[*] Listening on ${port}. Connect via "
+  echo "curl -k --pinnedpubkey 'sha256//${hpkp}' 'https://${cn}:${port}'"
+  echo ""
+  echo ""
+
+  openssl s_server -key "${key}" -cert "${cert}" -accept "${port}" -WWW -msg
 }
 
 # Convert PEM private key, PEM certificate and PEM CA certificate (used by nginx, Apache, and other openssl apps) to a PKCS12 file (typically for use with Windows or Tomcat)
@@ -116,12 +122,12 @@ function openssl-check-key-modulus {
 
 # For setting up public key pinning
 function openssl-key-to-hpkp-pin() {
-    openssl rsa -in "${1}" -outform der -pubout | openssl dgst -sha256 -binary | openssl enc -base64
+    openssl rsa -in "${1}" -outform der -pubout 2>/dev/null | openssl dgst -sha256 -binary | openssl enc -base64
 }
 
 # For setting up public key pinning (directly from the site)
 function openssl-website-to-hpkp-pin() {
-    openssl s_client -connect "${1}" | openssl x509 -pubkey -noout | openssl rsa -pubin -outform der | openssl dgst -sha256 -binary | openssl enc -base64
+    echo "Q" | openssl s_client -connect "${1}" 2>/dev/null | openssl x509 -pubkey -noout | openssl rsa -pubin -outform der 2>/dev/null | openssl dgst -sha256 -binary | openssl enc -base64
 }
 
 # Combines the key and the intermediate in a unified PEM file
