@@ -83,6 +83,9 @@ if [[ "${OSTYPE}" == "darwin"* ]]; then
   # Recursively delete `.DS_Store` files
   alias cleanup_dsstore="find . -name '*.DS_Store' -type f -ls -delete"
 
+  # who is using the laptop's iSight camera?
+  alias camerausedby="lsof | grep -wi \"iSight\|VDC\|AppleCamera\" | awk '{print \$2}' | xargs -L1 -I {} ps -p {} -o comm="
+
   # Show/hide hidden files in Finder
   alias show="defaults write com.apple.finder AppleShowAllFiles -bool true && killall Finder"
   alias hide="defaults write com.apple.finder AppleShowAllFiles -bool false && killall Finder"
