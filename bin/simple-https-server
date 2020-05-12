@@ -1,0 +1,36 @@
+#!/usr/bin/env python3
+
+import http.server, ssl
+import argparse, subprocess, base64
+
+parser = argparse.ArgumentParser(description='Simple HTTPS server')
+parser.add_argument('-k', dest='keyfile', help='path to key file')
+parser.add_argument('-c', dest='certfile', help='path to certificate file')
+parser.add_argument('bind_address', metavar='BIND', nargs='?')
+
+args = parser.parse_args()
+address="localhost"
+if (len(args.bind_address.split(":")) > 1) and (len(args.bind_address.split(":")[0]) > 1):
+    address=args.bind_address.split(":")[0]
+    port=int(args.bind_address.split(":")[1])
+else:
+    port=int(args.bind_address)
+
+pubkey = subprocess.Popen(["openssl", "rsa", "-in", args.keyfile, "-outform", "der", "-pubout"], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+digest = subprocess.check_output(["openssl", "dgst", "-sha256", "-binary"], stdin=pubkey.stdout)
+pubkey.wait()
+
+
+server_address = (address, port)
+print("Serving HTTPS on {:s} port {:d} ...".format(address, port))
+print("")
+print("Connect via: ")
+print("curl -k --pinnedpubkey 'sha256//{:s}' 'https://{:s}:{:d}/'".format(base64.b64encode(digest).decode(), address, port))
+print("")
+httpd = http.server.HTTPServer(server_address, http.server.SimpleHTTPRequestHandler)
+httpd.socket = ssl.wrap_socket(httpd.socket,
+                               server_side=True,
+                               certfile=args.certfile,
+                               keyfile=args.keyfile,
+                               ssl_version=ssl.PROTOCOL_TLSv1_2)
+httpd.serve_forever()
