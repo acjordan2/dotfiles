@@ -1,7 +1,33 @@
 #!/usr/bin/env bash
 
+cmd=${0##*/}
+
+_rand_print_usage() {
+  echo "usage: ${cmd} [-cdnpPRsw] [--charset <character set>]"
+  echo ""
+  echo "Generate a secure random dataset within a given range" 
+  echo "or character set (default is '[:hex:]')"
+  echo ""
+  echo "Arguments:"
+  echo "-c          Character/word count."
+  echo "              Default character count: ${DEFAULT_CHAR_COUNT}"
+  echo "              Default word count: ${DEFAULT_WORD_COUNT}"
+  echo "              Default pronounceable count: ${DEFAULT_PRONOUNCE_COUNT}"
+  echo "-d          Generate a random number from a given range (e.g x-y)"
+  echo "              if only one number is provided, x defaults to 1"
+  echo "--charset   Character set to use"
+  echo "-n          Number of strings to generate"
+  echo "-p          Generate a password (shorthand for rand '[:graph:]')"
+  echo "-P          Generate a pronounceable word"
+  echo "-R          Raw random data"
+  echo "-w          Random words"
+  echo "--max       Maximum word size"
+  echo "--min       Minimum word size"
+  echo "-s          Word Seperator"
+  echo "              Default: '-'" 
+}
+
 _rand() {
-  cmd=${0##*/}
 
   local charset='[:hex:]'
   local count
@@ -34,6 +60,10 @@ _rand() {
             # Indirect expansion that works with ZSH and Bash
             eval "charset=\"\${$OPTIND}\""
             OPTIND=$(( OPTIND + 1 ))
+            ;;
+          help)
+            _rand_print_usage
+            return
             ;;
           max)
             eval "max=\"\${$OPTIND}\""
@@ -104,28 +134,7 @@ _rand() {
         mode="words"
         ;;
       h)
-        echo "usage: ${cmd} [-cdnpPRsw] [--charset <character set>]"
-        echo ""
-        echo "Generate a secure random dataset within a given range" 
-        echo "or character set (default is '[:hex:]')"
-        echo ""
-        echo "Arguments:"
-        echo "-c          Character/word count."
-        echo "              Default character count: ${DEFAULT_CHAR_COUNT}"
-        echo "              Default word count: ${DEFAULT_WORD_COUNT}"
-        echo "              Default pronounceable count: ${DEFAULT_PRONOUNCE_COUNT}"
-        echo "-d          Generate a random number from a given range (e.g x-y)"
-        echo "              if only one number is provided, x defaults to 1"
-        echo "--charset   Character set to use"
-        echo "-n          Number of strings to generate"
-        echo "-p          Generate a password (shorthand for rand '[:graph:]')"
-        echo "-P          Generate a pronounceable word"
-        echo "-R          Raw random data"
-        echo "-w          Random words"
-        echo "--max       Maximum word size"
-        echo "--min       Minimum word size"
-        echo "-s          Word Seperator"
-        echo "              Default: '-'" 
+        _rand_print_usage
         return
         ;;
       :)
