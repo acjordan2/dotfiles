@@ -113,7 +113,89 @@ set wrapscan " Searches wrap around end of file
 " }}}
 
 " Configuration -------------------------------------------------------------
+" Tabline {{{
+" hi TabLineFill ctermfg=145 ctermbg=235
+hi TabLine cterm=none ctermfg=0 ctermbg=darkgray
+hi TabLineSel ctermfg=0 ctermbg=gray
+" }}}
 
+" Status Line {{{
+
+hi User1 ctermbg=black ctermfg=white guibg=black guifg=white
+hi User2 ctermbg=172 ctermfg=black guibg=lightgreen guifg=black
+hi User3 ctermbg=black ctermfg=lightblue guibg=black guifg=lightblue
+hi User4 ctermbg=black ctermfg=lightgreen guibg=black guifg=lightgreen
+hi User5 ctermbg=black ctermfg=magenta guibg=black guifg=magenta
+
+" Status line Mode Colors
+hi NormalColor cterm=bold ctermbg=gray ctermfg=0 guifg=Black guibg=lightgrey
+hi InsertColor cterm=bold ctermbg=blue  ctermfg=0
+hi ReplaceColor cterm=bold ctermbg=red ctermfg=0
+hi VisualColor cterm=bold ctermbg=green ctermfg=0
+hi CommandColor cterm=bold ctermbg=DarkMagenta ctermfg=0
+hi ShellColor cterm=bold ctermbg=white ctermfg=0
+hi ShellColor cterm=bold ctermbg=LightGreen ctermfg=0
+
+set statusline=
+set statusline+=%#NormalColor#%{(mode()=='n')?'\ \ NORMAL\ ':''}
+set statusline+=%#InsertColor#%{(mode()=='i')?'\ \ INSERT\ ':''}
+set statusline+=%#ReplaceColor#%{(mode()=='R')?'\ \ REPLACE\ ':''}
+set statusline+=%#VisualColor#%{(mode()=='v')?'\ \ VISUAL\ ':''}
+set statusline+=%#CommandColor#%{(mode()=='c')?'\ \ COMMAND\ ':''}
+set statusline+=%#ShellColor#%{(mode()=='!')?'\ \ SHELL\ ':''}
+set statusline+=%#TerminalColor#%{(mode()=='t')?'\ \ TERMINAL\ ':''}
+
+set statusline+=%1*
+set statusline+=\ 
+set statusline+=<<
+set statusline+=\ 
+set statusline+=%f                    " current filename
+set statusline+=\ 
+set statusline+=>>
+set statusline+=%=
+set statusline+=%m                    " modified flag
+set statusline+=%h                    " Help buffer flag
+set statusline+=%r                    " Readonly flag
+set statusline+=\ 
+set statusline+=%3*
+set statusline+=%{b:gitbranch}        " git integration
+set statusline+=%1*
+set statusline+=\ 
+set statusline+=%4*
+set statusline+=%F                    " Full file path in buffer
+set statusline+=:
+set statusline+=:
+set statusline+=%5*
+set statusline+=%l
+set statusline+=/
+set statusline+=%L                    " Number of lines
+set statusline+=%1*
+set statusline+=|
+set statusline+=%y                    " Filetype
+
+function! StatuslineGitBranch()
+  let b:gitbranch=""
+  if &modifiable
+    try
+      let l:dir=expand('%:p:h')
+      let l:gitrevparse = system("git -C ".l:dir." rev-parse --abbrev-ref HEAD")
+      if !v:shell_error
+        let b:gitbranch="(".substitute(l:gitrevparse, '
+', '', 'g').") "
+      endif
+    catch
+    endtry
+  endif
+endfunction
+
+augroup GetGitBranch
+  autocmd!
+  autocmd VimEnter,WinEnter,BufEnter * call StatuslineGitBranch()
+augroup END
+"
+" }}}
+"
+"
 " FastEscape {{{
 " Speed up transition from modes
 set ttimeoutlen=10 timeoutlen=1000
@@ -655,7 +737,7 @@ Plug 'rust-lang/rust.vim', {'for': 'rust'}
 " UI {{{
 Plug 'junegunn/goyo.vim', {'for': ['md', 'txt']}
 Plug 'tpope/vim-dispatch'
-Plug 'vim-airline/vim-airline'
+Plug 'zefei/vim-wintabs'
 " }}}
 
 call plug#end()
