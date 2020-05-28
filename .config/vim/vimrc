@@ -152,6 +152,8 @@ set statusline+=\
 set statusline+=%f                    " current filename
 set statusline+=\ 
 set statusline+=>>
+set statusline+=\ 
+set statusline+=%{StatusDiagnostic()}
 set statusline+=%=
 set statusline+=%m                    " modified flag
 set statusline+=%h                    " Help buffer flag
@@ -192,6 +194,19 @@ augroup GetGitBranch
   autocmd!
   autocmd VimEnter,WinEnter,BufEnter * call StatuslineGitBranch()
 augroup END
+
+function! StatusDiagnostic() abort
+  let info = get(b:, 'coc_diagnostic_info', {})
+  if empty(info) | return '' | endif
+  let msgs = []
+  if get(info, 'error', 0)
+    call add(msgs, 'E' . info['error'])
+  endif
+  if get(info, 'warning', 0)
+    call add(msgs, 'W' . info['warning'])
+  endif
+  return join(msgs, ' '). ' ' . get(g:, 'coc_status', '')
+endfunction
 "
 " }}}
 "
@@ -540,34 +555,6 @@ augroup airline_config
 augroup END
 " }}}
 
-" CtrlP.vim {{{
-" augroup ctrlp_config
-  " autocmd!
-  " let g:ctrlp_clear_cache_on_exit = 0 " Do not clear filenames cache, to improve CtrlP startup
-  " let g:ctrlp_lazy_update = 350 " Set delay to prevent extra search
-
-  " if has('python')
-    " let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' } " Use python fuzzy matcher for better performance
-  " endif 
-
-  " let g:ctrlp_match_window_bottom = 0 " Show at top of window
-  " let g:ctrlp_max_files = 0 " Set no file limit, we are building a big project
-  " let g:ctrlp_switch_buffer = 'Et' " Jump to tab AND buffer if already open
-  " let g:ctrlp_open_new_file = 'r' " Open newly created files in the current window
-  " let g:ctrlp_open_multiple_files = 'ij' " Open multiple files in hidden buffers, and jump to the first one
-  " let g:ctrlp_custom_ignore = {
-    " \ 'dir':  '\v[\/](\.(git|hg|svn)|\_site)$',
-    " \ 'file': '\v\.(exe|so|dll|class|png|jpg|jpeg)$',
-  " \}
-  " let g:ctrlp_working_path_mode = 'ra'
-
-  " if executable("ag")
-    " set grepprg=ag\ --nogroup\ --nocolor
-    " let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --ignore ''.git'' --ignore ''.DS_Store'' --ignore ''node_modules'' --hidden -g ""' " Use the silver searcher instead of find
-  " endif
-" augroup END
-" }}}
-
 " Dispatch {{{
 augroup dispatch_config
   autocmd!
@@ -713,32 +700,26 @@ augroup END
   
 call plug#begin('$XDG_CONFIG_HOME/vim/plugged')
 
-" Coding help {{{
+" Code completion/linting
 Plug 'dense-analysis/ale'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'majutsushi/tagbar'
-Plug 'ludovicchabant/vim-gutentags'
 Plug 'ervandew/supertab'
-Plug 'tpope/vim-commentary'
+Plug 'ludovicchabant/vim-gutentags'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Formatting
 Plug 'junegunn/rainbow_parentheses.vim'
-" }}}
-
-" Navigation {{{
+Plug 'tpope/vim-commentary'
+" Navigation
+Plug 'christoomey/vim-tmux-navigator'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-Plug 'christoomey/vim-tmux-navigator'
-" }}}
-
-" Language support {{{
+" Language support
 Plug 'fatih/vim-go', {'for' : 'go'}
 Plug 'rust-lang/rust.vim', {'for': 'rust'}
-" }}}
-
-" UI {{{
+" UI
 Plug 'junegunn/goyo.vim', {'for': ['md', 'txt']}
+Plug 'majutsushi/tagbar'
 Plug 'tpope/vim-dispatch'
 Plug 'zefei/vim-wintabs'
-" }}}
 
 call plug#end()
 " }}}
