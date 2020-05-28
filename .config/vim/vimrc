@@ -9,6 +9,7 @@ set undodir=$XDG_DATA_HOME/vim/undo//
 set directory=$XDG_DATA_HOME/vim/swaps//
 set backupdir=$XDG_DATA_HOME/vim/backups//
 set runtimepath=$XDG_CONFIG_HOME/vim,$VIMRUNTIME,$XDG_CONFIG_HOME/vim/after
+" }}}
 
 " Incompatible with Neovim {{{`
 if !has('nvim')
@@ -18,7 +19,6 @@ if !has('nvim')
 else
   set viminfo=%,'9999,s512,n$XDG_CACHE_HOME/nvim/nviminfo " Restore buffer list, marks are remembered for 9999 files, registers up to 512Kb are remembered
 endif
-
 " }}}
 
 " Make vim more useful {{{
@@ -69,15 +69,15 @@ set incsearch " Highlight dynamically as pattern is typed
 set laststatus=2 " Always show status line
 set lazyredraw " Don't redraw when we don't have to
 set magic " Enable extended regexes
-set modelines=0 " Disable modeline
-set nomodeline
+set nomodeline " Disable modeline
+set modelines=0 " Just in case
 set mouse=a " Enable mouse in all in all modes
 set noerrorbells " Disable error bells
 set nojoinspaces " Only insert single space after a '.', '?' and '!' with a join command
 set noshowmode " Don't show the current mode (airline.vim takes care of us)
 set nostartofline " Don't reset cursor to start of line when moving around
 set nowrap " Do not wrap lines
-set nu " Enable line numbers
+set number " Enable line numbers
 set ofu=syntaxcomplete#Complete " Set omni-completion method
 set report=0 " Show all changes
 set ruler " Show the cursor position
@@ -108,10 +108,6 @@ set wildmenu " Hitting TAB in command mode will show possible completions above 
 set wildmode=list:longest " Complete only until point of ambiguity
 set winminheight=0 " Allow splits to be reduced to a single line
 set wrapscan " Searches wrap around end of file
-
-
-" }}}
-
 " }}}
 
 " }}}
@@ -210,6 +206,14 @@ augroup nerd_commenter
   let NERDSpaceDelims=1
   let NERDCompactSexyComs=1
   let g:NERDCustomDelimiters = { 'racket': { 'left': ';', 'leftAlt': '#|', 'rightAlt': '|#' } }
+augroup END
+" }}}
+
+" Tabs {{{
+augroup tab_control
+  autocmd!
+  map gt :tabn<CR>
+  map gT :tabp<CR>
 augroup END
 " }}}
 
@@ -388,7 +392,6 @@ augroup filetype_json
   autocmd!
   au BufRead,BufNewFile *.json set ft=json syntax=javascript
 augroup END
-" }}}
 
 " Markdown {{{
 augroup filetype_markdown
@@ -400,9 +403,17 @@ augroup END
 " Python {{{
 augroup filetype_python
   autocmd!
-  au Filetype python let b:dispatch = 'python %'
+  au FileType python let b:dispatch = 'python %'
 augroup END
 " }}}
+
+" Rust {{{
+augroup filetype_rust
+  autocmd!
+  au FileType rust let g:rustfmt_autosave = 1
+  au FileType rust let g:cargo_shell_command_runner = 'Dispatch '
+augroup END
+" }}
 
 " Ruby {{{
 augroup filetype_ruby
@@ -492,9 +503,11 @@ augroup easy_align_config
 augroup END
 " }}}
 
-" RainbowParenthesis.vim {{{
-augroup rainbow_parenthesis_config
+" RainbowParentheses.vim {{{
+augroup rainbow_parentheses_config
   autocmd!
+  let g:rainbow#max_level = 16
+  let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}']]
   nnoremap <leader>rp :RainbowParentheses!!<CR>
 augroup END
 " }}}
@@ -508,6 +521,7 @@ augroup END
 
 " Gutentags.vim {{{
 augroup gutentags_config
+  autocmd!
   let g:gutentags_ctags_exclude = ["*.min.js", "*.min.css", "build", "vendor", ".git", "*vim/plugged/*"]
 augroup END
 " }}}
@@ -617,25 +631,35 @@ augroup END
   
 call plug#begin('$XDG_CONFIG_HOME/vim/plugged')
 
-" Plug 'Chiel92/vim-autoformat'
-" Plug 'junegunn/vim-easy-align'
-" Plug 'kien/rainbow_parentheses.vim'
-" Plug 'tpope/vim-dispatch'
+" Coding help {{{
+Plug 'dense-analysis/ale'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug '/usr/local/opt/fzf'
-Plug 'christoomey/vim-tmux-navigator'
-Plug 'ervandew/supertab'
-Plug 'fatih/vim-go'
-Plug 'junegunn/fzf.vim'
-Plug 'junegunn/goyo.vim'
-Plug 'ludovicchabant/vim-gutentags'
 Plug 'majutsushi/tagbar'
-Plug 'scrooloose/nerdcommenter'
+Plug 'ludovicchabant/vim-gutentags'
+Plug 'ervandew/supertab'
+Plug 'tpope/vim-commentary'
+Plug 'junegunn/rainbow_parentheses.vim'
+" }}}
+
+" Navigation {{{
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'christoomey/vim-tmux-navigator'
+" }}}
+
+" Language support {{{
+Plug 'fatih/vim-go', {'for' : 'go'}
+Plug 'rust-lang/rust.vim', {'for': 'rust'}
+" }}}
+
+" UI {{{
+Plug 'junegunn/goyo.vim', {'for': ['md', 'txt']}
+Plug 'tpope/vim-dispatch'
 Plug 'vim-airline/vim-airline'
-Plug 'w0rp/ale'
+" }}}
 
 call plug#end()
 " }}}
 
-" Enable top leveol folds for .vimrc only
+" Enable top level folds for .vimrc only
 " vim:foldmethod=marker:foldlevel=0
