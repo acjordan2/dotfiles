@@ -120,94 +120,74 @@ hi TabLineSel ctermfg=0 ctermbg=gray
 " }}}
 
 " Status Line {{{
+augroup statusline_config 
+  " status bar colors
+  au InsertEnter * hi statusline guifg=black guibg=#d7afff ctermfg=black ctermbg=magenta
+  au InsertLeave * hi statusline guifg=black guibg=#8fbfdc ctermfg=black ctermbg=cyan
+  hi statusline gui=bold guifg=black guibg=#8fbfdc cterm=bold ctermfg=black ctermbg=cyan
 
-hi User1 ctermbg=black ctermfg=white guibg=black guifg=white
-hi User2 ctermbg=172 ctermfg=black guibg=lightgreen guifg=black
-hi User3 ctermbg=black ctermfg=lightblue guibg=black guifg=lightblue
-hi User4 ctermbg=black ctermfg=lightgreen guibg=black guifg=lightgreen
-hi User5 ctermbg=black ctermfg=magenta guibg=black guifg=magenta
+  " Status line
+  " default: set statusline=%f\ %h%w%m%r\ %=%(%l,%c%V\ %=\ %P%)
 
-" Status line Mode Colors
-hi NormalColor cterm=bold ctermbg=gray ctermfg=0 guifg=Black guibg=lightgrey
-hi InsertColor cterm=bold ctermbg=blue  ctermfg=0
-hi ReplaceColor cterm=bold ctermbg=red ctermfg=0
-hi VisualColor cterm=bold ctermbg=green ctermfg=0
-hi CommandColor cterm=bold ctermbg=DarkMagenta ctermfg=0
-hi ShellColor cterm=bold ctermbg=white ctermfg=0
-hi ShellColor cterm=bold ctermbg=LightGreen ctermfg=0
+  autocmd cursorhold,bufwritepost * unlet! b:statusline_trailing_space_warning
 
-set statusline=
-set statusline+=%#NormalColor#%{(mode()=='n')?'\ \ NORMAL\ ':''}
-set statusline+=%#InsertColor#%{(mode()=='i')?'\ \ INSERT\ ':''}
-set statusline+=%#ReplaceColor#%{(mode()=='R')?'\ \ REPLACE\ ':''}
-set statusline+=%#VisualColor#%{(mode()=='v')?'\ \ VISUAL\ ':''}
-set statusline+=%#CommandColor#%{(mode()=='c')?'\ \ COMMAND\ ':''}
-set statusline+=%#ShellColor#%{(mode()=='!')?'\ \ SHELL\ ':''}
-set statusline+=%#TerminalColor#%{(mode()=='t')?'\ \ TERMINAL\ ':''}
-
-set statusline+=%1*
-set statusline+=\ 
-set statusline+=<<
-set statusline+=\ 
-set statusline+=%f                    " current filename
-set statusline+=\ 
-set statusline+=>>
-set statusline+=\ 
-set statusline+=%{StatusDiagnostic()}
-set statusline+=%=
-set statusline+=%m                    " modified flag
-set statusline+=%h                    " Help buffer flag
-set statusline+=%r                    " Readonly flag
-set statusline+=\ 
-set statusline+=%3*
-set statusline+=%{b:gitbranch}        " git integration
-set statusline+=%1*
-set statusline+=\ 
-set statusline+=%4*
-set statusline+=%F                    " Full file path in buffer
-set statusline+=:
-set statusline+=:
-set statusline+=%5*
-set statusline+=%l
-set statusline+=/
-set statusline+=%L                    " Number of lines
-set statusline+=%1*
-set statusline+=|
-set statusline+=%y                    " Filetype
-
-function! StatuslineGitBranch()
-  let b:gitbranch=""
-  if &modifiable
-    try
-      let l:dir=expand('%:p:h')
-      let l:gitrevparse = system("git -C ".l:dir." rev-parse --abbrev-ref HEAD")
-      if !v:shell_error
-        let b:gitbranch="(".substitute(l:gitrevparse, '
-', '', 'g').") "
+  function! StatuslineTrailingSpaceWarning()
+      if !exists("b:statusline_trailing_space_warning")
+          if search('\s\+$', 'nw') != 0
+              let b:statusline_trailing_space_warning = '[\s]'
+          else
+              let b:statusline_trailing_space_warning = ''
+          endif
       endif
-    catch
-    endtry
-  endif
-endfunction
+      return b:statusline_trailing_space_warning
+  endfunction
 
-augroup GetGitBranch
-  autocmd!
-  autocmd VimEnter,WinEnter,BufEnter * call StatuslineGitBranch()
+  " Status Line Custom
+  let g:currentmode={
+      \ 'n'  : 'Normal',
+      \ 'no' : 'Normal·Operator Pending',
+      \ 'v'  : 'Visual',
+      \ 'V'  : 'V·Line',
+      \ "\<c-V>" : 'V·Block',
+      \ 's'  : 'Select',
+      \ 'S'  : 'S·Line',
+      \ "<c-S>" : 'S·Block',
+      \ 'i'  : 'Insert',
+      \ 'R'  : 'Replace',
+      \ 'Rv' : 'V·Replace',
+      \ 'c'  : 'Command',
+      \ 'cv' : 'Vim Ex',
+      \ 'ce' : 'Ex',
+      \ 'r'  : 'Prompt',
+      \ 'rm' : 'More',
+      \ 'r?' : 'Confirm',
+      \ '!'  : 'Shell',
+      \ 't'  : 'Terminal'
+      \}
+
+  set laststatus=2
+  set noshowmode
+  set statusline=
+  set statusline+=%0*\ %{toupper(g:currentmode[mode()])}\     " The current mode
+  set statusline+=%1*\ %<%F\                                  " File path
+  set statusline+=%3*│                                        " Separator
+  set statusline+=%4*%M%r%{StatuslineTrailingSpaceWarning()}  " modified, readonly, trailing space
+  set statusline+=%2*%h%w                                     " Helpfile, preview
+  set statusline+=%=                                          " Right Side
+  set statusline+=%2*\ %Y                                     " FileType
+  set statusline+=%3*│                                        " Separator
+  set statusline+=%1*\ %{''.(&fenc!=''?&fenc:&enc).''}        " Encoding
+  set statusline+=\ [%{&ff}]\                                 " FileFormat
+  set statusline+=%0*\ ≡\ %02l/%L\ :\ %02v\ [%3p%%]           " See next line
+  " Line number / total lines, col number, percentage of document
+
+  hi User1 ctermfg=007 ctermbg=239 guibg=#4e4e4e guifg=#adadad
+  hi User2 ctermfg=cyan ctermbg=236 guibg=#303030 guifg=#8fbfdc
+  hi User3 ctermfg=236 ctermbg=236 guibg=#303030 guifg=#303030
+  hi User4 ctermfg=001 ctermbg=236 guibg=#303030 guifg=#d75f5f
+
 augroup END
 
-function! StatusDiagnostic() abort
-  let info = get(b:, 'coc_diagnostic_info', {})
-  if empty(info) | return '' | endif
-  let msgs = []
-  if get(info, 'error', 0)
-    call add(msgs, 'E' . info['error'])
-  endif
-  if get(info, 'warning', 0)
-    call add(msgs, 'W' . info['warning'])
-  endif
-  return join(msgs, ' '). ' ' . get(g:, 'coc_status', '')
-endfunction
-"
 " }}}
 "
 "
@@ -249,6 +229,10 @@ augroup general_config
 
   " Insert newline {{{
   map <leader><Enter> o<ESC>
+  " }}}
+  
+  " Clear hlsearch pattern {{{
+  noremap <silent> <c-h> :let @/ = ""<CR>
   " }}}
 
   " Strip trailing whitespace (,ss) {{{
