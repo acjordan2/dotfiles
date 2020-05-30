@@ -119,12 +119,18 @@ hi TabLine cterm=none ctermfg=0 ctermbg=darkgray
 hi TabLineSel ctermfg=0 ctermbg=gray
 " }}}
 
+" Tabline {{{
+hi TabLineFill ctermbg=236
+hi TabLine ctermfg=225 ctermbg=236
+hi TabLineSel ctermfg=223 ctermbg=239
+" }}}
+
 " Status Line {{{
 augroup statusline_config 
   " status bar colors
-  au InsertEnter * hi statusline guifg=black guibg=#d7afff ctermfg=black ctermbg=magenta
-  au InsertLeave * hi statusline guifg=black guibg=#8fbfdc ctermfg=black ctermbg=cyan
-  hi statusline gui=bold guifg=black guibg=#8fbfdc cterm=bold ctermfg=black ctermbg=cyan
+  au InsertEnter * hi statusline guifg=black guibg=#d7afff ctermfg=black ctermbg=184
+  au InsertLeave * hi statusline guifg=black guibg=#8fbfdc ctermfg=black ctermbg=223
+  hi statusline gui=bold guifg=black guibg=#8fbfdc cterm=bold ctermfg=black ctermbg=223
 
   " Status line
   " default: set statusline=%f\ %h%w%m%r\ %=%(%l,%c%V\ %=\ %P%)
@@ -181,10 +187,10 @@ augroup statusline_config
   set statusline+=%0*\ ≡\ %02l/%L\ :\ %02v\ [%3p%%]           " See next line
   " Line number / total lines, col number, percentage of document
 
-  hi User1 ctermfg=007 ctermbg=239 guibg=#4e4e4e guifg=#adadad
-  hi User2 ctermfg=cyan ctermbg=236 guibg=#303030 guifg=#8fbfdc
+  hi User1 ctermfg=223 ctermbg=239 guibg=#4e4e4e guifg=#adadad
+  hi User2 ctermfg=172 ctermbg=236 guibg=#303030 guifg=#8fbfdc
   hi User3 ctermfg=236 ctermbg=236 guibg=#303030 guifg=#303030
-  hi User4 ctermfg=001 ctermbg=236 guibg=#303030 guifg=#d75f5f
+  hi User4 ctermfg=167 ctermbg=236 guibg=#303030 guifg=#d75f5f
 
 augroup END
 
@@ -232,7 +238,7 @@ augroup general_config
   " }}}
   
   " Clear hlsearch pattern {{{
-  noremap <silent> <c-h> :let @/ = ""<CR>
+  noremap <silent> <C-h> :let @/ = ""<CR>
   " }}}
 
   " Strip trailing whitespace (,ss) {{{
@@ -257,17 +263,6 @@ augroup general_config
   imap <PageDown> <C-O><C-D>
   " }}}
   
-  " Disable the arrow keys {{{
-  " map <up> <nop>
-  " map <down> <nop>
-  " map <left> <nop>
-  " map <right> <nop>
-  " imap <up> <nop>
-  " imap <down> <nop>
-  " imap <left> <nop>
-  " imap <right> <nop>
-  " }}}
- 
   " jj, jk, kj to <ESC> {{{
    imap jj <Esc>
    imap jk <Esc>
@@ -536,6 +531,13 @@ augroup airline_config
   let g:airline#extensions#tabline#enabled = 1
   let g:airline#extensions#tabline#fnamecollapse = 0
   let g:airline#extensions#tabline#fnamemod = ':t'
+augroup END
+" }}}
+
+" Coc.vim {{{
+augroup coc_config 
+  autocmd!
+  let g:coc_disable_startup_warning = 1
 augroup END
 " }}}
 
