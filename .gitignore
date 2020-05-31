@@ -27,3 +27,4 @@ extra.*
 .config/zsh/env/extra.zsh
 *.zwc
 tags
+.zcompdump
