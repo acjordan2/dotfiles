@@ -29,11 +29,34 @@ function source() {
 }
 
 function load_module() {
-  if ! zstyle -m ':module:'${1} loaded 'true'; then
-    jit-source "${ZDOTDIR}/modules/${1}/init.zsh" && 
-       zstyle ':module:'${1} loaded 'true' ||
-       echo "error loading '${1}' plugin'" >&2
+
+  cmd=("jit-source")
+  while [[ $# -gt 0 ]]; do
+    case "${1}" in
+      "--defer"|"-d")
+        if is_module_loaded 'zsh-defer' && cmd=("zsh-defer" ${cmd[@]})
+        shift
+        ;;
+      "--time"|"-t")
+        defer_time="-t ${2}"
+        shift; shift
+        ;;
+      *)
+        module="${1}"
+        shift
+        ;;
+    esac
+  done
+
+  if ! zstyle -m ':module:'${module} loaded 'true'; then
+    ${cmd[*]} "${ZDOTDIR}/modules/${module}/init.zsh" && 
+       zstyle ':module:'${module} loaded 'true' ||
+       echo "error loading '${module}' plugin'" >&2
   fi
+}
+
+function is_module_loaded() {
+  zstyle -m ':module:'${1} loaded 'true'
 }
 
 # Helper function to conditionally regenerate the 
@@ -68,7 +91,6 @@ _update_zcomp() {
 declare -a compdef_plugin
 
 # load core modules and dependencies
-load_module zsh-defer
 load_module line-editor
 
 # load optional plugins
@@ -76,15 +98,8 @@ load_module line-editor
 #  ${plugin}:defer?:<seconds to defer>?
 for i in ${plugins[@]}; do
   IFS=':' read -r -A array <<< "${i}"
-  if [[ "${array[2]}" == "defer" ]]; then
-    if [[ -n "${array[3]}" ]]; then
-      zsh-defer -t "${array[3]}" load_module "${array[1]}"
-    else
-      zsh-defer load_module "${array[1]}"
-    fi
-  else
-    load_module "${i}"
-  fi
+  module="${array[1]}"
+  load_module --"${array[2]}" --time "${array[3]}" "${module}"
 done
 
 # load last
