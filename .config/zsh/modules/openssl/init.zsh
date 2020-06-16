@@ -55,9 +55,9 @@ function openssl-client () {
 # Start a TLS enabled HTTP server
 function openssl-server(){
 
-  local cert key cn=localhost port=8443
-  local optspec="k:c:p:n:h"
-  local usage="openssl-server [-k <path/to/key.pem] [-c /path/to/cert.pem] [-c localhost] [-p 8443]"
+  local cert key cn=localhost port=8443 web
+  local optspec="k:c:p:n:hw"
+  local usage="openssl-server [-k <path/to/key.pem] [-c /path/to/cert.pem] [-c localhost] [-p 8443] [-w]"
 
   while getopts "${optspec}" opt; do
     case "${opt}" in
@@ -65,6 +65,7 @@ function openssl-server(){
       k) key="${OPTARG}";;
       n) cn="${OPTARG}";;
       p) port="${OPTARG}";;
+      w) web="-WWW";;
       h) echo "${usage}"; return;;
     esac
   done
@@ -87,7 +88,7 @@ function openssl-server(){
   echo ""
   echo ""
 
-  openssl s_server -key "${key}" -cert "${cert}" -accept "${port}" -WWW -msg
+  openssl s_server -key "${key}" -cert "${cert}" -accept "${port}" ${web} -msg
 }
 
 # Convert PEM private key, PEM certificate and PEM CA certificate (used by nginx, Apache, and other openssl apps) to a PKCS12 file (typically for use with Windows or Tomcat)
