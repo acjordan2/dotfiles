@@ -34,6 +34,7 @@ function load_module() {
   while [[ $# -gt 0 ]]; do
     case "${1}" in
       "--defer"|"-d")
+        load_module zsh-defer
         if is_module_loaded 'zsh-defer' && cmd=("zsh-defer" ${cmd[@]})
         shift
         ;;
@@ -48,11 +49,15 @@ function load_module() {
     esac
   done
 
-  if ! zstyle -m ':module:'${module} loaded 'true'; then
+  if ! is_module_loaded ${module}; then
     ${cmd[*]} "${ZDOTDIR}/modules/${module}/init.zsh" && 
        zstyle ':module:'${module} loaded 'true' ||
        echo "error loading '${module}' plugin'" >&2
   fi
+}
+
+function list-modules() {
+  find ${ZDOTDIR}/modules/* -maxdepth 0 -type d -printf "%f\n"
 }
 
 function is_module_loaded() {
