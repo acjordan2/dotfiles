@@ -6,8 +6,6 @@ TMUX_AUTOSTART=true
 TMUX_SESSION_ID="${KITTY_WINDOW_ID}"
 
 # order matters
-# load 'zsh-defer' before any deferred modules to 
-# enable deferred loading. Not needed if using instant prompt
 plugins=(
   history
   homebrew
