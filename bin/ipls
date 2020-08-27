@@ -1,0 +1,79 @@
+#!/usr/bin/env bash
+
+# list only the IPs for all interfaces
+ipls() {
+  local action output ipv='' labels=false interface ipcmd
+
+  action="${1}"
+
+  local optspec="46ahli:"
+  local usage="ipls [-i <interface>] [-46la]
+
+-4, -6
+-a                Show labels
+-i <interface>    Show IPs from specific interface
+-l                List interfaces
+  "
+
+  hash ifconfig 2>/dev/null && ipcmd=("ifconfig" "-a") || ipcmd=("ip" "-o" "addr" "show" "")
+
+  while getopts "${optspec}" opt
+  do
+    case "${opt}" in
+      (4|6) ipv="${opt}"  ;;
+      (a) labels=true  ;;
+      (i) interface="${OPTARG}"  ;;
+      (l)
+        if [[ "${ipcmd[@]:0:1}" == "ip" ]]; then
+          command ${ipcmd[*]} | awk '{split($4, a, "/"); print $2"}' | sort
+        else
+          command ${ipcmd[*]} | sed -E 's/[[:space:]:].*//;/^$/d' | sort
+        fi
+        return
+        ;;
+      (h) echo "${usage}"; return ;;
+    esac
+  done
+
+  if [[ "${labels}" == false ]] && [[ -z "${interface}" ]]; then
+#        output="$(ifconfig | grep "inet" | grep -v "127.0.0.1" | grep -v "::1" | cut -d" "  -f2 | cut -d"%" -f1 | sort)"
+      output=$(command ${ipcmd[*]} | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)' | awk '{ sub(/inet6? (addr:)? ?/, ""); print }')
+  else 
+    if [[ -n "${interface}" ]]; then
+      while read -r ip; do
+        if [ -n "${ip}" ]; then
+          output="${output}${ip}\n"
+          fi 
+      done < <(command ${ipcmd[*]:0:-1} "${interface}" | grep "inet" | sed -e 's/^[ \t]*//' | cut -d" "  -f2 | cut -d"%" -f1)
+    else
+      # list all interfaces
+      
+      if [[ "${ipcmd[@]:0:1}" == "ip" ]]; then
+        command ${ipcmd[*]} | awk '{split($4, a, "/"); print $2" : "a[1]}'
+      else
+        while read -r interface; do
+          # get ip for each interface
+          while read -r ip; do
+            if [ -n "${ip}" ]; then
+              output="${output}${interface} : ${ip}
+"
+              fi 
+          done < <(command ${ipcmd[@]:0:1} "${interface}" | grep "inet" | sed -e 's/^[ \t]*//' | cut -d" "  -f2 | cut -d"%" -f1)
+        done < <(command ${ipcmd[*]} | sed -E 's/[[:space:]:].*//;/^$/d')
+      fi
+    fi
+ fi
+
+  case "${ipv}" in 
+    4)
+        echo "${output}" | grep -v ":"
+        ;;
+    6)
+        echo "${output}" | grep -v "\."
+        ;;
+    *)
+      echo "${output}"
+  esac
+}
+
+ipls $@

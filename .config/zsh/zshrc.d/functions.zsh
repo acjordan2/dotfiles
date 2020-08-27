@@ -57,50 +57,6 @@ md() {
     pandoc "${1}" | lynx -stdin
 }
 
-# list only the IPs for all interfaces
-ipls() {
-  local action
-  local output
-
-  action="${1}"
-  output=""
-
-  if command -v ifconfig >/dev/null; then
-    if [[ "${action}" != "-a" ]] && [[ "${action}" != "--all" ]]; then
-#        output="$(ifconfig | grep "inet" | grep -v "127.0.0.1" | grep -v "::1" | cut -d" "  -f2 | cut -d"%" -f1 | sort)"
-        output=$(command ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)' | awk '{ sub(/inet6? (addr:)? ?/, ""); print }')
-    else 
-      # list all interfaces
-      while read -r interface; do
-        # get IP for each interface
-        while read -r ip; do
-          if [ -n "${ip}" ]; then
-            output="${output}${interface}: ${ip}\n"
-            fi 
-        done < <(command ifconfig "${interface}" | grep "inet" | cut -d" "  -f2 | cut -d"%" -f1)
-      done < <(command ifconfig -a | sed -E 's/[[:space:]:].*//;/^$/d')
-   fi
-  fi
-
-  case "${action}" in 
-    -4)
-        echo "${output}" | grep -v ":"
-        ;;
-    -6)
-        echo "${output}" | grep -v "\."
-        ;;
-    -h|--help)
-        echo "usage: ipls [-4|-6|-a]"
-        echo ""
-        echo "options"
-        echo "-4, -6        Show only IPv4 or IPv6 addresses"
-        echo "-a, --all     Show interface label" 
-        ;;
-    *)
-      echo "${output}"
-  esac
-}
-
 xor() {
   printf '%#x\n' "$((${1} ^ ${2}))"
 }

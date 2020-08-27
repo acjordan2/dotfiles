@@ -149,7 +149,7 @@ _rand() {
   done
   shift $((OPTIND -1))
 
-  if [ -n "${max}" ] && [ "${min}" -gt "${max}" ]; then
+  if [ -n "${max}" ] && [[ "${min}" -gt "${max}" ]]; then
     printf "rand: min value cannot be greater than max\n" 1>&2
     return 2
   fi
