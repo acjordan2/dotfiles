@@ -39,7 +39,7 @@ ipls() {
         return
         ;;
       (h) echo "${usage}"; return ;;
-      (p) dig +short +tcp myip.opendns.com @resolver1.opendns.com; return ;;
+      (p) command dig +short +tcp myip.opendns.com @resolver1.opendns.com; return ;;
       (:|?) return 1 ;;
     esac
   done
