@@ -57,7 +57,14 @@ function load_module() {
 }
 
 function list-modules() {
-  find ${ZDOTDIR}/modules/* -maxdepth 0 -type d -printf "%f\n"
+ 
+  while read -r mod; do
+    if is_module_loaded $mod; then 
+      echo "${mod}*"
+    else
+      echo "${mod}"
+    fi
+  done < <(find ${ZDOTDIR}/modules/* -maxdepth 0 -type d -printf "%f\n")
 }
 
 function is_module_loaded() {
