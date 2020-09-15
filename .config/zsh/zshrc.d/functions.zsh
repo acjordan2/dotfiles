@@ -132,5 +132,12 @@ vless() {
 zdot() {
   local dir="${ZDOTDIR}"
   [[ -n "${1}" ]] && dir="${ZDOTDIR}/${1}"
-  cd "${dir}" || return 1
+  cd "${dir}" || return
+}
+
+dotfiles() {
+  zdot
+  local dir="$(git rev-parse --show-toplevel)"
+  [[ -n "${1}" ]] && dir="${dir}/${1}"
+  cd "${dir}" || return
 }

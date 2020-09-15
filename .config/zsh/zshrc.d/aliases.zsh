@@ -45,7 +45,6 @@ alias v="vim"
 alias PlugInstall="vim +PlugInstall"
 alias msfc="msfconsole"
 alias zshrc="vim ${ZDOTDIR}/.zshrc"
-alias dotfiles="zdot; cd \$(git rev-parse --show-toplevel)"
 
 # Vim scratchpad with autosaving
 alias scratchpad='vim -c "let g:auto_save = 1" ~/scratchpad/`date +"%m_%d_%Y"`.txt'
