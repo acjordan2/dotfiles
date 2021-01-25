@@ -17,6 +17,30 @@ function openssl-view-pkcs12 () {
     openssl pkcs12 -info -in "${1}"
 }
 
+function openssl-view-server-cert() {
+  usage="${0} [-p|-d] www.example.com:443"
+  optspec="pdh"
+  outform="PEM"
+  while getopts "${optspec}" opt; do
+    case "${opt}" in
+      p) outform="PEM";; 
+      d) outform="DER";;
+      h) echo "${usage}"; return ;;
+    esac
+  done
+  shift $(($OPTIND-1))
+  openssl s_client -showcerts -servername "${1%%:*}" -connect "${1}" </dev/null 2>/dev/null | openssl x509 -outform "${outform}"
+}
+
+function openssl-view-fingerprint {
+  if [[ -z "${1}" ]]; then
+    data=$(cat <&0)
+    openssl x509 -noout -fingerprint -sha256 -inform PEM 2>/dev/null <<< "${data}" || openssl x509 -noout -fingerprint -sha256 -inform DER  <<< "${data}"
+  else 
+    openssl x509 -noout -fingerprint -sha256 -inform PEM -in "${1}" 2>/dev/null || openssl x509 -noout -fingerprint -sha256 -inform DER -in "${1}" 2>/dev/null
+  fi
+}
+
 # create a self signed certificate
 function openssl-generate-certificate() {
   local cn="localhost" size=2048 output_path="/tmp"
@@ -136,4 +160,6 @@ function openssl-website-to-hpkp-pin() {
 function openssl-key-and-intermediate-to-unified-pem() {
     echo -e "$(cat "${1}")\n$(cat "${2}")" > "${1:0:-4}"_unified.pem
 }
+
+
 

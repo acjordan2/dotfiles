@@ -22,3 +22,6 @@
 [submodule ".config/zsh/modules/autopair/external"]
 	path = .config/zsh/modules/autopair/external
 	url = https://github.com/hlissner/zsh-autopair
+[submodule ".config/tmux/plugins/tpm"]
+	path = .config/tmux/plugins/tpm
+	url = https://github.com/tmux-plugins/tpm
