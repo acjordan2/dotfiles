@@ -1,5 +1,10 @@
 " vim:fdm=marker
 
+" Encoding {{{
+set encoding=utf-8 nobomb " BOM often causes trouble
+scriptencoding utf-8
+" }}}
+
 " Settings -------------------------------------------------------------
 
 " Preamble {{{
@@ -21,18 +26,14 @@ else
 endif
 " }}}
 
-" Make vim more useful {{{
-set nocompatible              " be iMproved, required
-" }}}
-
 " Syntax Highlighting {{{
 set background=dark
 syntax on
-colorscheme gruvbox
+" colorscheme gruvbox
 " }}}
 
 " Mapleader {{{
-let mapleader=","
+let mapleader=','
 " }}}
 
 
@@ -43,7 +44,6 @@ set cursorline " Highlight current line
 set clipboard=unnamed " System clipboard integration
 set diffopt=filler " Add vertical spaces to keep right and left aligned
 set diffopt+=iwhite " Ignore whitespace changes (focus on code changes)
-set encoding=utf-8 nobomb " BOM often causes trouble
 set expandtab " Expand tabs to spaces
 set foldcolumn=0 " Column to show folds
 set foldenable " Enable folding
@@ -78,7 +78,7 @@ set noshowmode " Don't show the current mode (airline.vim takes care of us)
 set nostartofline " Don't reset cursor to start of line when moving around
 set nowrap " Do not wrap lines
 set number " Enable line numbers
-set ofu=syntaxcomplete#Complete " Set omni-completion method
+set omnifunc=syntaxcomplete#Complete " Set omni-completion method
 set report=0 " Show all changes
 set ruler " Show the cursor position
 set scrolloff=3 " Start scrolling three lines before horizontal border of window
@@ -113,90 +113,7 @@ set wrapscan " Searches wrap around end of file
 " }}}
 
 " Configuration -------------------------------------------------------------
-" Tabline {{{
-" hi TabLineFill ctermfg=145 ctermbg=235
-hi TabLine cterm=none ctermfg=0 ctermbg=darkgray
-hi TabLineSel ctermfg=0 ctermbg=gray
-" }}}
 
-" Tabline {{{
-hi TabLineFill ctermbg=236
-hi TabLine ctermfg=225 ctermbg=236
-hi TabLineSel ctermfg=223 ctermbg=239
-" }}}
-
-" Status Line {{{
-augroup statusline_config 
-  " status bar colors
-  au InsertEnter * hi statusline guifg=black guibg=#d7afff ctermfg=black ctermbg=184
-  au InsertLeave * hi statusline guifg=black guibg=#8fbfdc ctermfg=black ctermbg=223
-  hi statusline gui=bold guifg=black guibg=#8fbfdc cterm=bold ctermfg=black ctermbg=223
-
-  " Status line
-  " default: set statusline=%f\ %h%w%m%r\ %=%(%l,%c%V\ %=\ %P%)
-
-  autocmd cursorhold,bufwritepost * unlet! b:statusline_trailing_space_warning
-
-  function! StatuslineTrailingSpaceWarning()
-      if !exists("b:statusline_trailing_space_warning")
-          if search('\s\+$', 'nw') != 0
-              let b:statusline_trailing_space_warning = '[\s]'
-          else
-              let b:statusline_trailing_space_warning = ''
-          endif
-      endif
-      return b:statusline_trailing_space_warning
-  endfunction
-
-  " Status Line Custom
-  let g:currentmode={
-      \ 'n'  : 'Normal',
-      \ 'no' : 'Normal·Operator Pending',
-      \ 'v'  : 'Visual',
-      \ 'V'  : 'V·Line',
-      \ "\<c-V>" : 'V·Block',
-      \ 's'  : 'Select',
-      \ 'S'  : 'S·Line',
-      \ "<c-S>" : 'S·Block',
-      \ 'i'  : 'Insert',
-      \ 'R'  : 'Replace',
-      \ 'Rv' : 'V·Replace',
-      \ 'c'  : 'Command',
-      \ 'cv' : 'Vim Ex',
-      \ 'ce' : 'Ex',
-      \ 'r'  : 'Prompt',
-      \ 'rm' : 'More',
-      \ 'r?' : 'Confirm',
-      \ '!'  : 'Shell',
-      \ 't'  : 'Terminal'
-      \}
-
-  set laststatus=2
-  set noshowmode
-  set statusline=
-  set statusline+=%0*\ %{toupper(g:currentmode[mode()])}\     " The current mode
-  set statusline+=%1*\ %<%F\                                  " File path
-  set statusline+=%3*│                                        " Separator
-  set statusline+=%4*%M%r%{StatuslineTrailingSpaceWarning()}  " modified, readonly, trailing space
-  set statusline+=%2*%h%w                                     " Helpfile, preview
-  set statusline+=%=                                          " Right Side
-  set statusline+=%2*\ %Y                                     " FileType
-  set statusline+=%3*│                                        " Separator
-  set statusline+=%1*\ %{''.(&fenc!=''?&fenc:&enc).''}        " Encoding
-  set statusline+=\ [%{&ff}]\                                 " FileFormat
-  set statusline+=%0*\ ≡\ %02l/%L\ :\ %02v\ [%3p%%]           " See next line
-  " Line number / total lines, col number, percentage of document
-
-  hi User1 ctermfg=223 ctermbg=239 guibg=#4e4e4e guifg=#adadad
-  hi User2 ctermfg=172 ctermbg=236 guibg=#303030 guifg=#8fbfdc
-  hi User3 ctermfg=236 ctermbg=236 guibg=#303030 guifg=#303030
-  hi User4 ctermfg=167 ctermbg=236 guibg=#303030 guifg=#d75f5f
-
-augroup END
-
-" }}}
-"
-"
 " FastEscape {{{
 " Speed up transition from modes
 set ttimeoutlen=10 timeoutlen=1000
@@ -219,18 +136,14 @@ augroup general_config
   " }}}
  
   " Toggle show tabs and trailing spaces (,c) {{{
-  set lcs=tab:›\ ,trail:·,eol:¬,nbsp:_
-  set fcs=fold:-
+  set listchars=tab:›\ ,trail:·,eol:¬,nbsp:_
+  set fillchars=fold:-
   nnoremap <silent> <leader>c :set nolist!<CR>
   " }}}
 
   " Paste toggle (,p) {{{
   set pastetoggle=<leader>p
   map <leader>p :set invpaste paste?<CR>
-  " }}}
-
-  " Yank from cursor to end of line {{{
-  nnoremap Y y$
   " }}}
 
   " Insert newline {{{
@@ -243,7 +156,7 @@ augroup general_config
 
   " Strip trailing whitespace (,ss) {{{
   function! StripWhitespace () " {{{
-    let save_cursor = getpos(".")
+    let save_cursor = getpos('.')
     let old_query = getreg('/')
     :%s/\s\+$//e
     call setpos('.', save_cursor)
@@ -271,17 +184,8 @@ augroup general_config
 
   " Disable Ex-MOde {{{
    map Q <Nop> 
+   map q <Nop>
   " }}}
-augroup END
-" }}}
-
-" NERD Commenter {{{
-augroup nerd_commenter
-  autocmd!
-
-  let NERDSpaceDelims=1
-  let NERDCompactSexyComs=1
-  let g:NERDCustomDelimiters = { 'racket': { 'left': ';', 'leftAlt': '#|', 'rightAlt': '|#' } }
 augroup END
 " }}}
 
@@ -319,7 +223,7 @@ augroup buffer_control
    " Jump to buffer number (<N>gb) {{{
   let c = 1
   while c <= 99
-    execute "nnoremap " . c . "gb :" . c . "b\<CR>"
+    execute 'nnoremap ' . c . 'gb :' . c . 'b\<CR>'
     let c += 1
   endwhile
   " }}}
@@ -359,12 +263,12 @@ augroup jump_to_tags
     let color = 233
 
     for i in range(start, end, width)
-      execute "hi CursorLine ctermbg=" . (color + i)
+      execute 'hi CursorLine ctermbg=' . (color + i)
       redraw
       sleep 6m
     endfor
     for i in range(end, start, -1 * width)
-      execute "hi CursorLine ctermbg=" . (color + i)
+      execute 'hi CursorLine ctermbg=' . (color + i)
       redraw
       sleep 6m
     endfor
@@ -411,7 +315,7 @@ augroup word_processor_mode
     endif
   endfunction
 
-  if exists("g:wp_mode")
+  if exists('g:wp_mode')
     autocmd! User GoyoEnter call <SID>goyo_enter()
     autocmd! User GoyoLeave call <SID>goyo_leave()
   endif
@@ -427,95 +331,6 @@ augroup restore_cursor
     \ if line("'\"") > 1 && line("'\"") <= line("$") |
     \   exe "normal! g`\"" |
     \ endif
-augroup END
-" }}}
-
-
-" Filetypes -------------------------------------------------------------
-" C {{{
-augroup filetype_c
-  autocmd!
-
-  " Highlight Custom C Types {{{
-  autocmd BufRead,BufNewFile *.[ch] let fname = expand('<afile>:p:h') . '/types.vim'
-  autocmd BufRead,BufNewFile *.[ch] if filereadable(fname)
-  autocmd BufRead,BufNewFile *.[ch]   exe 'so ' . fname
-  autocmd BufRead,BufNewFile *.[ch] endif
-  " }}}
-augroup END
-" }}}
-
-" JavaScript {{{
-augroup filetype_javascript
-  autocmd!
-  let g:javascript_conceal = 1
-augroup END
-" }}}
-
-" Go {{{
-augroup filetype_go
-  " Use go style guidlines
-  autocmd!
-  autocmd FileType go set noexpandtab
-  autocmd FileType go set shiftwidth=4
-  autocmd FileType go set softtabstop=4
-  autocmd FileType go set tabstop=4
-augroup END
-" }}}
-
-" JSON {{{
-augroup filetype_json
-  autocmd!
-  au BufRead,BufNewFile *.json set ft=json syntax=javascript
-augroup END
-
-" Markdown {{{
-augroup filetype_markdown
-  autocmd!
-  let g:markdown_fenced_languages = ['ruby', 'html', 'javascript', 'css', 'erb=eruby.html', 'bash=sh']
-augroup END
-" }}}
-
-" Python {{{
-augroup filetype_python
-  autocmd!
-  au FileType python let b:dispatch = 'python %'
-augroup END
-" }}}
-
-" Rust {{{
-augroup filetype_rust
-  autocmd!
-  au FileType rust let g:rustfmt_autosave = 1
-  au FileType rust let g:cargo_shell_command_runner = 'Dispatch '
-augroup END
-" }}
-
-" Ruby {{{
-augroup filetype_ruby
-  autocmd!
-
-  au BufRead,BufNewFile Rakefile,Capfile,Gemfile,.autotest,.irbrc,*.treetop,*.tt set ft=ruby syntax=ruby
-
-  " Ruby.vim {{{
-  let ruby_operators = 1
-  let ruby_space_errors = 1
-  let ruby_fold = 1
-  " }}}
-augroup END
-" }}}
-
-" XML {{{
-augroup filetype_xml
-  autocmd!
-  au FileType xml exe ":silent 1,$!xmllint --format --recover - 2>/dev/null"
-augroup END
-" }}}
-
-" ZSH {{{
-augroup filetype_zsh
-  autocmd!
-  au BufRead,BufNewFile .zsh_rc,.functions,.commonrc set ft=zsh
 augroup END
 " }}}
 
@@ -577,7 +392,7 @@ augroup END
 " Gutentags.vim {{{
 augroup gutentags_config
   autocmd!
-  let g:gutentags_ctags_exclude = ["*.min.js", "*.min.css", "build", "vendor", ".git", "*vim/plugged/*"]
+  let g:gutentags_ctags_exclude = ['*.min.js', '*.min.css', 'build', 'vendor', '.git', '*vim/plugged/*']
 augroup END
 " }}}
 
@@ -702,13 +517,17 @@ Plug 'junegunn/fzf.vim'
 Plug 'fatih/vim-go', {'for' : 'go'}
 Plug 'rust-lang/rust.vim', {'for': 'rust'}
 " UI
-Plug 'junegunn/goyo.vim', {'for': ['md', 'txt']}
+Plug 'dracula/vim', { 'as': 'dracula' }
+Plug 'junegunn/goyo.vim'
+Plug 'vim-airline/vim-airline'
 Plug 'majutsushi/tagbar'
 Plug 'tpope/vim-dispatch'
 Plug 'zefei/vim-wintabs'
 
 call plug#end()
 " }}}
+
+colorscheme dracula
 
 " Enable top level folds for .vimrc only
 " vim:foldmethod=marker:foldlevel=0
