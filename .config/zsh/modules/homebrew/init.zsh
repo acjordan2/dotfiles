@@ -11,6 +11,6 @@ if [ -f /usr/local/bin/brew ]; then
   export HOMEBREW_NO_ANALYTICS=1
 
   # Update all the brews
-  alias brewup="brew update && { brew upgrade; brew cask upgrade; brew cleanup && brew doctor}"
+  alias brewup="brew update && { brew upgrade; brew upgrade --cask; brew cleanup && brew doctor}"
   alias brews="brew list -1"
 fi

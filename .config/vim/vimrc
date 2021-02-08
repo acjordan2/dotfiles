@@ -517,7 +517,6 @@ Plug 'junegunn/fzf.vim'
 Plug 'fatih/vim-go', {'for' : 'go'}
 Plug 'rust-lang/rust.vim', {'for': 'rust'}
 " UI
-Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'junegunn/goyo.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'majutsushi/tagbar'
@@ -527,7 +526,7 @@ Plug 'zefei/vim-wintabs'
 call plug#end()
 " }}}
 
-colorscheme dracula
+runtime theme.vim
 
 " Enable top level folds for .vimrc only
 " vim:foldmethod=marker:foldlevel=0

@@ -3,7 +3,7 @@
 ZSH_THEME="p10k-lean"
 ZSH_INSTANT_PROMPT=true
 TMUX_AUTOSTART=true
-TMUX_SESSION_ID="${KITTY_WINDOW_ID}"
+TMUX_SESSION_ID="1"
 
 # order matters
 plugins=(

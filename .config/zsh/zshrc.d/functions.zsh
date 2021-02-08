@@ -141,3 +141,57 @@ dotfiles() {
   [[ -n "${1}" ]] && dir="${dir}/${1}"
   cd "${dir}" || return
 }
+
+switch-theme () {
+  local theme_folders=(
+    "${XDG_CONFIG_HOME}/kitty/themes/themes"
+    "${XDG_CONFIG_HOME}/tmux/themes"
+    "${XDG_CONFIG_HOME}/vim/themes"
+  )
+
+  local symlinks=(
+    "${XDG_CONFIG_HOME}/kitty/theme.conf"
+    "${XDG_CONFIG_HOME}/tmux/theme.conf"
+    "${XDG_CONFIG_HOME}/vim/theme.vim"
+  )
+
+  local files_to_symlink=()
+
+  theme="${1}.conf"
+
+  for dir in ${theme_folders}; do
+    if [[ -f "${dir}/${theme}" ]]; then
+      files_to_symlink+=("${dir}/${theme}")
+    elif [[ -f "${dir}/${theme//-/_}" ]]; then
+      files_to_symlink+=("${dir}/${theme//-/_}")
+    else 
+      echo "File not found: ${dir}/${theme}"
+      return 1
+    fi
+  done
+
+  index=1
+  for f in "${files_to_symlink[@]}"; do
+  
+    if [[ -L "${symlinks[${index}]}" ]]; then
+      command rm "${symlinks[${index}]}"
+    fi
+    ln -s "${f}" "${symlinks[${index}]}"
+    index=$((index + 1))
+  done
+
+  sed -i '/### START THEME ###/,/### END THEME ###/d' "${XDG_CONFIG_HOME}/tmux/tmux.conf"
+  if [[ "${theme}" = "dracula.conf" ]]; then
+    { 
+      echo "### START THEME ###"
+      cat "${XDG_CONFIG_HOME}/tmux/theme.conf"
+      echo "### END THEME ###" 
+    } >> "${XDG_CONFIG_HOME}/tmux/tmux.conf"
+    tmux source "${XDG_CONFIG_HOME}/tmux/tmux.conf"
+  else
+    tmux source "${XDG_CONFIG_HOME}/tmux/theme.conf"
+  fi
+  kitty @ set-colors "${XDG_CONFIG_HOME}/kitty/theme.conf"
+  
+}
+
