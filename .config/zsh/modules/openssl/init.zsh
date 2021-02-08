@@ -29,7 +29,15 @@ function openssl-view-server-cert() {
     esac
   done
   shift $(($OPTIND-1))
-  openssl s_client -showcerts -servername "${1%%:*}" -connect "${1}" </dev/null 2>/dev/null | openssl x509 -outform "${outform}"
+
+  host="${1%%:*}"
+  port="${1##*:}"
+
+  if [[ -z "${port}" ]] || [[ "${port}" = "${host}" ]]; then
+    port=443
+  fi
+
+  openssl s_client -showcerts -servername "${host}" -connect "${host}:${port}" </dev/null 2>/dev/null | openssl x509 -outform "${outform}"
 }
 
 function openssl-view-fingerprint {
