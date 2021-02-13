@@ -2,7 +2,11 @@
 # with a few of my own shortcuts
 
 function openssl-view-certificate () {
+  if [[ -z "${1}" ]]; then
+    openssl x509 -text -noout
+  else
     openssl x509 -text -noout -in "${1}"
+  fi
 }
 
 function openssl-view-csr () {
@@ -17,14 +21,17 @@ function openssl-view-pkcs12 () {
     openssl pkcs12 -info -in "${1}"
 }
 
-function openssl-view-server-cert() {
-  usage="${0} [-p|-d] www.example.com:443"
-  optspec="pdh"
+# gets the full certificate chain (with the -f flag)
+# of a remote server
+function openssl-get-server-cert() {
+  usage="${0} [-p|-d] [-f] www.example.com:443"
+  optspec="pdhf"
   outform="PEM"
   while getopts "${optspec}" opt; do
     case "${opt}" in
       p) outform="PEM";; 
       d) outform="DER";;
+      f) chain=true;;
       h) echo "${usage}"; return ;;
     esac
   done
@@ -36,10 +43,114 @@ function openssl-view-server-cert() {
   if [[ -z "${port}" ]] || [[ "${port}" = "${host}" ]]; then
     port=443
   fi
-
-  openssl s_client -showcerts -servername "${host}" -connect "${host}:${port}" </dev/null 2>/dev/null | openssl x509 -outform "${outform}"
+  
+  if [[ -z "${chain}" ]]; then
+    openssl s_client -showcerts -servername "${host}" -connect "${host}:${port}" </dev/null 2>/dev/null | openssl x509 -outform "${outform}"
+  else
+    openssl s_client -showcerts -verify 5 -connect "${host}:${port}" < /dev/null 2>/dev/null | awk '/BEGIN/,/END/ {print }'
+  fi
 }
 
+# Clone the certificate chain of a remote server including
+# intermedaite and root certificates
+function openssl-clone-server-cert-chain(){
+  usage="${0} [-p </ouput/path>] www.example.com:443"
+  optspec="pdh"
+  output_path="/tmp"
+  current_dir="${PWD}"
+  CA_cert=""
+  CA_key=""
+  local port
+
+  if [[ -n "${ZSH_VERSION}" ]]; then
+    offset=0
+  else
+    offset=1
+  fi
+  
+  while getopts "${optspec}" opt; do
+    case "${opt}" in
+      p) output_path="${OPTARG}";;
+      h) echo "${usage}"; return ;;
+    esac
+  done
+  shift $(($OPTIND-1))
+
+  host="${1%%:*}"
+  port="${1##*:}"
+
+  if [[ -z "${port}" ]] || [[ "${port}" = "${host}" ]]; then
+    port=443
+  fi
+  
+  local dir="${output_path}/${host}"
+  mkdir -p "${dir}/orig" "${dir}/clone"
+  
+  openssl s_client -showcerts -verify 5 -connect "${host}:${port}" < /dev/null 2>/dev/null | 
+    awk '/BEGIN/,/END/{ if(/BEGIN/){a++}; out="'${dir}/orig/'"a".crt"; print >out}' 
+  orig_files=( ${dir}/orig/*.crt )
+  
+  for ((i=${#orig_files[@]}-${offset}; i>0; i--)); do
+
+    subject=$(openssl x509 -noout -subject -in "${orig_files[$i]}" | sed 's/subject=\ //g')
+    issuer=$(openssl x509 -noout -issuer -in "${orig_files[$i]}" | sed 's/issuer=\ //g')
+    serial=$(openssl x509 -noout -serial -in "${orig_files[$i]}" | sed 's/serial=//g')
+    san=$(openssl x509 -noout -text -in "${orig_files[$i]}" | grep "DNS")
+
+    if [[ -z "${CA_cert}" ]]; then
+      # Sign cert is not set, so lets create a self signed cert  as the root
+      openssl genrsa -out "${dir}/clone/root_${host}.key" 4096
+      openssl req -sha256 -new -x509 -days 1826 -subj "${issuer}" -key "${dir}/clone/root_${host}.key" -out "${dir}/clone/root_${host}.crt"
+      CA_cert="${dir}/clone/root_${host}.crt"
+      CA_key="${dir}/clone/root_${host}.key"
+    fi
+  
+    openssl genrsa -out "${dir}/clone/${i}_${host}.key" 2048
+    if [[ -z "${san}" ]]; then
+      openssl req -sha256 -new -subj "${subject}" -key "${dir}/clone/${i}_${host}.key" \
+        -out "${dir}/clone/${i}_${host}.csr"
+      openssl x509 -req -days 360 -in "${dir}/clone/${i}_${host}.csr" -CA "${CA_cert}" \
+        -CAkey "${CA_key}" -set_serial "0x${serial}" -out "${dir}/clone/${i}_${host}.crt" -sha256
+    else
+      openssl req -sha256 -new -subj "${subject}" -key "${dir}/clone/${i}_${host}.key" \
+        -out "${dir}/clone/${i}_${host}.csr" -reqexts SAN -config <(cat /etc/ssl/openssl.cnf \
+        <(printf "\n[SAN]\nsubjectAltName=${san}")) -extensions SAN
+      openssl x509 -req -days 360 -in "${dir}/clone/${i}_${host}.csr" -CA "${CA_cert}" \
+        -CAkey "${CA_key}" -set_serial "0x${serial}" -out "${dir}/clone/${i}_${host}.crt" -sha256 \
+        -extfile  <(printf "subjectAltName=${san}")
+    fi
+
+    CA_cert="${dir}/clone/${i}_${host}.crt"
+    CA_key="${dir}/clone/${i}_${host}.key"
+  done
+  
+  cat ${dir}/clone/*.crt > "${dir}/clone/fullchain_${host}.crt"
+}
+
+function openssl-clone-server() {
+  optspec="hl:H:p:"
+  port=8443
+  host=""
+
+  while getopts "${optspec}" opt; do
+    case "${opt}" in
+      p) port="${OPTARG}";;
+      H) host="${OPTARG}";;
+      h) echo "${usage}"; return ;;
+    esac
+  done
+
+  openssl-clone-server-cert-chain "${host}" 
+  # I can't figure out how to get openssl to server the entire certificate chain
+  # use python wrapper for now (requires python3)
+  # openssl-server -k "/tmp/${host}/clone/1_${host}.key" -c "/tmp/${host}/clone/fullchain_${host}.crt" -p ${port} -w -a "/tmp/${host}/clone/fullchain_${host}.crt"
+ 
+  simple-https-server -k "/tmp/${host}/clone/1_${host}.key" -c "/tmp/${host}/clone/fullchain_${host}.crt" "${port}" 
+
+}
+
+# view the finger printn of a give x509
+# certificate
 function openssl-view-fingerprint {
   if [[ -z "${1}" ]]; then
     data=$(cat <&0)
@@ -88,11 +199,12 @@ function openssl-client () {
 function openssl-server(){
 
   local cert key cn=localhost port=8443 web
-  local optspec="k:c:p:n:hw"
+  local optspec="k:c:p:n:hwx:"
   local usage="openssl-server [-k <path/to/key.pem] [-c /path/to/cert.pem] [-c localhost] [-p 8443] [-w]"
 
   while getopts "${optspec}" opt; do
     case "${opt}" in
+      a) ca_file="${OPTARG}";;
       c) cert="${OPTARG}";;
       k) key="${OPTARG}";;
       n) cn="${OPTARG}";;
