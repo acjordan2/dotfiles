@@ -1,6 +1,5 @@
 # mostly grabbed from https://expeditedsecurity.com/blog/openssl-shortcuts/
 # with a few of my own shortcuts
-
 function openssl-view-certificate () {
   if [[ -z "${1}" ]]; then
     openssl x509 -text -noout
@@ -10,15 +9,27 @@ function openssl-view-certificate () {
 }
 
 function openssl-view-csr () {
+  if [[ -z "${1}" ]]; then
+    openssl req -text -noout -verify
+  else 
     openssl req -text -noout -verify -in "${1}"
+  fi
 }
 
 function openssl-view-key () {
+  if [[ -z "${1}" ]]; then
+    openssl rsa -check 
+  else
     openssl rsa -check -in "${1}"
+  fi
 }
 
 function openssl-view-pkcs12 () {
+  if [[ -z "${1}" ]]; then
+    openssl pkcs12 -info
+  else
     openssl pkcs12 -info -in "${1}"
+  fi
 }
 
 # gets the full certificate chain (with the -f flag)
@@ -52,15 +63,13 @@ function openssl-get-server-cert() {
 }
 
 # Clone the certificate chain of a remote server including
-# intermedaite and root certificates
+# intermedaite and root certificates. Only tested on the 
+# default openssl version shipped with macOS
 function openssl-clone-server-cert-chain(){
-  usage="${0} [-p </ouput/path>] www.example.com:443"
-  optspec="pdh"
-  output_path="/tmp"
-  current_dir="${PWD}"
-  CA_cert=""
-  CA_key=""
-  local port
+  local usage="${0} [-o </ouput/directory>] www.example.com:443"
+  local optspec="o:dh"
+  local output_path="/tmp"
+  local port CA_cert CA_key
 
   if [[ -n "${ZSH_VERSION}" ]]; then
     offset=0
@@ -70,11 +79,16 @@ function openssl-clone-server-cert-chain(){
   
   while getopts "${optspec}" opt; do
     case "${opt}" in
-      p) output_path="${OPTARG}";;
+      o) output_path="${OPTARG}";;
       h) echo "${usage}"; return ;;
     esac
   done
   shift $(($OPTIND-1))
+
+  if [[ -z "${1}" ]]; then 
+    echo "${usage}"
+    return
+  fi
 
   host="${1%%:*}"
   port="${1##*:}"
@@ -127,25 +141,45 @@ function openssl-clone-server-cert-chain(){
   cat ${dir}/clone/*.crt > "${dir}/clone/fullchain_${host}.crt"
 }
 
+# start a TLS enabled server with a cloned cert chain
 function openssl-clone-server() {
-  optspec="hl:H:p:"
-  port=8443
-  host=""
+  local optspec="hl:X" port=8443 host use_openssl=false
+  local usage="${0} [-l 8443] [-X] www.example.com:443
+
+Arguments:
+
+-l    Listen port
+-X    Use openssl s_server instead of python helper script
+        will only server the leaf node and not the full
+        cert chain
+
+  "
 
   while getopts "${optspec}" opt; do
     case "${opt}" in
-      p) port="${OPTARG}";;
+      l) port="${OPTARG}";;
       H) host="${OPTARG}";;
+      X) use_openssl=true;;
       h) echo "${usage}"; return ;;
     esac
   done
 
+  shift $(($OPTIND-1))
+
+  if [[ -z "${1}" ]]; then 
+    echo "${usage}"
+    return
+  fi
+  host="${1}"
+
   openssl-clone-server-cert-chain "${host}" 
   # I can't figure out how to get openssl to server the entire certificate chain
-  # use python wrapper for now (requires python3)
-  # openssl-server -k "/tmp/${host}/clone/1_${host}.key" -c "/tmp/${host}/clone/fullchain_${host}.crt" -p ${port} -w -a "/tmp/${host}/clone/fullchain_${host}.crt"
- 
-  simple-https-server -k "/tmp/${host}/clone/1_${host}.key" -c "/tmp/${host}/clone/fullchain_${host}.crt" "${port}" 
+  # use python wrapper for now (requires python3). Force openssl via the -X flag
+  if [[ ${use_openssl} = true ]]; then
+    openssl-server -k "/tmp/${host}/clone/1_${host}.key" -c "/tmp/${host}/clone/fullchain_${host}.crt" -l ${port} -w # -a "/tmp/${host}/clone/fullchain_${host}.crt"
+  else
+    simple-https-server -k "/tmp/${host}/clone/1_${host}.key" -c "/tmp/${host}/clone/fullchain_${host}.crt" "${port}" 
+  fi
 
 }
 
@@ -164,21 +198,21 @@ function openssl-view-fingerprint {
 function openssl-generate-certificate() {
   local cn="localhost" size=2048 output_path="/tmp"
   local expiration=365
-  local usage="openssl-generate-certificate [-n localhost] [-s 2048] [-x 365] [-p /tmp]
+  local usage="openssl-generate-certificate [-n localhost] [-s 2048] [-x 365] [-o /tmp]
 
 -n    common name
 -s    key size
 -x    expiration time in days
--p    output path"
+-o    output path"
 
-  optspec="n:s:x:p:h"
+  optspec="n:s:x:o:h"
 
   while getopts "${optspec}" opt; do
     case "${opt}" in
       n) cn="${OPTARG}";;
       s) size="${OPTARG}";;
       x) expiration="${OPTARG}";;
-      p) output_path="${OPTARG}";;
+      o) output_path="${OPTARG}";;
       h) echo "${usage}"; return;;
     esac
   done
@@ -199,8 +233,8 @@ function openssl-client () {
 function openssl-server(){
 
   local cert key cn=localhost port=8443 web
-  local optspec="k:c:p:n:hwx:"
-  local usage="openssl-server [-k <path/to/key.pem] [-c /path/to/cert.pem] [-c localhost] [-p 8443] [-w]"
+  local optspec="k:c:l:n:hwx:"
+  local usage="openssl-server [-k <path/to/key.pem] [-c /path/to/cert.pem] [-c localhost] [-l 8443] [-w]"
 
   while getopts "${optspec}" opt; do
     case "${opt}" in
@@ -208,7 +242,7 @@ function openssl-server(){
       c) cert="${OPTARG}";;
       k) key="${OPTARG}";;
       n) cn="${OPTARG}";;
-      p) port="${OPTARG}";;
+      l) port="${OPTARG}";;
       w) web="-WWW";;
       h) echo "${usage}"; return;;
     esac
@@ -232,6 +266,7 @@ function openssl-server(){
   echo ""
   echo ""
 
+  # @TODO find a way to serve a full cert chain
   openssl s_server -key "${key}" -cert "${cert}" -accept "${port}" ${web} -msg
 }
 
@@ -280,6 +315,3 @@ function openssl-website-to-hpkp-pin() {
 function openssl-key-and-intermediate-to-unified-pem() {
     echo -e "$(cat "${1}")\n$(cat "${2}")" > "${1:0:-4}"_unified.pem
 }
-
-
-
