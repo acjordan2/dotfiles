@@ -143,7 +143,7 @@ function openssl-clone-server-cert-chain(){
 
 # start a TLS enabled server with a cloned cert chain
 function openssl-clone-server() {
-  local optspec="hl:X" port=8443 host use_openssl=false
+  local optspec="hl:" port=8443 host 
   local usage="${0} [-l 8443] [-X] www.example.com:443
 
 Arguments:
@@ -159,7 +159,6 @@ Arguments:
     case "${opt}" in
       l) port="${OPTARG}";;
       H) host="${OPTARG}";;
-      X) use_openssl=true;;
       h) echo "${usage}"; return ;;
     esac
   done
@@ -173,14 +172,7 @@ Arguments:
   host="${1}"
 
   openssl-clone-server-cert-chain "${host}" 
-  # I can't figure out how to get openssl to server the entire certificate chain
-  # use python wrapper for now (requires python3). Force openssl via the -X flag
-  if [[ ${use_openssl} = true ]]; then
-    openssl-server -k "/tmp/${host}/clone/1_${host}.key" -c "/tmp/${host}/clone/fullchain_${host}.crt" -l ${port} -w # -a "/tmp/${host}/clone/fullchain_${host}.crt"
-  else
-    simple-https-server -k "/tmp/${host}/clone/1_${host}.key" -c "/tmp/${host}/clone/fullchain_${host}.crt" "${port}" 
-  fi
-
+  openssl-server -k "/tmp/${host}/clone/1_${host}.key" -c "/tmp/${host}/clone/fullchain_${host}.crt" -l ${port} -w
 }
 
 # view the finger printn of a give x509
@@ -267,7 +259,7 @@ function openssl-server(){
   echo ""
 
   # @TODO find a way to serve a full cert chain
-  openssl s_server -key "${key}" -cert "${cert}" -accept "${port}" ${web} -msg
+  openssl s_server -key "${key}" -cert "${cert}" -chain -CAfile "${cert}" -accept "${port}" ${web} -msg
 }
 
 # Convert PEM private key, PEM certificate and PEM CA certificate (used by nginx, Apache, and other openssl apps) to a PKCS12 file (typically for use with Windows or Tomcat)
