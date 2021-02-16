@@ -1,0 +1,49 @@
+#compdef rand
+
+setopt localoptions 
+
+local environ e cmd
+local -a rand_args
+local -a _comp_priv_prefix
+
+local -a charsets
+
+charsets=(
+    "'[\:alnum\:]'"
+    "'[\:alpha\:]'"
+    "'[\:blank\:]'"
+    "'[\:cntrl\:]'"
+    "'[\:digit\:]'"
+    "'[\:graph\:]'"
+    "'[\:hex\:]'"
+    "'[\:lower\:]'"
+    "'[\:print\:]'"
+    "'[\:punct\:]'"
+    "'[\:space\:]'"
+    "'[\:upper\:]'"
+    "'[\:xdigit\:]'"
+  )
+
+zstyle -a ":completion:${curcontext}:" environ environ
+
+for e in "${environ[@]}"
+do local -x "$e"
+done
+
+rand_args=(
+  '-c[Character/word count]'
+  '-d[Generate a random number from a given range (e.g x-y)]'
+  '-n[Number of strings to generate]'
+  '-p[Generate a password]'
+  '-P[Generate a pronounceable word]'
+  '-R[Raw random data]'
+  '-w[Random words]'
+  '--word-list=-[Path to word list]:word-list:_files'
+  "--charset=-[Character set to use]:charset:( ${charsets[*]} )"
+  '(-h --help)'{-h,--help}'[display help message and exit]'
+  '--max[Maximum word size]'
+  '--min[Minimum word size]'
+  '-s[Word seperator]'
+)
+
+_arguments -s $rand_args

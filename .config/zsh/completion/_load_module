@@ -1,0 +1,27 @@
+#compdef load_module
+
+setopt localoptions AUTO_REMOVE_SLASH
+set +o list_types
+
+local environ e cmd dir
+local -a _add
+local -a _comp_priv_prefix
+
+zstyle -a ":completion:${curcontext}:" environ environ
+zstyle ':completion:*' list-colors tc=33 ${(s.:.)LS_COLORS}
+
+for e in "${environ[@]}"
+do local -x "$e"
+done
+
+for dir in ${ZDOTDIR}/modules/*/; do
+  if [[ -f "${dir}/init.zsh" ]]; then
+    module="$(basename "${dir}")"
+
+    if ! is_module_loaded "${module}"; then
+      _add+=("$(basename ${dir})")
+    fi
+  fi
+done
+
+compadd ${_add}

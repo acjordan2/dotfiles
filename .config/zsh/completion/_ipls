@@ -1,0 +1,25 @@
+#compdef ipls
+
+setopt localoptions 
+
+local environ e cmd
+local -a args
+local -a _comp_priv_prefix
+
+zstyle -a ":completion:${curcontext}:" environ environ
+
+for e in "${environ[@]}"
+do local -x "$e"
+done
+
+args=(
+  '-4[Show only IPv4 addresses]'
+  '-6[Show only IPv6 addresses]'
+  '-a[Show labels]'
+  '-l[List interfaces]'
+  '-i[Get IP of interface"]:interface:_net_interfaces'
+  '-p[Show public interface]'
+  '-h[display help message and exit]'
+)
+
+_arguments -s $args
