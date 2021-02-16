@@ -35,7 +35,7 @@ function openssl-view-pkcs12 () {
 # gets the full certificate chain (with the -f flag)
 # of a remote server
 function openssl-get-server-cert() {
-  usage="${0} [-p|-d] [-f] www.example.com:443"
+  usage="usage: ${0} [-p|-d] [-f] www.example.com:443"
   optspec="pdhf"
   outform="PEM"
   while getopts "${optspec}" opt; do
@@ -66,7 +66,7 @@ function openssl-get-server-cert() {
 # intermedaite and root certificates. Only tested on the 
 # default openssl version shipped with macOS
 function openssl-clone-server-cert-chain(){
-  local usage="${0} [-o </ouput/directory>] www.example.com:443"
+  local usage="usage: ${0} [-o </ouput/directory>] www.example.com:443"
   local optspec="o:dh"
   local output_path="/tmp"
   local port CA_cert CA_key
@@ -144,16 +144,7 @@ function openssl-clone-server-cert-chain(){
 # start a TLS enabled server with a cloned cert chain
 function openssl-clone-server() {
   local optspec="hl:" port=8443 host 
-  local usage="${0} [-l 8443] [-X] www.example.com:443
-
-Arguments:
-
--l    Listen port
--X    Use openssl s_server instead of python helper script
-        will only server the leaf node and not the full
-        cert chain
-
-  "
+  local usage="usage: ${0} [-l 8443] www.example.com:443"
 
   while getopts "${optspec}" opt; do
     case "${opt}" in
@@ -190,7 +181,7 @@ function openssl-view-fingerprint {
 function openssl-generate-certificate() {
   local cn="localhost" size=2048 output_path="/tmp"
   local expiration=365
-  local usage="openssl-generate-certificate [-n localhost] [-s 2048] [-x 365] [-o /tmp]
+  local usage="usage: ${0} [-n localhost] [-s 2048] [-x 365] [-o /tmp]
 
 -n    common name
 -s    key size
@@ -226,7 +217,7 @@ function openssl-server(){
 
   local cert key cn=localhost port=8443 web
   local optspec="k:c:l:n:hwx:"
-  local usage="openssl-server [-k <path/to/key.pem] [-c /path/to/cert.pem] [-c localhost] [-l 8443] [-w]"
+  local usage="usage: ${0} [-k <path/to/key.pem] [-c /path/to/cert.pem] [-c localhost] [-l 8443] [-w]"
 
   while getopts "${optspec}" opt; do
     case "${opt}" in
@@ -258,7 +249,6 @@ function openssl-server(){
   echo ""
   echo ""
 
-  # @TODO find a way to serve a full cert chain
   openssl s_server -key "${key}" -cert "${cert}" -chain -CAfile "${cert}" -accept "${port}" ${web} -msg
 }
 
