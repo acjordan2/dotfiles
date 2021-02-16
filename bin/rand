@@ -9,28 +9,29 @@ DEFAULT_PRONOUNCE_COUNT=8
 cmd=${0##*/}
 
 _rand_print_usage() {
-  echo "usage: ${cmd} [-cdnpPRsw] [--charset <character set>]"
+  echo "usage: ${cmd} [-cdnpPRsw] [--charset='[:hex:]'] [--word-list=/usr/shar/dict/words]"
   echo ""
   echo "Generate a secure random dataset within a given range" 
   echo "or character set (default is '[:hex:]')"
   echo ""
   echo "Arguments:"
-  echo "-c          Character/word count."
-  echo "              Default character count: ${DEFAULT_CHAR_COUNT}"
-  echo "              Default word count: ${DEFAULT_WORD_COUNT}"
-  echo "              Default pronounceable count: ${DEFAULT_PRONOUNCE_COUNT}"
-  echo "-d          Generate a random number from a given range (e.g x-y)"
-  echo "              if only one number is provided, x defaults to 1"
-  echo "--charset   Character set to use"
-  echo "-n          Number of strings to generate"
-  echo "-p          Generate a password (shorthand for rand --charset '[:graph:]')"
-  echo "-P          Generate a pronounceable word"
-  echo "-R          Raw random data"
-  echo "-w          Random words"
-  echo "--max       Maximum word size"
-  echo "--min       Minimum word size"
-  echo "-s          Word Seperator"
-  echo "              Default: '-'" 
+  echo "-c            Character/word count."
+  echo "                Default character count: ${DEFAULT_CHAR_COUNT}"
+  echo "                Default word count: ${DEFAULT_WORD_COUNT}"
+  echo "                Default pronounceable count: ${DEFAULT_PRONOUNCE_COUNT}"
+  echo "-d            Generate a random number from a given range (e.g x-y)"
+  echo "                if only one number is provided, x defaults to 1"
+  echo "--charset     Character set to use"
+  echo "-n            Number of strings to generate"
+  echo "-p            Generate a password (shorthand for rand --charset='[:graph:]')"
+  echo "-P            Generate a pronounceable word"
+  echo "-R            Raw random data"
+  echo "-w            Random words"
+  echo "--word-list   Word list used to generate passphrase"
+  echo "--max         Maximum word size"
+  echo "--min         Minimum word size"
+  echo "-s            Word Seperator"
+  echo "                Default: '-'"
 }
 
 _rand_shuf() {
@@ -197,6 +198,7 @@ _rand() {
   local num=1
   local seperator="-"
   local count max min mode num range
+  local word_list="/usr/share/dict/words"
 
   local optspec=":-:hpPRwc:s:n:d:"
   local OPTIND=1
@@ -212,6 +214,16 @@ _rand() {
             # Indirect expansion that works with ZSH and Bash
             eval "charset=\"\${$OPTIND}\""
             OPTIND=$(( OPTIND + 1 ))
+            ;;
+          charset=*)
+            charset="$(echo "${OPTARG}" | cut -d"=" -f2)"
+            ;;
+          word-list)
+            eval "word_list=\"\${$OPTIND}\""
+            OPTIND=$(( OPTIND + 1 ))
+            ;;
+          word-list=*)
+            word_list="$(echo "${OPTARG}" | cut -d"=" -f2)"
             ;;
           help)
             _rand_print_usage
@@ -319,7 +331,7 @@ _rand() {
   for ((i=1;i<=num;i++)); do
     case "${mode}" in
       "words")
-        run_cmd=("_rand_generate_pass_phrase" "-f" "/usr/share/dict/words"
+        run_cmd=("_rand_generate_pass_phrase" "-f" "${word_list}"
                   "-s" "${seperator}" "-c" "${count}")
         ;;
      "pronounceable")
@@ -329,7 +341,7 @@ _rand() {
         run_cmd=("_rand_number" "${range[*]:0:1}" "${range[*]:1:1}") 
         ;;
       "raw")
-        run_cmd=("command" "head" "-c" "${count}" "<" "/dev/urandom")
+        run_cmd=("command" "head" "-c" "${count}" "<" "/dev/urandom;" "echo")
         ;;
       *)
         if [[ "${charset}" == "[:hex:]" ]]; then
@@ -349,7 +361,7 @@ _rand() {
         if [[ -n "${min}" ]]; then
           run_cmd+=("-m" "${min}")
         fi
-      ${run_cmd[*]}
+      eval "${run_cmd[*]}"
     fi
   done
   
