@@ -38,6 +38,8 @@ function openssl-get-server-cert() {
   usage="usage: ${0} [-p|-d] [-f] www.example.com:443"
   optspec="pdhf"
   outform="PEM"
+  chain=false
+
   while getopts "${optspec}" opt; do
     case "${opt}" in
       p) outform="PEM";; 
