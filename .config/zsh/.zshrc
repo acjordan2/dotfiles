@@ -27,5 +27,7 @@ source "${ZDOTDIR}/modules/init.zsh"
 
 # load extra dotfiles
 for file in "${ZDOTDIR}"/zshrc.d/{aliases,functions,exports,extra}.zsh; do
-  [[ -f "${file}" ]] && jit-source "${file}"
+  if [[ -f "${file}" ]]; then
+    jit-source "${file}"
+  fi
 done

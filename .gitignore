@@ -28,3 +28,4 @@ extra.*
 *.zwc
 tags
 .zcompdump
+.zsh_history
