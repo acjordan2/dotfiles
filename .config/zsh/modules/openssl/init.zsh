@@ -35,10 +35,10 @@ function openssl-view-pkcs12 () {
 # gets the full certificate chain (with the -f flag)
 # of a remote server
 function openssl-get-server-cert() {
-  usage="usage: ${0} [-p|-d] [-f] www.example.com:443"
-  optspec="pdhf"
-  outform="PEM"
-  chain=false
+  local usage="usage: ${0} [-p|-d] [-f] www.example.com:443"
+  local optspec="pdhf"
+  local outform="PEM"
+  local chain
 
   while getopts "${optspec}" opt; do
     case "${opt}" in
