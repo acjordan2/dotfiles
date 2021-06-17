@@ -70,7 +70,7 @@ function openssl-get-server-cert() {
 function openssl-clone-server-cert-chain(){
   local usage="usage: ${0} [-o </ouput/directory>] www.example.com:443"
   local optspec="o:dh"
-  local output_path="/tmp"
+  local output_path="${TMPDIR}"
   local port CA_cert CA_key
 
   if [[ -n "${ZSH_VERSION}" ]]; then
@@ -165,7 +165,7 @@ function openssl-clone-server() {
   host="${1}"
 
   openssl-clone-server-cert-chain "${host}" 
-  openssl-server -k "/tmp/${host}/clone/1_${host}.key" -c "/tmp/${host}/clone/fullchain_${host}.crt" -l ${port} -w
+  openssl-server -k "${TMPDIR}/${host}/clone/1_${host}.key" -c "${TMPDIR}/${host}/clone/fullchain_${host}.crt" -l ${port} -w
 }
 
 # view the finger printn of a give x509
@@ -181,9 +181,9 @@ function openssl-view-fingerprint {
 
 # create a self signed certificate
 function openssl-generate-certificate() {
-  local cn="localhost" size=2048 output_path="/tmp"
+  local cn="localhost" size=2048 output_path="${TMPDIR}"
   local expiration=365
-  local usage="usage: ${0} [-n localhost] [-s 2048] [-x 365] [-o /tmp]
+  local usage="usage: ${0} [-n localhost] [-s 2048] [-x 365] [-o ${TMPDIR}]
 
 -n    common name
 -s    key size
