@@ -25,6 +25,7 @@ Thumbs.db
 .extra
 extra.*
 .config/zsh/env/extra.zsh
+.config/zsh/.zsh_sessions
 *.zwc
 tags
 .zcompdump
