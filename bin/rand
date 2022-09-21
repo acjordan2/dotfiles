@@ -162,8 +162,16 @@ _rand_generate_word() {
 
   local const=('b' 'c' 'd' 'f' 'g' 'h' 'j'
                'k' 'l' 'm' 'n' 'p' 'r' 's' 
-               't' 'v' 'w' 'x' 'y' 'z')
-  local vowels=('a' 'e' 'i' 'o' 'u')
+               't' 'v' 'w' 'x' 'y' 'z' 'bl'
+               'cl' 'fl' 'gl' 'pl' 'sl' 'br'
+               'cr' 'dr' 'fr' 'gr' 'pr' 'tr'
+               'sc' 'sc' 'sk' 'sm' 'sn' 'sp'
+               'st' 'sw' 'ch' 'th'
+             )
+  local vowels=('a' 'e' 'i' 'o' 'u' 'ai' 'au'
+                'ea' 'ei' 'ie' 'ee' 'ou' 'oo'
+                )
+  local len check
 
   if [[ -z "${max}" ]] && [[ -n "${min}" ]]; then
     max="${count}"
@@ -180,14 +188,23 @@ _rand_generate_word() {
     count=$(_rand_number "${min}" "${max}")
   fi
 
-  for ((j=1;j<=count;j++)); do
+
+  for ((j=1;len<count;j++)); do
+    check=$((count+1))
     if [ $((j % 2)) -eq 0 ]; then
-      r=$(_rand_number 0 $((${#vowels[@]}-1)))
+      while [[ ${check} -gt ${count} ]]; do
+        r=$(_rand_number 0 $((${#vowels[@]}-1)))
+        check=$(( ${#r} + len ))
+      done
       output="${output}${vowels[*]:${r}:1}"
     else
-      r=$(_rand_number 0 $((${#const[@]}-1)))
+      while [[ ${check} -gt ${count} ]]; do
+        r=$(_rand_number 0 $((${#const[@]}-1)))
+        check=$(( ${#r} + len ))
+      done
       output="${output}${const[*]:${r}:1}"
     fi
+    len="${#output}"
   done
   echo "${output}"
 }
