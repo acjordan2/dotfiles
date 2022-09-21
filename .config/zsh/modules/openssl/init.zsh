@@ -204,7 +204,15 @@ function openssl-generate-certificate() {
   
   local dir="${output_path}/${cn}"
   mkdir -p "${dir}"
-  openssl req -nodes -newkey "rsa:${size}" -keyout "${dir}/key.pem" -x509 -days "${expiration}" -out "${dir}/certificate.pem" -subj "/CN=${cn}"  -passout pass:
+  openssl req -nodes \
+    -newkey "rsa:${size}" \
+    -keyout "${dir}/key.pem" \
+    -x509 \
+    -days "${expiration}" \
+    -out "${dir}/certificate.pem" \
+    -subj "/CN=${cn}"  \
+    -passout pass: \
+    # -addext basicConstraints=critical,CA:TRUE,pathlen:1 \
   echo key="${dir}/key.pem"
   echo cert="${dir}/certificate.pem"
 }
