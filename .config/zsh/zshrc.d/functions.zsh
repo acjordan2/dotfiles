@@ -195,3 +195,30 @@ switch-theme () {
   
 }
 
+hex() {
+  local OPTIND=1
+  local delimeter=""
+  local output
+
+  while getopts "d:" opt; do
+    case "${opt}" in
+      d) delimeter="$(printf '%s\n' "${OPTARG}" | sed -e 's/[\/&]/\\&/g')";;
+    esac
+  done
+  shift $(($OPTIND-1))
+
+  output="$(echo -n ${1} | od -A n -t x1)"
+
+  if [[ -z "${delimeter}" ]]; then
+    echo "${output}" | sed 's/^[ \t]*//'
+  else
+    echo "${output}" | sed "s/ /${delimeter}/g"
+  fi
+}
+
+gitmake() {
+  args="${@}"
+  gitroot=$(git rev-parse --show-toplevel)
+
+  make -C "${gitroot}" ${args}
+}

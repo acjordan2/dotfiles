@@ -21,7 +21,7 @@ alias less="less -FSRXc"
 hash gls >/dev/null 2>&1 || alias gls="ls"
 
 # use neovim instead of vim
-hash nvim >/dev/null 2>&1 && alias vim="nvim "
+hash nvim >/dev/null 2>&1 && alias vim="nvim"
 
 # always use color, even when piping (to awk,grep,etc)
 if gls --color > /dev/null 2>&1; then colorflag="--color"; else colorflag="-G"; fi;
@@ -40,8 +40,8 @@ alias diskspace_report="df -P -kHl"
 alias free_diskspace_report="diskspace_report"
 
 # Shortcuts
-alias vi="vim"
-alias v="vim"
+alias vi="vim "
+alias v="vim "
 alias PlugInstall="vim +PlugInstall"
 alias msfc="msfconsole"
 alias zshrc="vim ${ZDOTDIR}/.zshrc"

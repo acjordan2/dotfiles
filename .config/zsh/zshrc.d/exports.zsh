@@ -19,4 +19,8 @@ if [[ ! -f "${ZDOTDIR}/zshrc.d/dircolors.zsh" ]]; then
 fi
 jit-source "${ZDOTDIR}/zshrc.d/dircolors.zsh" 2>/dev/null || source "${ZDOTDIR}/zshrc.d/dircolors.zsh"
 
-eval "$(direnv hook zsh)"
+if [[ -n "${ZSH_VERSION}" ]]; then
+  eval "$(direnv hook zsh)"
+else
+  eval "$(direnv hook bash)"
+fi
