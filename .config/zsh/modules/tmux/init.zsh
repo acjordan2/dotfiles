@@ -8,6 +8,8 @@
 : "${TMUX_AUTOEXIT:=${TMUX_AUTOSTART}}"
 # Config file for tmux to use
 : "${TMUX_CONFIG:=${XDG_CONFIG_HOME}/tmux/tmux.conf}"
+# Enable tmux logging, 0=no logging, 1=-v, 2=-vv
+: "${TMUX_LOG_LEVEL:=0}"
 # Tmux log directory
 : "${TMUX_LOG_DIR:="${XDG_DATA_HOME}/tmux/log"}"
 # Tmux window session ID, set to a static value to force single sessions
@@ -24,13 +26,15 @@ alias tmux="_tmux_plugin "
 # Config location defaults to XDG spec, fall back to tmux default
 [[ ! -f "${TMUX_CONFIG}" ]] && TMUX_CONFIG="${HOME}/.tmux.conf"
 
+v_args=("" "-v" "-vv")
+
 # Enable tmux completions for our function in ZSH
 # compdef needs to be called after compinit
 compdef_plugin+=("_tmux:_tmux_plugin")
 
 function _tmux_plugin() {
   if [[ -n "${*}" ]]; then 
-    command tmux "${@}"
+      command tmux "${@}"
   else
     # Try to guess what terminal is being used to
     # create deterministic session IDs, Thia makes it
@@ -43,7 +47,7 @@ function _tmux_plugin() {
     current_directory="${PWD}"
     cd "${TMUX_LOG_DIR}" || return  
     SECONDS=0
-    command tmux -f "${TMUX_CONFIG}" new-session -A -s "${TMUX_SESSION_ID}" -c "${current_directory}" 
+    command tmux ${v_args[${TMUX_LOG_LEVEL}]} -f "${TMUX_CONFIG}" new-session -A -s "${TMUX_SESSION_ID}" -c "${current_directory}"
     ret_val="$?"
     RUNTIME="${SECONDS}"
     cd "${current_directory}" || return
