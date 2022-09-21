@@ -505,7 +505,7 @@ call plug#begin('$XDG_CONFIG_HOME/vim/plugged')
 Plug 'dense-analysis/ale'
 Plug 'ervandew/supertab'
 Plug 'ludovicchabant/vim-gutentags'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
 " Formatting
 Plug 'junegunn/rainbow_parentheses.vim'
 Plug 'tpope/vim-commentary'
