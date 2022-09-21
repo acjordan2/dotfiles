@@ -9,3 +9,4 @@ export BDOTDIR="${XDG_CONFIG_HOME}/bash"
 source "${BDOTDIR}/bashrc"
 
 export PATH="$HOME/.cargo/bin:$PATH"
+. "$HOME/.cargo/env"
