@@ -29,8 +29,7 @@ function source() {
 }
 
 function load_module() {
-
-  cmd=("jit-source")
+  local cmd=("jit-source")
   while [[ $# -gt 0 ]]; do
     case "${1}" in
       "--defer"|"-d")
