@@ -98,6 +98,7 @@ create_dirs() {
   execute "mkdir -p $HOME/.local/share/vim/{undo,swaps,backups}" "mkdir '$HOME/.local/share/vim/{undo,swaps,backups}'"
   execute "mkdir -p $HOME/.local/share/tmux/log" "mkdir '$HOME/.local/share/tmux/log"
   execute "mkdir -p $HOME/bin" "mkdir $HOME/bin"
+  execute "mkdir -p $HOME/.ssh/control" "mkdir $HOME/.ssh/control"
 }
 
 main() {
