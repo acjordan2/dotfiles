@@ -6,6 +6,8 @@ TMUX_AUTOSTART=true
 TMUX_SESSION_ID="1"
 TMUX_LOG_LEVEL="2"
 
+export TMUX_THEME="dracula"
+
 # order matters
 plugins=(
   history
